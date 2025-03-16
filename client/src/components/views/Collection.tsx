@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import type { ApolloQueryResult } from '@apollo/client'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
@@ -14,16 +15,12 @@ import NB from '../common/NoBooks'
 interface Props {
     search: string
 }
-interface URLParams {
-    title?: string
-    page?: string
-}
 const Collection: React.FC<Props> = ({ search }) => {
     const { refetch } = useQuery(FetchGQL, { skip: true })
     const [remove] = useMutation(RemoveGQL)
     const dispatch = useDispatch()
     const colState = useSelector((state: RootState) => state.COL)
-    const { title, page }: URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
+    const { query, page } = useParams<{ query: string, page: string }>()
     const pg = Number(page) || 1
     React.useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
@@ -39,7 +36,7 @@ const Collection: React.FC<Props> = ({ search }) => {
         try {
             dispatch(setLoad(true))
             const res = await refetch({
-                search: search || title,
+                search: search || query,
                 page: pg || colState.currentPage
             })
             collectionData(res)
@@ -56,6 +53,15 @@ const Collection: React.FC<Props> = ({ search }) => {
         else {
             dispatch(setBooks(collection))
             dispatch(setTotalPages(Math.ceil(totalCollection / 9)))
+        }
+    }
+    const removeCollection = async (author_key: string[], cover_edition_key: string, cover_i: number) => {
+        try {
+            const { data } = await remove({ variables: { author_key, cover_edition_key, cover_i } })
+            if (data.remove) fetchCollection()
+        } catch (err) {
+            if (err instanceof ApolloError) alert(err.message)
+            else alert('An unexpected error occurred.')
         }
     }
     const pageNumbers = () => {
@@ -96,24 +102,15 @@ const Collection: React.FC<Props> = ({ search }) => {
                     <span
                         key={idx}
                         onClick={() => handleClick(page)}
-                        className={`cursor-pointer px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
+                        className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`collection?${search ? `title=${search.split(' ').join('+')}&page=${colState.currentPage}` : `page=${colState.currentPage}`}`}>
+                        <a href={`collection${search ? `/${search.split(' ').join('+')}/${colState.currentPage}` : `/${colState.currentPage}`}`} >
                             {page}
                         </a>
                     </span >
                 ))}
             </>
         )
-    }
-    const removeCollection = async (author_key: string[], cover_edition_key: string, cover_i: number) => {
-        try {
-            const { data } = await remove({ variables: { author_key, cover_edition_key, cover_i } })
-            if (data.remove) fetchCollection()
-        } catch (err) {
-            if (err instanceof ApolloError) alert(err.message)
-            else alert('An unexpected error occurred.')
-        }
     }
     return (
         <>

@@ -22,7 +22,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
     const [add] = useMutation(AddGQL)
     const dispatch = useDispatch()
     const homeState = useSelector((state: RootState) => state.HOME)
-    const { query, page } = useParams<{ query?: string, page?: string }>()
+    const { query, page } = useParams<{ query: string, page: string }>()
     const pg = Number(page) || 1
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
@@ -142,9 +142,9 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                     <span
                         key={idx}
                         onClick={() => handleClick(page)}
-                        className={`cursor-pointer px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
+                        className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`/${search ? search.split(' ').join('+') : 'harry+potter'}/${currentPage}`}>
+                        <a href={`${search ? search.split(' ').join('+') : 'harry+potter'}/${currentPage}`}>
                             {page}
                         </a>
                     </span>

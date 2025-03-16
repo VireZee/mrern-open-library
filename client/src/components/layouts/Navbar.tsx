@@ -18,7 +18,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
     const path = location.pathname.split('/').filter(Boolean)
-    const str = path[0]?.split('+').join(' ')
+    const str = navState.active === 'home' ? path[0]?.split('+').join(' ') : undefined
     React.useEffect(() => {
         const path = window.location.pathname
         if (path === '/collection') dispatch(setActive('col'))

@@ -12,7 +12,7 @@ import Reg from './components/auth/Register'
 import Log from './components/auth/Login'
 import Col from './components/views/Collection'
 import API from './components/views/API'
-// import Set from './components/auth/Settings'
+import Set from './components/auth/Settings'
 import NF from './components/common/NotFound'
 
 const App: React.FC = () => {
@@ -47,9 +47,10 @@ const App: React.FC = () => {
                     <Route path=':query' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path=':query/:page' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='collection' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='collection/:query' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
+                    <Route path='collection/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
                     <Route path='collection/:query/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
                     <Route path='API' element={appState.loadUser ? null : appState.user ? <API /> : <Navigate to='/login' />} />
+                    <Route path='settings' element={appState.loadUser ? null : appState.user ? <Set isUser={appState.user} /> : <Navigate to='/login' />} />
                     <Route path='*' element={<NF />} />
                 </Routes>
             </main>
