@@ -13,16 +13,12 @@ interface Props {
     } | null
     onSearch: (v: string) => void
 }
-interface URLParams {
-    title?: string
-    isbn?: string
-}
 const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LogoutGQL)
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
-    const { title, isbn }: URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
-    const str = title || isbn
+    const path = location.pathname.split('/').filter(Boolean)
+    const str = path[0] ? path[0].split('+').join(' ') : null
     React.useEffect(() => {
         const path = window.location.pathname
         if (path === '/collection') dispatch(setActive('col'))
