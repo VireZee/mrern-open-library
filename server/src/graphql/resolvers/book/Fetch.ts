@@ -1,5 +1,5 @@
-import Collection from '../../../models/Collection.ts'
 import type { Request } from 'express'
+import Collection from '../../../models/Collection.ts'
 import { verifyToken } from '../../../utils/Validation.ts'
 
 const Fetch = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number }, context: { req: Request }) => {
@@ -13,7 +13,6 @@ const Fetch = async (_: null, args: { author_key: string[], cover_edition_key: s
             author_key: { $in: author_key },
             cover_edition_key,
             cover_i
-
         })
         return {
             key: `${author_key.sort().join(',')}|${cover_edition_key}|${cover_i}`,

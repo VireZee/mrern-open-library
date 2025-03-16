@@ -1,6 +1,6 @@
+import type { Request, Response } from 'express'
 import Redis from '../../../database/Redis.ts'
 import { User } from '../../../models/User.ts'
-import type { Request, Response } from 'express'
 import { verifyToken } from '../../../utils/Validation.ts'
 import { GraphQLError } from 'graphql'
 

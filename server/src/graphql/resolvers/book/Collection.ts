@@ -1,6 +1,6 @@
-import { Types } from 'mongoose'
-import Col from '../../../models/Collection.ts'
 import type { Request } from 'express'
+import { Types } from 'mongoose'
+import CollectionModel from '../../../models/Collection.ts'
 import { verifyToken } from '../../../utils/Validation.ts'
 
 interface Query {
@@ -19,11 +19,11 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
         const query: Query = { user_id: id }
         if (search) query.title = { $regex: search, $options: 'i' }
         const [bookCollection, totalCollection] = await Promise.all([
-            Col.find(query)
+            CollectionModel.find(query)
                 .sort({ created: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit),
-                Col.countDocuments(query)
+            CollectionModel.countDocuments(query)
         ])
         return {
             found: bookCollection.length,

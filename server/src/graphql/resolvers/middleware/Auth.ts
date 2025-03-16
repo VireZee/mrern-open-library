@@ -1,11 +1,12 @@
+import type { Request } from 'express'
 import Redis from '../../../database/Redis.ts'
 import { User } from '../../../models/User.ts'
-import type { Request } from 'express'
 import { verifyToken } from '../../../utils/Validation.ts'
 import { GraphQLError } from 'graphql'
 
 const Auth = async (_: null, __: null, context: { req: Request }) => {
-    const t = context.req.cookies['!']
+    const { req } = context
+    const t = req.cookies['!']
     if (!t) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
     try {
         const { id } = verifyToken(t)

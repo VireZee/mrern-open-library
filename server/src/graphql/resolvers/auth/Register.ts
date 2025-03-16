@@ -1,5 +1,5 @@
-import { User } from '../../../models/User.ts'
 import type { Response } from 'express'
+import { User } from '../../../models/User.ts'
 import { generateSvg, validateName, formatName, validateUsername, formatUsername, validateEmail, hash, generateToken } from '../../../utils/Validation.ts'
 import { GraphQLError } from 'graphql'
 

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types, Document } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose'
 
 interface ICollection extends Document {
     _id: Types.ObjectId
@@ -11,7 +11,7 @@ interface ICollection extends Document {
     created: Date
 }
 const CollectionSchema = new Schema<ICollection>({
-    user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user_id: { type: Schema.Types.ObjectId, required: true },
     author_key: { type: [String], required: true },
     cover_edition_key: { type: String, required: true },
     cover_i: { type: Number, required: true },

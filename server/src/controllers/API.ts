@@ -1,5 +1,5 @@
-import { User } from '../models/User.ts'
 import type { Request, Response } from 'express'
+import { User } from '../models/User.ts'
 import Books from '../graphql/resolvers/api/Books.ts'
 
 const API = async (req: Request, res: Response) => {

@@ -1,10 +1,11 @@
-import { User } from '../../../models/User.ts'
-import type { Request } from 'express'
-import { verifyToken } from '../../../utils/Validation.ts'
 import crypto from 'crypto'
+import type { Request } from 'express'
+import { User } from '../../../models/User.ts'
+import { verifyToken } from '../../../utils/Validation.ts'
 
 const Generate = async (_: null, __: null, context: { req: Request }) => {
-    const t = context.req.cookies['!']
+    const { req } = context
+    const t = req.cookies['!']
     try {
         const { id } = verifyToken(t)
         const user = await User.findById({ id })
