@@ -21,13 +21,13 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LogoutGQL)
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
+    const { title, isbn }: URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
+    const str = title || isbn
     React.useEffect(() => {
         const path = window.location.pathname
         if (path === '/collection') dispatch(setActive('col'))
         else if (path === '/API') dispatch(setActive('api'))
     }, [])
-    const { title, isbn }: URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
-    const str = title || isbn
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onSearch(e.currentTarget.value)
     }

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import type { AxiosResponse } from 'axios'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
@@ -16,18 +17,12 @@ interface Props {
     search: string
     isUser: Record<string, string> | null
 }
-interface URLParams {
-    title?: string
-    isbn?: string
-    page?: string
-}
 const Home: React.FC<Props> = ({ isUser, search }) => {
     const { refetch } = useQuery(FetchGQL, { skip: true })
     const [add] = useMutation(AddGQL)
     const dispatch = useDispatch()
     const homeState = useSelector((state: RootState) => state.HOME)
-    const { title, isbn, page }: URLParams = Object.fromEntries(new URLSearchParams(window.location.search))
-    const str = title || isbn
+    const { query, page } = useParams<{ query?: string, page?: string }>()
     const pg = Number(page) || 1
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
@@ -36,8 +31,8 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
         (async () => {
             const fetchBooks = async () => {
                 const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
-                const query = search.split(' ').join('+')
-                const res = await axios.get(`https://openlibrary.org/search.json?${type}=${query}&page=${homeState.currentPage}`)
+                const str = search.split(' ').join('+')
+                const res = await axios.get(`https://openlibrary.org/search.json?${type}=${str}&page=${homeState.currentPage}`)
                 booksData(res)
                 dispatch(setLoad(false))
             }
@@ -55,9 +50,9 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                     dispatch(setCurrentPage(1))
                     fetchBooks()
                 } else {
-                    const type = /^\d{10}(\d{3})?$/.test(str ?? '') ? 'isbn' : 'title'
-                    const query = str ? str.split(' ').join('+') : 'harry+potter'
-                    const res = await axios.get(`https://openlibrary.org/search.json?${type}=${query}&page=${pg}`)
+                    const type = /^\d{10}(\d{3})?$/.test(query ?? '') ? 'isbn' : 'title'
+                    const str = query ? query.split(' ').join('+') : 'harry+potter'
+                    const res = await axios.get(`https://openlibrary.org/search.json?${type}=${str}&page=${pg}`)
                     booksData(res)
                     dispatch(setLoad(false))
                 }
@@ -88,6 +83,26 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
     const getValidAuthor = (author: string[] | string) => {
         if (Array.isArray(author)) return author.join(', ')
         return author || 'Unknown'
+    }
+    const addToCollection = async (author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string) => {
+        if (!isUser) location.href = '/login'
+        else if (isUser) {
+            try {
+                const { data } = await add({
+                    variables: {
+                        author_key,
+                        cover_edition_key,
+                        cover_i,
+                        title,
+                        author_name
+                    }
+                })
+                if (data.add) fetchStatus(author_key, cover_edition_key, cover_i)
+            } catch (err) {
+                if (err instanceof ApolloError) alert(err.message)
+                else alert('An unexpected error occurred.')
+            }
+        }
     }
     const pageNumbers = () => {
         const pages = []
@@ -136,26 +151,6 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                 ))}
             </>
         )
-    }
-    const addToCollection = async (author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string) => {
-        if (!isUser) location.href = '/login'
-        else if (isUser) {
-            try {
-                const { data } = await add({
-                    variables: {
-                        author_key,
-                        cover_edition_key,
-                        cover_i,
-                        title,
-                        author_name
-                    }
-                })
-                if (data.add) fetchStatus(author_key, cover_edition_key, cover_i)
-            } catch (err) {
-                if (err instanceof ApolloError) alert(err.message)
-                else alert('An unexpected error occurred.')
-            }
-        }
     }
     return (
         <>

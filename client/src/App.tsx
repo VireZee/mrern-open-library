@@ -44,8 +44,8 @@ const App: React.FC = () => {
                     <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='register' element={!appState.user ? <Reg /> : <Navigate to='/' />} />
                     <Route path='login' element={!appState.user ? <Log /> : <Navigate to='/' />} />
-                    {/* <Route path=':query' element={<Home isUser={appState.user} search={appState.search} />} />
-                    <Route path=':query/:page' element={<Home isUser={appState.user} search={appState.search} />} /> */}
+                    <Route path=':query' element={<Home isUser={appState.user} search={appState.search} />} />
+                    <Route path=':query/:page' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='collection' element={<Col search={appState.search} />} />
                     <Route path='*' element={<NF />} />
                 </Routes>
