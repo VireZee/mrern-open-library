@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
@@ -17,7 +17,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LogoutGQL)
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
-    useEffect(() => {
+    React.useEffect(() => {
         const path = location.pathname
         const pathSearchQuery = path.split('/').filter(Boolean)
         if (path.startsWith('/collection/s')) dispatch(setActive('col'))
@@ -27,8 +27,9 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
         else dispatch(setSearch(''))
     }, [navState.active])
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') onSearch(navState.search)
+        if (e.key === 'Enter') onSearch(e.currentTarget.value)
     }
+    console.log(navState.search)
     const imgFormat = (base64String: string) => {
         const decodedString = atob(base64String)
         const hexString = Array.from(decodedString).map(char => char.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')).join('')
