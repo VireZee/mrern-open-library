@@ -8,7 +8,7 @@ interface UserData {
     email: string
 }
 interface State {
-    [key: string]: string | undefined | null | UserData | Boolean
+    [key: string]: string | undefined | null | UserData | boolean
 }
 const initialState: State = {
     search: '',

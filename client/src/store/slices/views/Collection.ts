@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
+export interface Books {
+    author_key: string[]
+    cover_edition_key: string
+    cover_i: number
+    title: string
+    author_name: string
+}
 interface State {
     [key: string]: boolean | Books[] | number
     books: Books[]
@@ -12,14 +19,7 @@ const initialState: State = {
     currentPage: 1,
     totalPages: 1
 }
-export interface Books {
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string
-}
-const CollectionAction = createSlice({
+const Collection = createSlice({
     name: 'COL',
     initialState,
     reducers: {
@@ -40,5 +40,5 @@ const CollectionAction = createSlice({
         }
     }
 })
-export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } = CollectionAction.actions
-export default CollectionAction.reducer
+export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } = Collection.actions
+export default Collection.reducer

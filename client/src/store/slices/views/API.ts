@@ -8,7 +8,7 @@ const initialState: State = {
     online: navigator.onLine,
     apiKey: undefined
 }
-const APIAction = createSlice({
+const API = createSlice({
     name: 'API',
     initialState,
     reducers: {
@@ -20,5 +20,5 @@ const APIAction = createSlice({
         }
     }
 })
-export const { setOnline, setApiKey } = APIAction.actions
-export default APIAction.reducer
+export const { setOnline, setApiKey } = API.actions
+export default API.reducer

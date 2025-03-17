@@ -21,7 +21,8 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const str = navState.active === 'home' ? path[0]?.split('+').join(' ') : undefined
     React.useEffect(() => {
         const path = window.location.pathname
-        if (path === '/collection') dispatch(setActive('col'))
+        console.log(path === '/collection')
+        if (path === '/collection/s') dispatch(setActive('col'))
         else if (path === '/API') dispatch(setActive('api'))
     }, [])
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

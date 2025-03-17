@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
+export interface Books {
+    author_key: string[]
+    cover_edition_key: string
+    cover_i: number
+    title: string
+    author_name: string[] | string
+}
 interface State {
     [key: string]: boolean | Books[] | number | Record<string, boolean>
     books: Books[]
@@ -14,14 +21,7 @@ const initialState: State = {
     totalPages: 1,
     status: {}
 }
-export interface Books {
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string[] | string
-}
-const HomeAction = createSlice({
+const Home = createSlice({
     name: 'HOME',
     initialState,
     reducers: {
@@ -45,5 +45,5 @@ const HomeAction = createSlice({
         }
     }
 })
-export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } = HomeAction.actions
-export default HomeAction.reducer
+export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } = Home.actions
+export default Home.reducer
