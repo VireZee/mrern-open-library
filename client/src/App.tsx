@@ -19,8 +19,8 @@ const App: React.FC = () => {
     const { loading, data, error } = useQuery(AuthGQL)
     const dispatch = useDispatch()
     const appState = useSelector((state: RootState) => state.APP)
-    const showBackLink = ['/register', '/login'].includes(window.location.pathname)
-    const hideHeader = window.location.pathname === '/settings'
+    const showBackLink = ['/register', '/login'].includes(location.pathname)
+    const hideHeader = location.pathname === '/settings'
     const searchHandler = (s: string) => dispatch(setSearch(s))
     React.useEffect(() => {
         if (!loading) {
@@ -46,9 +46,9 @@ const App: React.FC = () => {
                     <Route path='login' element={!appState.user ? <Log /> : <Navigate to='/' />} />
                     <Route path=':query' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path=':query/:page' element={<Home isUser={appState.user} search={appState.search} />} />
-                    <Route path='collection' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='collection/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='collection/:query/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
+                    <Route path='collection/s' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
+                    <Route path='collection/s/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
+                    <Route path='collection/s/:query/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
                     <Route path='API' element={appState.loadUser ? null : appState.user ? <API /> : <Navigate to='/login' />} />
                     <Route path='settings' element={appState.loadUser ? null : appState.user ? <Set isUser={appState.user} /> : <Navigate to='/login' />} />
                     <Route path='*' element={<NF />} />

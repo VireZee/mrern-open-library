@@ -104,7 +104,7 @@ const Collection: React.FC<Props> = ({ search }) => {
                         onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`collection${search ? `/${search.split(' ').join('+')}/${colState.currentPage}` : `/${colState.currentPage}`}`} >
+                        <a href={`/collection${search ? `/s/${search.split(' ').join('+')}/${colState.currentPage}` : `/s/${colState.currentPage}`}`} >
                             {page}
                         </a>
                     </span >

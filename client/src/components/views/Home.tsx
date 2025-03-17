@@ -144,7 +144,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                         onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`${search ? search.split(' ').join('+') : 'harry+potter'}/${currentPage}`}>
+                        <a href={`/${search ? search.split(' ').join('+') : 'harry+potter'}/${currentPage}`}>
                             {page}
                         </a>
                     </span>

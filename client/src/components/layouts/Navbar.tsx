@@ -18,15 +18,16 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
     const path = location.pathname.split('/').filter(Boolean)
-    const str = navState.active === 'home' ? path[0]?.split('+').join(' ') : undefined
+    const str = navState.active === 'home' ? path[0]?.split('+').join(' ') : navState.active === 'col' && isNaN(Number(path[2])) ? path[2]?.split('+').join(' ') : ''
+    const [searchValue, setSearchValue] = React.useState(str)
     React.useEffect(() => {
-        const path = window.location.pathname
-        console.log(path === '/collection')
-        if (path === '/collection/s') dispatch(setActive('col'))
+        const path = location.pathname
+        if (path.startsWith('/collection/s')) dispatch(setActive('col'))
         else if (path === '/API') dispatch(setActive('api'))
+        setSearchValue(str); // Perbarui nilai setiap `str` berubah
     }, [])
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') onSearch(e.currentTarget.value)
+        if (e.key === 'Enter') onSearch(searchValue)
     }
     const imgFormat = (base64String: string) => {
         const decodedString = atob(base64String)
@@ -52,7 +53,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
                 {isUser ? (
                     <div className="flex flex-wrap space-x-4">
                         <Link to="" className={`${navState.active === 'home' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('home'))}>Home</Link>
-                        <Link to="collection" className={`${navState.active === 'col' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('col'))}>Collection</Link>
+                        <Link to="collection/s" className={`${navState.active === 'col' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('col'))}>Collection</Link>
                         <Link to="API" className={`${navState.active === 'api' ? 'text-gray-500' : 'hover:text-gray-500'}`} onClick={() => dispatch(setActive('api'))}>API</Link>
                     </div>
                 ) : (
@@ -60,7 +61,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
                 )}
             </div>
             {navState.active !== 'api' && (
-                <input placeholder={navState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={str} onKeyDown={handleKeyDown} />
+                <input placeholder={navState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" value={searchValue} onChange={e => setSearchValue(e.target.value)} onKeyDown={handleKeyDown} />
             )}
             <div className="w-full flex flex-col items-center mt-4 md:mt-0 md:w-auto md:flex-row md:justify-end">
                 {isUser ? (
