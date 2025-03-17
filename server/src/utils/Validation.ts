@@ -47,7 +47,7 @@ export const validateEmail = async (email: string, id?: Types.ObjectId) => {
         return "Email must be valid!"
     } else if (await User.findOne({
         email,
-        ...(id && { id: { $ne: id } })
+        ...(id && { _id: { $ne: id } })
 
     })) {
         return "Email is already registered!"

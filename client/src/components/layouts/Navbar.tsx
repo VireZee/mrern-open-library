@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
-import { setActive, setIsDropdownOpen } from '../../store/slices/layouts/Navbar'
+import { setActive, setSearch, setIsDropdownOpen } from '../../store/slices/layouts/Navbar'
 import LogoutGQL from '../../graphql/mutations/auth/Logout'
 
 interface Props {
@@ -11,23 +11,23 @@ interface Props {
         photo: string
         name: string
     } | null
-    onSearch: (v: string) => void
+    onSearch: (v: undefined | string) => void
 }
 const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LogoutGQL)
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
-    const path = location.pathname.split('/').filter(Boolean)
-    const str = navState.active === 'home' ? path[0]?.split('+').join(' ') : navState.active === 'col' && isNaN(Number(path[2])) ? path[2]?.split('+').join(' ') : ''
-    const [searchValue, setSearchValue] = React.useState(str)
-    React.useEffect(() => {
+    useEffect(() => {
         const path = location.pathname
+        const pathSearchQuery = path.split('/').filter(Boolean)
         if (path.startsWith('/collection/s')) dispatch(setActive('col'))
         else if (path === '/API') dispatch(setActive('api'))
-        setSearchValue(str); // Perbarui nilai setiap `str` berubah
-    }, [])
+        if (navState.active === 'home') dispatch(setSearch(pathSearchQuery[0]?.split('+').join(' ')))
+        else if (navState.active === 'col' && isNaN(Number(pathSearchQuery[2]))) dispatch(setSearch(pathSearchQuery[2]?.split('+').join(' ')))
+        else dispatch(setSearch(''))
+    }, [navState.active])
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') onSearch(searchValue)
+        if (e.key === 'Enter') onSearch(navState.search)
     }
     const imgFormat = (base64String: string) => {
         const decodedString = atob(base64String)
@@ -61,7 +61,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
                 )}
             </div>
             {navState.active !== 'api' && (
-                <input placeholder={navState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" value={searchValue} onChange={e => setSearchValue(e.target.value)} onKeyDown={handleKeyDown} />
+                <input placeholder={navState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={navState.search} onKeyDown={handleKeyDown} />
             )}
             <div className="w-full flex flex-col items-center mt-4 md:mt-0 md:w-auto md:flex-row md:justify-end">
                 {isUser ? (
