@@ -1,5 +1,4 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 import type { ApolloQueryResult } from '@apollo/client'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
@@ -20,7 +19,7 @@ const Collection: React.FC<Props> = ({ search }) => {
     const [remove] = useMutation(RemoveGQL)
     const dispatch = useDispatch()
     const colState = useSelector((state: RootState) => state.COL)
-    const { query, page } = useParams<{ query: string, page: string }>()
+    const { title, page } = Object.fromEntries(new URLSearchParams(window.location.search))
     const pg = Number(page) || 1
     React.useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
@@ -36,7 +35,7 @@ const Collection: React.FC<Props> = ({ search }) => {
         try {
             dispatch(setLoad(true))
             const res = await refetch({
-                search: search || query,
+                search: search || title,
                 page: pg || colState.currentPage
             })
             collectionData(res)
@@ -104,7 +103,7 @@ const Collection: React.FC<Props> = ({ search }) => {
                         onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`/collection${search ? `/s/${search.split(' ').join('+')}/${colState.currentPage}` : `/s/${colState.currentPage}`}`} >
+                        <a href={`collection?${search ? `title=${search.split(' ').join('+')}&page=${colState.currentPage}` : `page=${colState.currentPage}`}`}>
                             {page}
                         </a>
                     </span >

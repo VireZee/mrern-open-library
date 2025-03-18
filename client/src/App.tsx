@@ -28,6 +28,7 @@ const App: React.FC = () => {
             else if (error) dispatch(setUser(null))
         }
     }, [data, error])
+    console.log(appState.search)
     return (
         <BrowserRouter>
             {!hideHeader && (
@@ -44,11 +45,9 @@ const App: React.FC = () => {
                     <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='register' element={!appState.user ? <Reg /> : <Navigate to='/' />} />
                     <Route path='login' element={!appState.user ? <Log /> : <Navigate to='/' />} />
-                    <Route path=':query' element={<Home isUser={appState.user} search={appState.search} />} />
-                    <Route path=':query/:page' element={<Home isUser={appState.user} search={appState.search} />} />
-                    <Route path='collection/s' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='collection/s/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='collection/s/:query/:page' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
+                    <Route path='s' element={<Home isUser={appState.user} search={appState.search} />} />
+                    <Route path='collection' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
+                    <Route path='collection?' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
                     <Route path='API' element={appState.loadUser ? null : appState.user ? <API /> : <Navigate to='/login' />} />
                     <Route path='settings' element={appState.loadUser ? null : appState.user ? <Set isUser={appState.user} /> : <Navigate to='/login' />} />
                     <Route path='*' element={<NF />} />

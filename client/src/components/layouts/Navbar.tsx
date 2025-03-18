@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
-import { setActive, setSearch, setIsDropdownOpen } from '../../store/slices/layouts/Navbar'
+import { setActive, setIsDropdownOpen } from '../../store/slices/layouts/Navbar'
 import LogoutGQL from '../../graphql/mutations/auth/Logout'
 
 interface Props {
@@ -17,19 +17,16 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LogoutGQL)
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
+    const { title, isbn } = Object.fromEntries(new URLSearchParams(window.location.search))
+    const str = title || isbn
     React.useEffect(() => {
-        const path = location.pathname
-        const pathSearchQuery = path.split('/').filter(Boolean)
-        if (path.startsWith('/collection/s')) dispatch(setActive('col'))
+        const path = window.location.pathname
+        if (path === '/collection') dispatch(setActive('col'))
         else if (path === '/API') dispatch(setActive('api'))
-        if (navState.active === 'home') dispatch(setSearch(pathSearchQuery[0]?.split('+').join(' ')))
-        else if (navState.active === 'col' && isNaN(Number(pathSearchQuery[2]))) dispatch(setSearch(pathSearchQuery[2]?.split('+').join(' ')))
-        else dispatch(setSearch(''))
-    }, [navState.active])
+    }, [])
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onSearch(e.currentTarget.value)
     }
-    console.log(navState.search)
     const imgFormat = (base64String: string) => {
         const decodedString = atob(base64String)
         const hexString = Array.from(decodedString).map(char => char.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')).join('')
@@ -54,7 +51,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
                 {isUser ? (
                     <div className="flex flex-wrap space-x-4">
                         <Link to="" className={`${navState.active === 'home' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('home'))}>Home</Link>
-                        <Link to="collection/s" className={`${navState.active === 'col' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('col'))}>Collection</Link>
+                        <Link to="collection" className={`${navState.active === 'col' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('col'))}>Collection</Link>
                         <Link to="API" className={`${navState.active === 'api' ? 'text-gray-500' : 'hover:text-gray-500'}`} onClick={() => dispatch(setActive('api'))}>API</Link>
                     </div>
                 ) : (
@@ -62,7 +59,7 @@ const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
                 )}
             </div>
             {navState.active !== 'api' && (
-                <input placeholder={navState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={navState.search} onKeyDown={handleKeyDown} />
+                <input placeholder={navState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={str} onKeyDown={handleKeyDown} />
             )}
             <div className="w-full flex flex-col items-center mt-4 md:mt-0 md:w-auto md:flex-row md:justify-end">
                 {isUser ? (

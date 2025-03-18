@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import type { AxiosResponse } from 'axios'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
@@ -22,7 +21,8 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
     const [add] = useMutation(AddGQL)
     const dispatch = useDispatch()
     const homeState = useSelector((state: RootState) => state.HOME)
-    const { query, page } = useParams<{ query: string, page: string }>()
+    const { title, isbn, page } = Object.fromEntries(new URLSearchParams(window.location.search))
+    const str = title || isbn
     const pg = Number(page) || 1
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
@@ -31,8 +31,8 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
         (async () => {
             const fetchBooks = async () => {
                 const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
-                const str = search.split(' ').join('+')
-                const res = await axios.get(`https://openlibrary.org/search.json?${type}=${str}&page=${homeState.currentPage}`)
+                const query = search.split(' ').join('+')
+                const res = await axios.get(`https://openlibrary.org/search.json?${type}=${query}&page=${homeState.currentPage}`)
                 booksData(res)
                 dispatch(setLoad(false))
             }
@@ -50,9 +50,9 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                     dispatch(setCurrentPage(1))
                     fetchBooks()
                 } else {
-                    const type = /^\d{10}(\d{3})?$/.test(query ?? '') ? 'isbn' : 'title'
-                    const str = query ? query.split(' ').join('+') : 'harry+potter'
-                    const res = await axios.get(`https://openlibrary.org/search.json?${type}=${str}&page=${pg}`)
+                    const type = /^\d{10}(\d{3})?$/.test(str ?? '') ? 'isbn' : 'title'
+                    const query = str ? str.split(' ').join('+') : 'harry+potter'
+                    const res = await axios.get(`https://openlibrary.org/search.json?${type}=${query}&page=${pg}`)
                     booksData(res)
                     dispatch(setLoad(false))
                 }
@@ -144,7 +144,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                         onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`/${search ? search.split(' ').join('+') : 'harry+potter'}/${currentPage}`}>
+                        <a href={`s?${/^\d{10}(\d{3})?$/.test(search ?? '') ? 'isbn' : 'title'}=${search ? search.split(' ').join('+') : 'harry+potter'}&page=${currentPage}`}>
                             {page}
                         </a>
                     </span>
