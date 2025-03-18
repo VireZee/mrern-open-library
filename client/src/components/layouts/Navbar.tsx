@@ -11,7 +11,7 @@ interface Props {
         photo: string
         name: string
     } | null
-    onSearch: (v: undefined | string) => void
+    onSearch: (v: string) => void
 }
 const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LogoutGQL)

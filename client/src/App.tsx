@@ -28,7 +28,6 @@ const App: React.FC = () => {
             else if (error) dispatch(setUser(null))
         }
     }, [data, error])
-    console.log(appState.search)
     return (
         <BrowserRouter>
             {!hideHeader && (
