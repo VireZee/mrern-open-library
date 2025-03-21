@@ -3,7 +3,7 @@ import { User } from '../../../models/User.ts'
 import { generateSvg, validateName, formatName, validateUsername, formatUsername, validateEmail, hash, generateToken } from '../../../utils/Validation.ts'
 import { GraphQLError } from 'graphql'
 
-const Register = async (_: null, args: { name: string; uname: string; email: string; pass: string; rePass: string; show: boolean }, context: { res: Response }) => {
+const Register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Response }) => {
     try {
         const { name, uname, email, pass, rePass, show } = args
         const errs: Record<string, string> = {}

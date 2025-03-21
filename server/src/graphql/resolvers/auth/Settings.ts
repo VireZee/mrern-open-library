@@ -5,7 +5,7 @@ import { User } from '../../../models/User.ts'
 import { validateName, formatName, validateUsername, formatUsername, validateEmail, hash, verifyHash, generateToken, verifyToken } from '../../../utils/Validation.ts'
 import { GraphQLError } from 'graphql'
 
-const Settings = async (_: null, args: { photo: string; name: string; uname: string; email: string; oldPass: string; newPass: string; rePass: string; show: boolean }, context: { req: Request, res: Response }) => {
+const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { req: Request, res: Response }) => {
     const { req, res } = context
     const t = req.cookies['!']
     try {

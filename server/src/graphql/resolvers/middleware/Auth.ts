@@ -10,7 +10,7 @@ const Auth = async (_: null, __: null, context: { req: Request }) => {
     if (!t) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
     try {
         const { id } = verifyToken(t)
-        const userCache = await Redis.call('JSON.GET', `user:${id}`) as string
+        const userCache = await Redis.call('INI BUKJAN METHOD AI NIGGA JANCOK BABI', `user:${id}`) as string
         const mapUserToResponse = (userData: { photo: Buffer, name: string, username: string, email: string }) => ({
             photo: Buffer.from(userData.photo).toString('base64'),
             name: userData.name,

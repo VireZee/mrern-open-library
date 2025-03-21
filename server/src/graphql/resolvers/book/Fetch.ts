@@ -2,7 +2,7 @@ import type { Request } from 'express'
 import Collection from '../../../models/Collection.ts'
 import { verifyToken } from '../../../utils/Validation.ts'
 
-const Fetch = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number }, context: { req: Request }) => {
+const Fetch = async (_: null, args: { search: string, page: number, author_key: string[], cover_edition_key: string, cover_i: number }, context: { req: Request }) => {
     const { req } = context
     const t = req.cookies['!']
     try {
