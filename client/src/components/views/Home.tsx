@@ -32,12 +32,6 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
         window.addEventListener('online', handleOnline)
         window.addEventListener('offline', handleOnline);
         (async () => {
-            const fetchBooks = async () => {
-                const { data } = await homeRefetch({ search: search || 'harry potter', page: homeState.currentPage })
-                if (data.home) booksData(data.home)
-                else dispatch(setBooks([]))
-                dispatch(setLoad(false))
-            }
             const booksData = (data: BooksData) => {
                 const { numFound, docs } = data
                 if (numFound === 0) dispatch(setBooks([]))
@@ -46,11 +40,15 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                     dispatch(setTotalPages(Math.ceil(numFound / 100)))
                 }
             }
-            if (homeState.online) {
+            const fetchBooks = async () => {
                 dispatch(setLoad(true))
                 dispatch(setCurrentPage(1))
-                fetchBooks()
+                const { data } = await homeRefetch({ search: search || 'harry potter', page: homeState.currentPage })
+                if (data.home) booksData(data.home)
+                else dispatch(setBooks([]))
+                dispatch(setLoad(false))
             }
+            if (homeState.online) fetchBooks()
         })()
         return () => {
             window.removeEventListener('online', handleOnline)

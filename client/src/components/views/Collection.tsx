@@ -1,5 +1,4 @@
 import React from 'react'
-import type { ApolloQueryResult } from '@apollo/client'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
@@ -13,6 +12,17 @@ import NB from '../common/NoBooks'
 
 interface Props {
     search: string
+}
+interface CollectionData {
+    found: number
+    collection: {
+        author_key: string[]
+        cover_edition_key: string
+        cover_i: number
+        title: string
+        author_name: string[]
+    }[]
+    totalCollection: number
 }
 const Collection: React.FC<Props> = ({ search }) => {
     const { refetch } = useQuery(FetchGQL, { skip: true })
@@ -31,27 +41,27 @@ const Collection: React.FC<Props> = ({ search }) => {
             window.removeEventListener('offline', handleOnline)
         }
     }, [colState.online, search])
+    const collectionData = (data: CollectionData) => {
+        const { found, collection, totalCollection } = data
+        if (found === 0) dispatch(setBooks([]))
+        else {
+            dispatch(setBooks(collection))
+            dispatch(setTotalPages(Math.ceil(totalCollection / 9)))
+        }
+    }
     const fetchCollection = async () => {
         try {
             dispatch(setLoad(true))
-            const res = await refetch({
+            const { data } = await refetch({
                 search: search || title,
                 page: pg || colState.currentPage
             })
-            collectionData(res)
+            if (data.collection) collectionData(data.collection)
         } catch (err) {
             if (err instanceof ApolloError) alert('Fetch Error: ' + err.message)
             else alert('Fetch Error: An unexpected error occurred.')
         } finally {
             dispatch(setLoad(false))
-        }
-    }
-    const collectionData = (res: ApolloQueryResult<{ collection: { found: number, collection: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string }[]; totalCollection: number } }>) => {
-        const { found, collection, totalCollection } = res.data.collection
-        if (found === 0) dispatch(setBooks([]))
-        else {
-            dispatch(setBooks(collection))
-            dispatch(setTotalPages(Math.ceil(totalCollection / 9)))
         }
     }
     const removeCollection = async (author_key: string[], cover_edition_key: string, cover_i: number) => {
@@ -131,7 +141,7 @@ const Collection: React.FC<Props> = ({ search }) => {
                                                     className="w-full sm:w-[210px] h-[300px] object-cover border-2 border-gray-400" />
                                                 <div className="ml-4">
                                                     <h1 className="text-center font-black text-xl mb-5">{book.title}</h1>
-                                                    <h2 className="text-sm mb-2">Author(s): {book.author_name}</h2>
+                                                    <h2 className="text-sm mb-2">Author(s): {book.author_name.join(', ')}</h2>
                                                     <label className="flex items-center space-x-2">
                                                         <input
                                                             type="checkbox"
