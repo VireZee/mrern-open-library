@@ -63,7 +63,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                 if (book.author_key && book.cover_edition_key && book.cover_i) fetchStatus(book.author_key, book.cover_edition_key, book.cover_i)
             })
         }
-    }, [homeState.books])
+    }, [isUser, homeState.books])
     const fetchStatus = async (author_key: string[], cover_edition_key: string, cover_i: number) => {
         try {
             const { data } = await fetRefetch({ author_key, cover_edition_key, cover_i })
@@ -74,11 +74,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
         }
     }
     const getValidKey = (author_key: string[], cover_edition_key: string, cover_i: number): string => `${[...author_key].sort().join(',')}|${cover_edition_key}|${cover_i}`
-    const getValidAuthor = (author: string[] | string) => {
-        if (Array.isArray(author)) return author.join(', ')
-        return author || 'Unknown'
-    }
-    const addToCollection = async (author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string) => {
+    const addToCollection = async (author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[]) => {
         if (!isUser) location.href = '/login'
         else if (isUser) {
             try {
@@ -166,12 +162,12 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                                                     className="w-full sm:w-[210px] h-[300px] object-cover border-2 border-gray-400" />
                                                 <div className="ml-4">
                                                     <h1 className="text-center font-black text-xl mb-5">{book.title}</h1>
-                                                    <h2 className="text-sm mb-2">Author(s): {Array.isArray(book.author_name) ? book.author_name.join(', ') : book.author_name || 'Unknown'}</h2>
+                                                    <h2 className="text-sm mb-2">Author(s): {book.author_name.join(', ')}</h2>
                                                     <label className="flex items-center space-x-2">
                                                         <input
                                                             type="checkbox"
                                                             checked={(book.author_key && book.cover_edition_key && book.cover_i) ? homeState.status[getValidKey(book.author_key, book.cover_edition_key, book.cover_i)] || false : false}
-                                                            onChange={() => { if (book.author_key && book.cover_edition_key && book.cover_i) addToCollection(book.author_key, book.cover_edition_key, book.cover_i, book.title, getValidAuthor(book.author_name)) }}
+                                                            onChange={() => { if (book.author_key && book.cover_edition_key && book.cover_i) addToCollection(book.author_key, book.cover_edition_key, book.cover_i, book.title, book.author_name) }}
                                                             disabled={!(book.author_key && book.cover_edition_key && book.cover_i)}
                                                         />
                                                         <span>Add to Collection</span>

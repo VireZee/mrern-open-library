@@ -60,7 +60,7 @@ const Schema = `#graphql
             cover_edition_key: String!
             cover_i: Int!
             title: String!
-            author_name: String!
+            author_name: [String!]!
         ): Boolean!
         remove(
             author_key: [String!]!
