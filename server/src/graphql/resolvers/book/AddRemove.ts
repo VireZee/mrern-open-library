@@ -12,10 +12,7 @@ const AddRemove = async (_: null, args: { author_key: string[], cover_edition_ke
             user_id: id,
             author_key: { $in: author_key },
             cover_edition_key,
-            cover_i,
-            title,
-            author_name
-
+            cover_i
         })
         if (bookCollection) await Collection.deleteOne({ _id: bookCollection._id })
         else {
