@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+@config "../../../tailwind.config.js";
+
+.loader::before,
+.loader::after {
+    content: "";
+    grid-area: 1 / 1;
+    background: no-repeat radial-gradient(farthest-side, #25b09b 92%, transparent) 50% 0,
+        no-repeat radial-gradient(farthest-side, #25b09b 92%, transparent) 50% 100%,
+        no-repeat radial-gradient(farthest-side, #25b09b 92%, transparent) 100% 50%,
+        no-repeat radial-gradient(farthest-side, #25b09b 92%, transparent) 0 50%;
+    background-size: 12px 12px;
+    animation: l12 0.5s infinite;
+}
+.loader::before {
+    margin: 4px;
+    filter: hue-rotate(45deg);
+    background-size: 8px 8px;
+    animation-timing-function: linear;
+}
+@keyframes l12 {
+    100% {
+        transform: rotate(0.5turn);
+    }
+}
