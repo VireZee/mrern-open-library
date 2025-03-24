@@ -11,24 +11,25 @@ interface Query {
         $options: 'i'
     }
 }
-interface CollectionData {
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string[]
-}
 const Collection = async (_: null, args: { search: string, page: number }, context: { req: Request }) => {
     const { req } = context
     const t = req.cookies['!']
     try {
         const { id } = verifyToken(t)
-        const { search = '', page } = args
+        const { search, page } = args
         const redisKey = `collection:${id}|${search}|${page}`
-        const collectionCache = await Redis.call('JSON.GET', redisKey) as string
-        const mapCollectionToResponse = (collectionData: CollectionData[], totalCollection: number) => ({
-            found: collectionData.length,
-            collection: collectionData.map(book => ({
+        const cachedCollection = await Redis.call('JSON.GET', redisKey) as string
+        if (cachedCollection) return JSON.parse(cachedCollection)
+        const limit = 9
+        const query: Query = { user_id: id }
+        if (search) query.title = { $regex: search, $options: 'i' }
+        const [bookCollection, totalCollection] = await Promise.all([
+            CollectionModel.find(query).sort({ created: -1 }).skip((page - 1) * limit).limit(limit),
+            CollectionModel.countDocuments(query)
+        ])
+        const response = {
+            found: bookCollection.length,
+            collection: bookCollection.map(book => ({
                 author_key: book.author_key,
                 cover_edition_key: book.cover_edition_key,
                 cover_i: book.cover_i,
@@ -36,23 +37,10 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
                 author_name: book.author_name
             })),
             totalCollection
-        })
-        // console.log(mapCollectionToResponse(JSON.parse(collectionCache), totalCollection))
-        if (collectionCache) return JSON.parse(collectionCache)
-        const limit = 9
-        const query: Query = { user_id: id }
-        if (search) query.title = { $regex: search, $options: 'i' }
-        const [bookCollection, totalCollection] = await Promise.all([
-            CollectionModel.find(query)
-                .sort({ created: -1 })
-                .skip((page - 1) * limit)
-                .limit(limit),
-            CollectionModel.countDocuments(query)
-        ])
-        const response = mapCollectionToResponse(bookCollection, totalCollection)
+        }
         await Redis.call('JSON.SET', redisKey, '$', JSON.stringify(response))
         await Redis.expire(redisKey, 86400)
-        return mapCollectionToResponse(bookCollection, totalCollection)
+        return response
     } catch (e) {
         throw e
     }

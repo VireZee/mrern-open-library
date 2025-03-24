@@ -8,26 +8,27 @@ const Auth = async (_: null, __: null, context: { req: Request }) => {
     const { req } = context
     const t = req.cookies['!']
     if (!t) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
+    const formatUserResponse = (userData: { photo: Buffer, name: string, username: string, email: string }) => ({
+        photo: Buffer.from(userData.photo).toString('base64'),
+        name: userData.name,
+        uname: userData.username,
+        email: userData.email
+    })
     try {
         const { id } = verifyToken(t)
-        const userCache = await Redis.call('JSON.GET', `user:${id}`) as string
-        const mapUserToResponse = (userData: { photo: Buffer, name: string, username: string, email: string }) => ({
-            photo: Buffer.from(userData.photo).toString('base64'),
-            name: userData.name,
-            uname: userData.username,
-            email: userData.email
-        })
-        if (userCache) return mapUserToResponse(JSON.parse(userCache))
+        const redisKey = `user:${id}`
+        const cachedUser = await Redis.call('JSON.GET', redisKey) as string
+        if (cachedUser) return formatUserResponse(JSON.parse(cachedUser))
         const user = await User.findById(id)
         if (!user) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
-        await Redis.call('JSON.SET', `user:${id}`, '$', JSON.stringify({
+        await Redis.call('JSON.SET', redisKey, '$', JSON.stringify({
             photo: user.photo.toString(),
             name: user.name,
             username: user.username,
             email: user.email
         }))
-        await Redis.expire(`user:${id}`, 86400)
-        return mapUserToResponse(user)
+        await Redis.expire(redisKey, 86400)
+        return formatUserResponse(user)
     } catch (e) {
         throw e
     }

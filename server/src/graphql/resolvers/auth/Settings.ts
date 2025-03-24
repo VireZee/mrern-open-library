@@ -33,13 +33,13 @@ const Settings = async (_: null, args: { photo: string, name: string, uname: str
         if (newPass) updatedUser.pass = await hash(newPass)
         if (Object.keys(updatedUser).length > 0) {
             updatedUser.updated = new Date()
-            const newUserCache = await User.findByIdAndUpdate(id, updatedUser, { new: true })
+            const newCachedUser = await User.findByIdAndUpdate(id, updatedUser, { new: true })
             await Redis.del(`user:${id}`)
             await Redis.call('JSON.SET', `user:${id}`, '$', JSON.stringify({
-                photo: newUserCache!.photo.toString(),
-                name: newUserCache!.name,
-                username: newUserCache!.username,
-                email: newUserCache!.email
+                photo: newCachedUser!.photo.toString(),
+                name: newCachedUser!.name,
+                username: newCachedUser!.username,
+                email: newCachedUser!.email
             }))
             const t = generateToken(user!._id)
             res.cookie('!', t, {
