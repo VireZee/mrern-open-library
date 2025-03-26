@@ -14,10 +14,9 @@ const Home = async (_: null, args: { search: string, page: number }) => {
         const redisKey = `book:${search}|${page}`
         const cachedBooks = await Redis.call('JSON.GET', redisKey) as string
         if (cachedBooks) return JSON.parse(cachedBooks)
-        const isISBN = /^\d{10}(\d{3})?$/.test(search)
-        const queryType = isISBN ? 'isbn' : 'title'
+        const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')
-        const response = await got(`https://openlibrary.org/search.json?${queryType}=${formattedQuery}&page=${page}`).json<{ numFound: number, docs: Books[] }>()
+        const response = await got(`https://openlibrary.org/search.json?${type}=${formattedQuery}&page=${page}`).json<{ numFound: number, docs: Books[] }>()
         const books = {
             numFound: response.numFound,
             docs: response.docs.map((book: Books) => ({
