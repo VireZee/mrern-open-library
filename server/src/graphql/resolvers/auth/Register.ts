@@ -21,8 +21,7 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
             name: formatName(name),
             username: formatUsername(uname),
             email,
-            pass: await hash(pass),
-            created: new Date()
+            pass: await hash(pass)
         })
         await newUser.save()
         const t = generateToken(newUser._id)
