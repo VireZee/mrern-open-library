@@ -41,14 +41,23 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
         })
         await newUser.save()
         await transporter.sendMail({
-            from: '"My App" <no-reply@myapp.com>',
+            from: process.env['MAIL_FROM'],
             to: email,
-            subject: "Verify Your Email",
+            subject: 'Verify Your Email',
             html: `
-                <p>Your verification code: <strong>${verificationCode}</strong></p>
-                <p>Or click the button below to verify:</p>
-                <a href="http://localhost:5173/verify?email=${email}&code=${verificationCode}" style="padding: 10px 20px; background: blue; color: white; text-decoration: none;">Verify Now</a>
-                <p>This code will expire in 5 minutes.</p>
+                <div style="max-width: 500px; margin: auto; font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; border-radius: 8px; text-align: center;">
+                    <h2 style="color: #333;">Verify Your Email</h2>
+                    <p style="color: #555;">Use the code below to verify your email:</p>
+                    <div style="font-size: 20px; font-weight: bold; background: #f3f3f3; padding: 12px 18px; border-radius: 5px; display: inline-block; word-break: break-all; margin: 10px 0;">
+                        ${verificationCode}
+                    </div>
+                    <p style="color: #555;">Or click the button below:</p>
+                    <a href="http://localhost:5173/verify?email=${email}&code=${verificationCode}" 
+                        style="display: inline-block; background: #007BFF; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                        Verify Now
+                    </a>
+                    <p style="color: #888; font-size: 14px; margin-top: 10px;">This code will expire in 5 minutes.</p>
+                </div>
             `
         })
         const t = generateToken(newUser._id)

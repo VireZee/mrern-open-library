@@ -8,8 +8,8 @@ export interface IUser extends Document {
     email: string
     pass: string
     isVerified: boolean
-    verificationCode: string
-    codeExpiresAt: Date
+    verificationCode: string | null
+    codeExpiresAt: Date | null
     api_key: Buffer
     created: Date
     updated: Date

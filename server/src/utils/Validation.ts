@@ -73,10 +73,10 @@ export const hash = async (pass: string) => {
         return rslt
     }
     const opt: argon2.Options = {
-        hashLength: 4096,
-        timeCost: 13,
-        memoryCost: 1024 * 1024,
-        parallelism: 13,
+        hashLength: 128,
+        timeCost: 6,
+        memoryCost: 128 * 1024,
+        parallelism: 4,
         type: 2,
         salt: Buffer.from(generateSecretKey(), 'utf-8')
     }

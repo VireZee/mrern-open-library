@@ -27,7 +27,7 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
             CollectionModel.find(query).sort({ created: -1 }).skip((page - 1) * limit).limit(limit),
             CollectionModel.countDocuments(query)
         ])
-        const response = {
+        const collection = {
             found: bookCollection.length,
             collection: bookCollection.map(book => ({
                 author_key: book.author_key,
@@ -38,9 +38,9 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
             })),
             totalCollection
         }
-        await Redis.call('JSON.SET', redisKey, '$', JSON.stringify(response))
+        await Redis.call('JSON.SET', redisKey, '$', JSON.stringify(collection))
         await Redis.expire(redisKey, 86400)
-        return response
+        return collection
     } catch (e) {
         throw e
     }

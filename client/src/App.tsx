@@ -9,6 +9,7 @@ import './assets/styles/global.css'
 import Nav from './components/layouts/Navbar'
 import Home from './components/views/Home'
 import Reg from './components/auth/Register'
+import Ver from './components/auth/Verify'
 import Log from './components/auth/Login'
 import Col from './components/views/Collection'
 import API from './components/views/API'
@@ -19,7 +20,7 @@ const App: React.FC = () => {
     const { loading, data, error } = useQuery(AuthGQL)
     const dispatch = useDispatch()
     const appState = useSelector((state: RootState) => state.APP)
-    const showBackLink = ['/register', '/login'].includes(location.pathname)
+    const showBackLink = ['/register', '/verify', '/login'].includes(location.pathname)
     const hideHeader = location.pathname === '/settings'
     const searchHandler = (s: string) => dispatch(setSearch(s))
     React.useEffect(() => {
@@ -43,6 +44,7 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='register' element={!appState.user ? <Reg /> : <Navigate to='/' />} />
+                    <Route path='verify' element={<Ver /> } />
                     <Route path='login' element={!appState.user ? <Log /> : <Navigate to='/' />} />
                     <Route path='s' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='collection' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
