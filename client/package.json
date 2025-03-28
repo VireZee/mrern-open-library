@@ -10,14 +10,14 @@
     "dependencies": {
         "@apollo/client": "^3.13.5",
         "@reduxjs/toolkit": "^2.6.1",
-        "@tailwindcss/postcss": "^4.0.15",
+        "@tailwindcss/postcss": "^4.0.17",
         "graphql": "^16.10.0",
         "postcss": "^8.5.3",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-redux": "^9.2.0",
         "react-router-dom": "^7.4.0",
-        "tailwindcss": "^4.0.15"
+        "tailwindcss": "^4.0.17"
     },
     "devDependencies": {
         "@types/react": "^19.0.12",
@@ -26,7 +26,7 @@
         "typescript": "^5.8.2",
         "vite": "^6.2.3"
     },
-    "packageManager": "pnpm@10.6.5",
+    "packageManager": "pnpm@10.7.0",
     "pnpm": {
         "onlyBuiltDependencies": [
             "@swc/core",

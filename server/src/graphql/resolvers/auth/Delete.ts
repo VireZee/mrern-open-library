@@ -14,6 +14,7 @@ const Delete = async (_: null, __: null, context: { req: Request, res: Response 
         if (!user) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
         await Collection.deleteMany({ user_id: id })
         await User.findByIdAndDelete(id)
+        await Redis.del(`collection:${id}*`)
         await Redis.del(`user:${id}`)
         res.clearCookie('!')
         return true
