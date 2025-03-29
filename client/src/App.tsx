@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from './store/index'
-import { setUser, setSearch } from './store/slices/core/App'
+import { setUser, setVerified, setSearch } from './store/slices/core/App'
 import AuthGQL from './graphql/queries/auth/Auth'
 import './assets/styles/global.css'
 import Nav from './components/layouts/Navbar'
@@ -15,6 +15,8 @@ import Col from './components/views/Collection'
 import API from './components/views/API'
 import Set from './components/auth/Settings'
 import NF from './components/common/NotFound'
+import ProtectedRoute from './ProtectedRoute'
+import Load from './components/common/Load'
 
 const App: React.FC = () => {
     const { loading, data, error } = useQuery(AuthGQL)
@@ -25,10 +27,14 @@ const App: React.FC = () => {
     const searchHandler = (s: string) => dispatch(setSearch(s))
     React.useEffect(() => {
         if (!loading) {
-            if (data) dispatch(setUser(data.auth))
+            if (data) {
+                dispatch(setUser(data.auth))
+                dispatch(setVerified(data.auth.verified))
+            }
             else if (error) dispatch(setUser(null))
         }
     }, [data, error])
+    if (loading) return <Load />
     return (
         <BrowserRouter>
             {!hideHeader && (
@@ -44,13 +50,13 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
                     <Route path='register' element={!appState.user ? <Reg /> : <Navigate to='/' />} />
-                    <Route path='verify' element={<Ver /> } />
                     <Route path='login' element={!appState.user ? <Log /> : <Navigate to='/' />} />
-                    <Route path='s' element={<Home isUser={appState.user} search={appState.search} />} />
-                    <Route path='collection' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='collection?' element={appState.loadUser ? null : appState.user ? <Col search={appState.search} /> : <Navigate to='/login' />} />
-                    <Route path='API' element={appState.loadUser ? null : appState.user ? <API /> : <Navigate to='/login' />} />
-                    <Route path='settings' element={appState.loadUser ? null : appState.user ? <Set isUser={appState.user} /> : <Navigate to='/login' />} />
+                    <Route path='verify' element={appState.user && !appState.verified ? <Ver /> : <Navigate to="/" />} />
+                    <Route element={<ProtectedRoute user={appState.user} verified={appState.verified} />}>
+                        <Route path='collection' element={<Col search={appState.search} />} />
+                        <Route path='API' element={<API />} />
+                        <Route path='settings' element={<Set isUser={appState.user} />} />
+                    </Route>
                     <Route path='*' element={<NF />} />
                 </Routes>
             </main>

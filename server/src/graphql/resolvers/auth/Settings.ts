@@ -34,13 +34,10 @@ const Settings = async (_: null, args: { photo: string, name: string, uname: str
         if (Object.keys(updatedUser).length > 0) {
             updatedUser.updated = new Date()
             const newCachedUser = await User.findByIdAndUpdate(id, updatedUser, { new: true })
-            await Redis.del(`user:${id}`)
-            await Redis.call('JSON.SET', `user:${id}`, '$', JSON.stringify({
-                photo: newCachedUser!.photo.toString(),
-                name: newCachedUser!.name,
-                username: newCachedUser!.username,
-                email: newCachedUser!.email
-            }))
+            if (updatedUser.photo) await Redis.call('JSON.SET', `user:${id}`, '$.photo', `${newCachedUser!.photo.toString()}`)
+            if (updatedUser.name) await Redis.call('JSON.SET', `user:${id}`, '$.name', `${newCachedUser!.name}`)
+            if (updatedUser.username) await Redis.call('JSON.SET', `user:${id}`, '$.username', `${newCachedUser!.username}`)
+            if (updatedUser.email) await Redis.call('JSON.SET', `user:${id}`, '$.email', `${newCachedUser!.email}`)
             const t = generateToken(user!._id)
             res.cookie('!', t, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,

@@ -1,5 +1,6 @@
 import type { Store } from '@reduxjs/toolkit'
 import { configureStore } from '@reduxjs/toolkit'
+import storage from 'redux-persist/lib/storage'
 import App from './slices/core/App'
 import Nav from './slices/layouts/Navbar'
 import Reg from './slices/auth/Register'

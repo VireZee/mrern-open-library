@@ -7,6 +7,7 @@ const AUTH = gql`
             name
             uname
             email
+            verified
         }
     }
 `

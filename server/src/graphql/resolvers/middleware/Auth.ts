@@ -8,11 +8,12 @@ const Auth = async (_: null, __: null, context: { req: Request }) => {
     const { req } = context
     const t = req.cookies['!']
     if (!t) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
-    const formatUserResponse = (userData: { photo: Buffer, name: string, username: string, email: string }) => ({
+    const formatUserResponse = (userData: { photo: Buffer, name: string, username: string, email: string, verified: boolean }) => ({
         photo: Buffer.from(userData.photo).toString('base64'),
         name: userData.name,
         uname: userData.username,
-        email: userData.email
+        email: userData.email,
+        verified: userData.verified
     })
     try {
         const { id } = verifyToken(t)
@@ -25,7 +26,8 @@ const Auth = async (_: null, __: null, context: { req: Request }) => {
             photo: user.photo.toString(),
             name: user.name,
             username: user.username,
-            email: user.email
+            email: user.email,
+            verified: user.verified
         }))
         await Redis.expire(redisKey, 86400)
         return formatUserResponse(user)

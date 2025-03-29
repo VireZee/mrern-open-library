@@ -7,7 +7,7 @@ export interface IUser extends Document {
     username: string
     email: string
     pass: string
-    isVerified: boolean
+    verified: boolean
     verificationCode: string | null
     codeExpiresAt: Date | null
     api_key: Buffer
@@ -20,7 +20,7 @@ const UserSchema = new Schema<IUser>({
     username: { type: String, unique: true, maxlength: 20, required: true },
     email: { type: String, unique: true, required: true },
     pass: { type: String, required: true },
-    isVerified: { type: Boolean, default: false, required: true },
+    verified: { type: Boolean, default: false, required: true },
     verificationCode: { type: String },
     codeExpiresAt: { type: Date },
     api_key: { type: Buffer },

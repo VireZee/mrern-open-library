@@ -4,6 +4,7 @@ const Schema = `#graphql
         name: String!
         uname: String!
         email: String!
+        verified: Boolean!
     }
     type Book {
         author_key: [String!]!

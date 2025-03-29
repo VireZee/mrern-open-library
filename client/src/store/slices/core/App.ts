@@ -1,11 +1,12 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
-interface UserData {
+export interface UserData {
     photo: string
     name: string
     uname: string
     email: string
+    verified: boolean
 }
 interface State {
     [key: string]: string | undefined | null | UserData | boolean
@@ -13,7 +14,7 @@ interface State {
 const initialState: State = {
     search: '',
     user: undefined,
-    loadUser: true
+    verified: undefined
 }
 const App = createSlice({
     name: 'APP',
@@ -21,12 +22,14 @@ const App = createSlice({
     reducers: {
         setUser: (state, { payload }: PayloadAction<null | UserData>) => {
             state['user'] = payload
-            state['loadUser'] = false
+        },
+        setVerified: (state, { payload }: PayloadAction<boolean>) => {
+            state['verified'] = payload
         },
         setSearch: (state, { payload }: PayloadAction<string>) => {
             state['search'] = payload
         }
     }
 })
-export const { setUser, setSearch } = App.actions
+export const { setUser, setVerified, setSearch } = App.actions
 export default App.reducer
