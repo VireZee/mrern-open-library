@@ -53,6 +53,7 @@ const Schema = `#graphql
             show: Boolean!
         ): Boolean!
         verify(code: String!): Boolean!
+        resend: Boolean!
         login(
             emailOrUname: String!
             pass: String!

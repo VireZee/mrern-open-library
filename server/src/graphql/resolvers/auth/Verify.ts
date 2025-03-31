@@ -10,7 +10,11 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
     try {
         const { id } = verifyToken(t)
         const { code } = args
-        const user = await User.findById(id)
+        const redisKey = `verify:${id}`
+        const data = await Redis.hgetall(redisKey)
+        if (!data) throw new GraphQLError('Verification code expired!', { extensions: { code: '400' } })
+
+
         if (user!.verificationCode !== code) throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         else if (user!.codeExpiresAt! < new Date()) throw new GraphQLError('Verification code expired!', { extensions: { code: '400' } })
         const newCachedUser = await User.findByIdAndUpdate(id, {

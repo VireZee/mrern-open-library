@@ -12,7 +12,7 @@ const Login = async (_: null, args: { emailOrUname: string, pass: string }, cont
                 { username: emailOrUname.toLowerCase() }
             ]
         })
-        if (!user || !(await verifyHash(pass, user!.pass))) throw new GraphQLError('Invalid login credentials!', { extensions: { code: '401' } })
+        if (!user || !(await verifyHash(pass, user!.pass))) throw new GraphQLError('Invalid login credentials!', { extensions: { code: 401 } })
         const t = generateToken(user._id)
         context.res.cookie('!', t, {
             maxAge: 1000 * 60 * 60 * 24 * 30,

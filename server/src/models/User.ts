@@ -8,10 +8,6 @@ export interface IUser extends Document {
     email: string
     pass: string
     verified: boolean
-    verificationCode: string | null
-    codeExpiresAt: Date | null
-    attempts: number
-    lastAttemptAt: Date
     api_key: Buffer
     created: Date
     updated: Date
@@ -23,10 +19,6 @@ const UserSchema = new Schema<IUser>({
     email: { type: String, unique: true, required: true },
     pass: { type: String, required: true },
     verified: { type: Boolean, default: false, required: true },
-    verificationCode: { type: String },
-    codeExpiresAt: { type: Date },
-    attempts: { type: Number, default: 0, required: true },
-    lastAttemptAt: { type: Date },
     api_key: { type: Buffer },
     updated: { type: Date },
     created: { type: Date, default: new Date(), required: true }

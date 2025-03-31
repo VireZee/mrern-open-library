@@ -1,4 +1,5 @@
 import type { Response } from 'express'
+import Redis from '../../../database/Redis.ts'
 import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 import nodemailer from 'nodemailer'
 import { User } from '../../../models/User.ts'
@@ -27,7 +28,7 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
         if (emailErr) errs['email'] = emailErr
         if (!pass) errs['pass'] = "Password can't be empty!"
         if (!show && pass !== rePass) errs['rePass'] = "Password do not match!"
-        if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: '422' } })
+        if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
         const randomString = crypto.randomBytes(64).toString('hex')
         const verificationCode = crypto.createHash('sha512').update(randomString).digest('hex')
         const newUser = new User({
@@ -35,11 +36,14 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
             name: formatName(name),
             username: formatUsername(uname),
             email,
-            pass: await hash(pass),
-            verificationCode,
-            codeExpiresAt: new Date(Date.now() + 5 * 60 * 1000)
+            pass: await hash(pass)
         })
         await newUser.save()
+        await Redis.hset(`verify:${newUser._id}`, {
+            code: verificationCode,
+            attempts: 0
+        })
+        await Redis.expire(`verify:${newUser._id}`, 300)
         await transporter.sendMail({
             from: process.env['MAIL_FROM'],
             to: email,
@@ -52,7 +56,7 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
                         ${verificationCode}
                     </div>
                     <p style="color: #555;">Or click the button below:</p>
-                    <a href="http://localhost:5173/verify?email=${email}&code=${verificationCode}" 
+                    <a href="http://localhost:5173/verify/${newUser._id}/${verificationCode}" 
                         style="display: inline-block; background: #007BFF; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px; font-weight: bold;">
                         Verify Now
                     </a>

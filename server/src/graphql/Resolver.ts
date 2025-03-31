@@ -3,6 +3,7 @@ import Auth from './resolvers/middleware/Auth.ts'
 import Home from './resolvers/book/Home.ts'
 import Register from './resolvers/auth/Register.ts'
 import Verify from './resolvers/auth/Verify.ts'
+import Resend from './resolvers/auth/Resend.ts'
 import Login from './resolvers/auth/Login.ts'
 import Fetch from './resolvers/book/Fetch.ts'
 import Collection from './resolvers/book/Collection.ts'
@@ -25,6 +26,7 @@ export const resolvers = {
     Mutation: {
         register: Register,
         verify: Verify,
+        resend: Resend,
         login: Login,
         add: AddRemove,
         remove: AddRemove,

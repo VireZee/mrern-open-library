@@ -11,7 +11,7 @@ const Delete = async (_: null, __: null, context: { req: Request, res: Response 
     try {
         const { id } = verifyToken(t)
         const user = await User.findById(id)
-        if (!user) throw new GraphQLError('Unauthorized', { extensions: { code: '401' } })
+        if (!user) throw new GraphQLError('Unauthorized', { extensions: { code: 401 } })
         await Collection.deleteMany({ user_id: id })
         await User.findByIdAndDelete(id)
         await Redis.del(`collection:${id}*`)
