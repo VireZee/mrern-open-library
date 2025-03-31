@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from './store/index'
@@ -15,7 +15,10 @@ import Col from './components/views/Collection'
 import API from './components/views/API'
 import Set from './components/auth/Settings'
 import NF from './components/common/NotFound'
+import HomeRoute from './HomeRoute'
 import ProtectedRoute from './ProtectedRoute'
+import AuthRoute from './AuthRoute'
+import VerifyRoute from './VerifyRoute'
 import Load from './components/common/Load'
 
 const App: React.FC = () => {
@@ -48,10 +51,16 @@ const App: React.FC = () => {
             )}
             <main>
                 <Routes>
-                    <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
-                    <Route path='register' element={!appState.user ? <Reg /> : <Navigate to='/' />} />
-                    <Route path='login' element={!appState.user ? <Log /> : <Navigate to='/' />} />
-                    <Route path='verify' element={appState.user && !appState.verified ? <Ver /> : <Navigate to="/" />} />
+                    <Route element={<HomeRoute user={appState.user} verified={appState.verified}></HomeRoute>}>
+                        <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
+                    </Route>
+                    <Route element={<AuthRoute verified={appState.verified}></AuthRoute>}>
+                        <Route path='register' element={<Reg />} />
+                        <Route path='login' element={<Log />} />
+                    </Route>
+                    <Route element={<VerifyRoute verified={appState.verified}></VerifyRoute>}>
+                        <Route path='verify' element={<Ver />} />
+                    </Route>
                     <Route element={<ProtectedRoute user={appState.user} verified={appState.verified} />}>
                         <Route path='collection' element={<Col search={appState.search} />} />
                         <Route path='API' element={<API />} />
