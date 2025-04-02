@@ -44,6 +44,7 @@ const Verify: React.FC = () => {
                     </div>
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading} >{loading ? 'Loading...' : 'Verify'}</button>
                 </form>
+                {/* <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading} >{loading ? 'Loading...' : 'Verify'}</button> */}
             </div>
         </div>
     )
