@@ -12,53 +12,43 @@ const Resend = async (_: null, context: { req: Request }) => {
         const resendKey = `resend:${id}`
         const verifyKey = `verify:${id}`
         const isResendExist = await Redis.exists(resendKey)
-        if (isResendExist === 0) {
+        const generateVerificationCode = async () => {
             const randomString = crypto.randomBytes(64).toString('hex')
             const verificationCode = crypto.createHash('sha512').update(randomString).digest('hex')
             await Redis.hset(verifyKey, { code: verificationCode })
             await Redis.expire(verifyKey, 300)
-            await Redis.hset(resendKey, 'attempts', 1)
         }
-        else {
-            const getBlock = await Redis.hget(resendKey, 'block')
-            if (getBlock) {
-                const blockDate = new Date(getBlock)
+        const formatTimeLeft = (seconds: number) => {
+            const h = Math.floor(seconds / 3600)
+            const m = Math.floor((seconds % 3600) / 60)
+            const s = seconds % 60
+            return h > 0 ? `${h}h ${m}m ${s}s` : m > 0 ? `${m}m ${s}s` : `${s}s`
+        }
+        if (isResendExist === 0) {
+            await generateVerificationCode()
+            await Redis.hset(resendKey, 'attempts', 1)
+        } else {
+            const block = await Redis.hget(resendKey, 'block')
+            if (block) {
+                const blockDate = new Date(block)
                 const timeDiff = Math.max(0, Math.floor((blockDate.getTime() - Date.now()) / 1000))
                 if (timeDiff > 0) {
-                    const hours = Math.floor(timeDiff / 3600)
-                    const minutes = Math.floor((timeDiff % 3600) / 60)
-                    const seconds = timeDiff % 60
-                    const timeLeft = hours > 0
-                        ? `${hours}h ${minutes}m ${seconds}s`
-                        : minutes > 0
-                            ? `${minutes}m ${seconds}s`
-                            : `${seconds}s`
+                    const timeLeft = formatTimeLeft(timeDiff)
                     throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
                 }
             }
-            const getAttempts = await Redis.hget(resendKey, 'attempts')
-            let attempts = Number(getAttempts!)
+            const attempts = Number(await Redis.hget(resendKey, 'attempts'))
             if (attempts % 3 === 0) {
                 const date = new Date()
-                const blockDuration = 60 * 5 * (2 ** ((attempts / 3) - 1))
+                const blockDuration = 60 * 60 * (2 ** ((attempts / 3) - 1))
                 date.setSeconds(date.getSeconds() + blockDuration)
                 const blockUntil = date.toISOString()
                 await Redis.hset(resendKey, 'block', blockUntil)
-                const hours = Math.floor(blockDuration / 3600)
-                const minutes = Math.floor((blockDuration % 3600) / 60)
-                const seconds = blockDuration % 60
-                const timeLeft = hours > 0
-                    ? `${hours}h ${minutes}m ${seconds}s`
-                    : minutes > 0
-                        ? `${minutes}m ${seconds}s`
-                        : `${seconds}s`
+                const timeLeft = formatTimeLeft(blockDuration)
                 throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
             }
-            const randomString = crypto.randomBytes(64).toString('hex')
-            const verificationCode = crypto.createHash('sha512').update(randomString).digest('hex')
-            await Redis.hset(verifyKey, { code: verificationCode })
-            await Redis.expire(verifyKey, 300)
-            attempts = await Redis.hincrby(resendKey, 'attempts', 1)
+            await generateVerificationCode()
+            await Redis.hincrby(resendKey, 'attempts', 1)
         }
         return true
     } catch (e) {

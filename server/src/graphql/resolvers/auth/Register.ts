@@ -39,7 +39,7 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
             pass: await hash(pass)
         })
         await newUser.save()
-        await Redis.hset(`verify:${newUser._id}`, { code: verificationCode })
+        await Redis.hset(`verify:${newUser._id}`, { code: verificationCode, attempts: 0 })
         await Redis.expire(`verify:${newUser._id}`, 300)
         await transporter.sendMail({
             from: process.env['MAIL_FROM'],
