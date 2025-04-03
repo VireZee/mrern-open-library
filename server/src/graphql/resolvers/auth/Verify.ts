@@ -11,7 +11,6 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
         const { id } = verifyToken(t)
         const { code } = args
         const verifyKey = `verify:${id}`
-        const blockKey = `block:${id}`
         const getVerify = await Redis.hgetall(verifyKey)
         const formatTimeLeft = (seconds: number) => {
             const h = Math.floor(seconds / 3600)
@@ -22,24 +21,23 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
         if (!getVerify['code']) throw new GraphQLError('Verification code expired!', { extensions: { code: 400 } })
         const block = await Redis.hexists(verifyKey, 'block')
         if (block) {
-            const blockTTL = await Redis.call('HEXPIRETIME', verifyKey, 'FIELDS', 1, 'block') as number
-            const now = Math.floor(Date.now() / 1000)
-            const timeLeft = formatTimeLeft(Math.max(0, blockTTL - now))
+            const blockTTL = await Redis.call('HTTL', verifyKey, 'FIELDS', 1, 'block') as number
+            const timeLeft = formatTimeLeft(blockTTL)
             throw new GraphQLError(`Too many attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
         } if (code !== getVerify['code']) {
             const increment = await Redis.hincrby(verifyKey, 'attempts', 1)
             if (increment % 3 === 0) {
-                const blockDuration = 60 * 30 * (2 ** ((increment / 3) - 1))
                 await Redis.hset(verifyKey, 'block', '')
+                const blockDuration = 60 * 30 * (2 ** ((increment / 3) - 1))
                 await Redis.call('HEXPIRE', verifyKey, blockDuration, 'FIELDS', 1, 'block')
                 const timeLeft = formatTimeLeft(blockDuration)
                 throw new GraphQLError(`Too many attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
             }
             throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         }
-        const newCachedUser = await User.findByIdAndUpdate(id, { verified: true }, { new: true })
-        await Redis.call('JSON.SET', `user:${id}`, '$.verified', `${newCachedUser!.verified}`)
-        await Redis.del(verifyKey, blockKey, `resend:${id}`)
+        const verifiedUser = await User.findByIdAndUpdate(id, { verified: true }, { new: true })
+        await Redis.call('JSON.SET', `user:${id}`, '$.verified', `${verifiedUser!.verified}`)
+        await Redis.del(verifyKey, `resend:${id}`)
         return true
     } catch (e) {
         throw e
