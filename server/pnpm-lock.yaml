@@ -27,8 +27,8 @@ importers:
         specifier: 4.21.2
         version: 4.21.2
       got:
-        specifier: ^14.4.6
-        version: 14.4.6
+        specifier: ^14.4.7
+        version: 14.4.7
       graphql:
         specifier: ^16.10.0
         version: 16.10.0
@@ -39,8 +39,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       mongoose:
-        specifier: ^8.13.0
-        version: 8.13.0
+        specifier: ^8.13.1
+        version: 8.13.1
       nodemailer:
         specifier: ^6.10.0
         version: 6.10.0
@@ -599,8 +599,8 @@ packages:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
 
-  got@14.4.6:
-    resolution: {integrity: sha512-rnhwfM/PhMNJ1i17k3DuDqgj0cKx3IHxBKVv/WX1uDKqrhi2Gv3l7rhPThR/Cc6uU++dD97W9c8Y0qyw9x0jag==}
+  got@14.4.7:
+    resolution: {integrity: sha512-DI8zV1231tqiGzOiOzQWDhsBmncFW7oQDH6Zgy6pDPrqJuVZMtoSgPLLsBZQj8Jg4JFfwoOsDA8NGtLQLnIx2g==}
     engines: {node: '>=20'}
 
   graphql@16.10.0:
@@ -812,8 +812,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@8.13.0:
-    resolution: {integrity: sha512-e/iYV1mPeOkg+SWAMHzt3t42/EZyER3OB1H2pjP9C3vQ+Qb5DMeV9Kb+YCUycKgScA3fbwL7dKG4EpinGlg21g==}
+  mongoose@8.13.1:
+    resolution: {integrity: sha512-sRqlXI+6jhr9/KicCOjet1VVPONFsOxTrh14tfueX5y3GJ2ihswc5ewUUojuwdSS/5koGXLIPmGivDSApVXflA==}
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
@@ -1700,7 +1700,7 @@ snapshots:
 
   gopd@1.2.0: {}
 
-  got@14.4.6:
+  got@14.4.7:
     dependencies:
       '@sindresorhus/is': 7.0.1
       '@szmarczak/http-timer': 5.0.1
@@ -1880,7 +1880,7 @@ snapshots:
       bson: 6.10.3
       mongodb-connection-string-url: 3.0.2
 
-  mongoose@8.13.0:
+  mongoose@8.13.1:
     dependencies:
       bson: 6.10.3
       kareem: 2.6.3

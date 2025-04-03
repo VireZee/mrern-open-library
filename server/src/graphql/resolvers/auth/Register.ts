@@ -47,15 +47,15 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
             to: email,
             subject: 'Verify Your Email',
             html: `
-                <div style="max-width: 500px; margin: auto; font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; border-radius: 8px; text-align: center;">
+                <div style="max-width: 500px; margin: auto; font-family: Times New Roman; background: #f9f9f9; padding: 20px; border-radius: 8px; text-align: center;">
                     <h2 style="color: #333;">Verify Your Email</h2>
                     <p style="color: #555;">Use the code below to verify your email:</p>
-                    <div style="font-size: 20px; font-weight: bold; background: #f3f3f3; padding: 12px 18px; border-radius: 5px; display: inline-block; word-break: break-all; margin: 10px 0;">
+                    <div style="font-size: 20px; font-weight: bold; background: #f3f3f3; padding: 12px 18px; border-radius: 5px; display: inline-block; word-break: break-all; margin: 10px;">
                         ${verificationCode}
                     </div>
                     <p style="color: #555;">Or click the button below:</p>
-                    <a href="http://localhost:5173/verify/${newUser._id}/${verificationCode}" 
-                        style="display: inline-block; background: #007BFF; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                    <a href="http://localhost:5173/verify/${newUser._id}/${verificationCode}"
+                        style="display: inline-block; background: #007BFF; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-weight: bold;">
                         Verify Now
                     </a>
                     <p style="color: #888; font-size: 14px; margin-top: 10px;">This code will expire in 5 minutes.</p>
