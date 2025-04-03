@@ -11,7 +11,8 @@ const Delete = async (_: null, __: null, context: { req: Request, res: Response 
         const { id } = verifyToken(t)
         await Collection.deleteMany({ user_id: id })
         await User.findByIdAndDelete(id)
-        await Redis.del(`collection:${id}*`, `user:${id}`)
+        const keys = await Redis.keys(`*:${id}`)
+        if (keys.length > 0) await Redis.del(...keys)
         res.clearCookie('!')
         return true
     } catch (e) {

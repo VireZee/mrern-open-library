@@ -29,6 +29,7 @@ const Resend = async (_: null, context: { req: Request }) => {
             await Redis.hset(resendKey, 'attempts', 1)
         } else {
             const block = await Redis.hget(resendKey, 'block')
+            const attempts = Number(await Redis.hget(resendKey, 'attempts'))
             if (block) {
                 const blockDate = new Date(block)
                 const timeDiff = Math.max(0, Math.floor((blockDate.getTime() - Date.now()) / 1000))
@@ -36,9 +37,7 @@ const Resend = async (_: null, context: { req: Request }) => {
                     const timeLeft = formatTimeLeft(timeDiff)
                     throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
                 }
-            }
-            const attempts = Number(await Redis.hget(resendKey, 'attempts'))
-            if (attempts % 3 === 0) {
+            } if (attempts % 3 === 0) {
                 const date = new Date()
                 const blockDuration = 60 * 60 * (2 ** ((attempts / 3) - 1))
                 date.setSeconds(date.getSeconds() + blockDuration)
