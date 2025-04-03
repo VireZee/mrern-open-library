@@ -20,9 +20,7 @@ const Verify: React.FC = () => {
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
-            const { data } = await verify({
-                variables: { code: verState.code }
-            })
+            const { data } = await verify({ variables: { code: verState.code } })
             if (data.verify) location.href = '/'
         } catch (err) {
             if (err instanceof ApolloError) dispatch(setError(err.message))

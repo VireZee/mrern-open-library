@@ -4,7 +4,7 @@ import { verifyToken } from '../../../utils/Validation.ts'
 import crypto from 'crypto'
 import { GraphQLError } from 'graphql'
 
-const Resend = async (_: null, context: { req: Request }) => {
+const Resend = async (_: null, __: null, context: { req: Request }) => {
     const { req } = context
     const t = req.cookies['!']
     try {
@@ -30,7 +30,7 @@ const Resend = async (_: null, context: { req: Request }) => {
             const timeLeft = formatTimeLeft(blockTTL)
             throw new GraphQLError(`You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
         }
-        if (!getResend) {
+        if (!Object.keys(getResend).length) {
             await generateVerificationCode()
             await Redis.hset(resendKey, 'attempts', 1)
         } else {
@@ -40,8 +40,9 @@ const Resend = async (_: null, context: { req: Request }) => {
                 const timeLeft = formatTimeLeft(blockTTL)
                 throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
             }
-            const increment = await Redis.hincrby(verifyKey, 'attempts', 1)
+            const increment = await Redis.hincrby(resendKey, 'attempts', 1)
             if (increment % 3 === 0) {
+                await Redis.hdel(verifyKey, 'code')
                 await Redis.hset(resendKey, 'block', '')
                 const blockDuration = 60 * 60 * (2 ** ((increment / 3) - 1))
                 await Redis.call('HEXPIRE', resendKey, blockDuration, 'FIELDS', 1, 'block')
@@ -49,14 +50,10 @@ const Resend = async (_: null, context: { req: Request }) => {
                 throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
             }
             await generateVerificationCode()
-            await Redis.hincrby(resendKey, 'attempts', 1)
         }
         return true
     } catch (e) {
-        if (e instanceof GraphQLError) {
-            throw e
-        }
-        throw new GraphQLError('An unexpected error occurred', { extensions: { code: 500 } })
+        throw e
     }
 }
 export default Resend

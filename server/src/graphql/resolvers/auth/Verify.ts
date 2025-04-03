@@ -13,6 +13,7 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
         const user = await User.findById(id)
         const verifyKey = `verify:${id}`
         const getVerify = await Redis.hgetall(verifyKey)
+        await Redis.hsetnx(verifyKey, 'attempts', 0)
         const formatTimeLeft = (seconds: number) => {
             const h = Math.floor(seconds / 3600)
             const m = Math.floor((seconds % 3600) / 60)
@@ -25,10 +26,11 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
         if (block) {
             const blockTTL = await Redis.call('HTTL', verifyKey, 'FIELDS', 1, 'block') as number
             const timeLeft = formatTimeLeft(blockTTL)
-            throw new GraphQLError(`Too many attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
+            throw new GraphQLError(`You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
         } if (code !== getVerify['code']) {
             const increment = await Redis.hincrby(verifyKey, 'attempts', 1)
             if (increment % 3 === 0) {
+                await Redis.hdel(verifyKey, 'code')
                 await Redis.hset(verifyKey, 'block', '')
                 const blockDuration = 60 * 30 * (2 ** ((increment / 3) - 1))
                 await Redis.call('HEXPIRE', verifyKey, blockDuration, 'FIELDS', 1, 'block')

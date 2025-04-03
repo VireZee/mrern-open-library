@@ -40,7 +40,7 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
         })
         const newUserKey = `verify:${newUser._id}`
         await newUser.save()
-        await Redis.hset(newUserKey, { code: verificationCode, attempts: 0 })
+        await Redis.hset(newUserKey, 'code', verificationCode)
         await Redis.call('HEXPIRE', newUserKey, 300, 'FIELDS', 1, 'code')
         await transporter.sendMail({
             from: process.env['MAIL_FROM'],
