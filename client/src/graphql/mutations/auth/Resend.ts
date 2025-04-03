@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const RESEND = gql`
-    mutation Verify {
+    mutation Resend {
         resend
     }
 `

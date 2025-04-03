@@ -10,6 +10,7 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
     try {
         const { id } = verifyToken(t)
         const { code } = args
+        const user = await User.findById(id)
         const verifyKey = `verify:${id}`
         const getVerify = await Redis.hgetall(verifyKey)
         const formatTimeLeft = (seconds: number) => {
@@ -18,6 +19,7 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
             const s = seconds % 60
             return h > 0 ? `${h}h ${m}m ${s}s` : m > 0 ? `${m}m ${s}s` : `${s}s`
         }
+        if (user!.verified) throw new GraphQLError('Already verified!', { extensions: { code: 409 } })
         if (!getVerify['code']) throw new GraphQLError('Verification code expired!', { extensions: { code: 400 } })
         const block = await Redis.hexists(verifyKey, 'block')
         if (block) {
