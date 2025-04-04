@@ -1,19 +1,36 @@
 import MongoDB from './database/MongoDB.ts'
 import './database/Redis.ts'
 import express from 'express'
+import type { Request, Response } from 'express'
 import http from 'http'
 import cors from 'cors'
 import cp from 'cookie-parser'
+import passport from 'passport'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
 import { typeDefs, resolvers } from './graphql/Resolver.ts'
 import APIRt from './routes/API.ts'
+import { GraphQLError } from 'graphql'
+
+interface UserType {
+    photo: string
+    name: string
+    username: string
+    email: string
+    verified: boolean
+}
+
+interface MyContext {
+    req: Request
+    res: Response
+    user: UserType
+}
 
 await MongoDB()
 const app = express()
 const httpServer = http.createServer(app)
-const server = new ApolloServer({
+const server = new ApolloServer<MyContext>({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
@@ -25,8 +42,16 @@ const server = new ApolloServer({
         cors<cors.CorsRequest>({ origin: `http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`, credentials: true }),
         express.json({ limit: "5mb" }),
         cp(),
+        passport.initialize(),
         expressMiddleware(server, {
-            context: async ({ req, res }) => ({ req, res })
+            context: async ({ req, res }): Promise<MyContext> => {
+                return new Promise<{ req: Request, res: Response, user: UserType }>((resolve, reject) => {
+                    passport.authenticate('jwt', { session: false }, (err: Error, user: UserType) => {
+                        if (err || !user) return reject(new GraphQLError('Unauthorized', { extensions: { code: 401 } }))
+                        resolve({ req, res, user })
+                    })(req)
+                })
+            }
         })
     )
     app.use(APIRt)
