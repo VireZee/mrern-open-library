@@ -1,4 +1,3 @@
-import { GraphQLError } from "graphql"
 const Auth = async (_: null, __: null, context: { user: any }) => {
     const { user } = context
     const formatUserResponse = (userData: { photo: Buffer, name: string, username: string, email: string, verified: boolean }) => ({
@@ -12,3 +11,5 @@ const Auth = async (_: null, __: null, context: { user: any }) => {
     return formatUserResponse(user)
 }
 export default Auth
+
+Redis.

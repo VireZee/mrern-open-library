@@ -8,9 +8,7 @@ export const hash = async (pass: string) => {
             { s: 0x0370, e: 0x052F }
         ]
         const char: string[] = []
-        ranges.forEach(r => {
-            for (let i = r.s; i <= r.e; i++) char.push(String.fromCharCode(i))
-        })
+        for (const r of ranges) for (let i = r.s; i <= r.e; i++) char.push(String.fromCharCode(i))
         let result = ''
         for (let i = 0; i < 512; i++) {
             const shuffle = Math.floor(Math.random() * char.length)
