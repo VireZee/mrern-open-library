@@ -3,43 +3,7 @@ import { User } from '../models/User.ts'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 
-export const generateSvg = (name: string) => {
-    const initials = name.split(' ').map(w => w.charAt(0).toUpperCase()).slice(0, 5).join('')
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
-        <circle cx="256" cy="256" r="256" fill="#000" />
-        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Times New Roman" font-size="128" fill="white">${initials}</text>
-    </svg>`
-    return Buffer.from(svg).toString('base64')
-}
-export const validateName = (name: string) => {
-    if (!name) {
-        return "Name can't be empty!"
-    } else if (name.length >= 75) {
-        return "Name is too long!"
-    }
-    return
-}
-export const formatName = (name: string) => {
-    const nameParts = name.split(' ')
-    const cap = nameParts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    return name = cap.join(' ')
-}
-export const validateUsername = async (uname: string, id?: Types.ObjectId) => {
-    if (!uname) {
-        return "Username can't be empty!"
-    } else if (!/^[\w\d]+$/.test(uname)) {
-        return "Username can only contain Latin Alphabets, Numbers, and Underscores!"
-    } else if (uname.length >= 20) {
-        return "Username is too long!"
-    } else if (await User.findOne({
-        username: formatUsername(uname),
-        ...(id && { _id: { $ne: id } })
-    })) {
-        return "Username is unavailable!"
-    }
-    return
-}
-export const formatUsername = (uname: string) => uname.toLowerCase()
+
 export const validateEmail = async (email: string, id?: Types.ObjectId) => {
     if (!email) {
         return "Email can't be empty!"

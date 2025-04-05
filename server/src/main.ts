@@ -5,13 +5,12 @@ import type { Request, Response } from 'express'
 import http from 'http'
 import cors from 'cors'
 import cp from 'cookie-parser'
-import passport from './configs/passport.ts'
+import passport from './config/passport.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
 import { typeDefs, resolvers } from './graphql/Resolver.ts'
 import APIRt from './routes/API.ts'
-import { GraphQLError } from 'graphql'
 
 interface UserType {
     photo: string
@@ -24,7 +23,7 @@ interface UserType {
 interface MyContext {
     req: Request
     res: Response
-    user: UserType
+    user: UserType | null
 }
 
 await MongoDB()
@@ -40,15 +39,15 @@ const server = new ApolloServer({
     app.use(
         '/gql',
         cors<cors.CorsRequest>({ origin: `http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`, credentials: true }),
-        express.json({ limit: "5mb" }),
+        express.json({ limit: '5mb' }),
         cp(),
         passport.initialize(),
         expressMiddleware(server, {
             context: async ({ req, res }): Promise<MyContext> => {
                 return new Promise((resolve, reject) => {
                     passport.authenticate('jwt', { session: false }, (err: Error, user: UserType) => {
-                        if (err || !user) return reject(new GraphQLError('Unauthorized', { extensions: { code: 401 } }))
-                        resolve({ req, res, user })
+                        if (err) return reject(err)
+                        return resolve({ req, res, user })
                     })(req, res, () => null)
                 })
             }

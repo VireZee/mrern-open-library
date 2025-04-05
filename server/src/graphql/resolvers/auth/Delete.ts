@@ -1,17 +1,14 @@
-import type { Request, Response } from 'express'
+import type {  Response } from 'express'
 import Redis from '../../../database/Redis.ts'
 import { User } from '../../../models/User.ts'
 import Collection from '../../../models/Collection.ts'
-import { verifyToken } from '../../../utils/Validation.ts'
 
-const Delete = async (_: null, __: null, context: { req: Request, res: Response }) => {
-    const { req, res } = context
-    const t = req.cookies['!']
+const Delete = async (_: null, __: null, context: { res: Response, user: any }) => {
+    const { res, user } = context
     try {
-        const { id } = verifyToken(t)
-        await Collection.deleteMany({ user_id: id })
-        await User.findByIdAndDelete(id)
-        const keys = await Redis.keys(`*:${id}`)
+        await Collection.deleteMany({ user_id: user.id })
+        await User.findByIdAndDelete(user.id)
+        const keys = await Redis.keys(`*:${user.id}`)
         if (keys.length > 0) await Redis.del(...keys)
         res.clearCookie('!')
         return true
