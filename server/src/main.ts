@@ -5,7 +5,7 @@ import type { Request, Response } from 'express'
 import http from 'http'
 import cors from 'cors'
 import cp from 'cookie-parser'
-import passport from 'passport'
+import passport from './configs/passport.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
@@ -30,7 +30,7 @@ interface MyContext {
 await MongoDB()
 const app = express()
 const httpServer = http.createServer(app)
-const server = new ApolloServer<MyContext>({
+const server = new ApolloServer({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
@@ -45,11 +45,11 @@ const server = new ApolloServer<MyContext>({
         passport.initialize(),
         expressMiddleware(server, {
             context: async ({ req, res }): Promise<MyContext> => {
-                return new Promise<{ req: Request, res: Response, user: UserType }>((resolve, reject) => {
+                return new Promise((resolve, reject) => {
                     passport.authenticate('jwt', { session: false }, (err: Error, user: UserType) => {
                         if (err || !user) return reject(new GraphQLError('Unauthorized', { extensions: { code: 401 } }))
                         resolve({ req, res, user })
-                    })(req)
+                    })(req, res, () => null)
                 })
             }
         })

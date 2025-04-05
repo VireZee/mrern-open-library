@@ -11,16 +11,15 @@ passport.use(
             if (cached) return done(null, JSON.parse(cached))
             const user = await User.findById(payload.id)
             if (!user) return done(null, false)
-            const userData = {
+            await Redis.call('JSON.SET', redisKey, '$', JSON.stringify({
                 photo: user.photo.toString(),
                 name: user.name,
                 username: user.username,
                 email: user.email,
                 verified: user.verified
-            }
-            await Redis.call('JSON.SET', redisKey, '$', JSON.stringify(userData))
+            }))
             await Redis.expire(redisKey, 86400)
-            return done(null, userData)
+            return done(null, user)
         } catch (e) {
             return done(e, false)
         }
