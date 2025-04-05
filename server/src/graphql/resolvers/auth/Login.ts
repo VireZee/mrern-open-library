@@ -1,6 +1,6 @@
 import type { Response } from 'express'
 import { User } from '../../../models/User.ts'
-import { verifyHash, generateToken } from '../../../utils/Validation.ts'
+import { verifyHash, generateToken } from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
 const Login = async (_: null, args: { emailOrUname: string, pass: string }, context: { res: Response }) => {

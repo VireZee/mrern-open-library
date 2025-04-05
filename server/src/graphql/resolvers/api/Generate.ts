@@ -1,6 +1,6 @@
 import type { Request } from 'express'
 import { User } from '../../../models/User.ts'
-import { verifyToken } from '../../../utils/Validation.ts'
+import { verifyToken } from '../../../utils/security/jwt.ts'
 import crypto from 'crypto'
 
 const Generate = async (_: null, __: null, context: { req: Request }) => {

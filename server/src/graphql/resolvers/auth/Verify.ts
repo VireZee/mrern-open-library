@@ -1,7 +1,7 @@
 import type { Request } from 'express'
 import Redis from '../../../database/Redis.ts'
 import { User } from '../../../models/User.ts'
-import { verifyToken } from '../../../utils/Validation.ts'
+import { verifyToken } from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
 const Verify = async (_: null, args: { code: string }, context: { req: Request }) => {

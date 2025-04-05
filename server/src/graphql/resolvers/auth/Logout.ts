@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import Redis from '../../../database/Redis.ts'
-import { verifyToken } from '../../../utils/Validation.ts'
+import { verifyToken } from '../../../utils/security/jwt.ts'
 
 const Logout = async (_: null, __: null, context: { req: Request, res: Response }) => {
     const { req, res } = context

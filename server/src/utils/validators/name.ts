@@ -8,6 +8,6 @@ export const validateName = (name: string) => {
 }
 export const formatName = (name: string) => {
     const nameParts = name.split(' ')
-    const cap = nameParts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    return name = cap.join(' ')
+    const initials = nameParts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    return name = initials.join(' ')
 }

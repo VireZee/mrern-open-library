@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 import Redis from '../../../database/Redis.ts'
 import type { IUser } from '../../../models/User.ts'
 import { User } from '../../../models/User.ts'
-import { validateName, formatName, validateUsername, formatUsername, validateEmail, hash, verifyHash, generateToken, verifyToken } from '../../../utils/Validation.ts'
+import { validateName, formatName, validateUsername, formatUsername, validateEmail, hash, verifyHash, generateToken, verifyToken } from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
 const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { req: Request, res: Response }) => {

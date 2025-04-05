@@ -2,7 +2,7 @@ import type { Request } from 'express'
 import { Types } from 'mongoose'
 import Redis from '../../../database/Redis.ts'
 import CollectionModel from '../../../models/Collection.ts'
-import { verifyToken } from '../../../utils/Validation.ts'
+import { verifyToken } from '../../../utils/security/jwt.ts'
 
 interface Query {
     user_id: Types.ObjectId

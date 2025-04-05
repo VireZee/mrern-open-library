@@ -1,4 +1,5 @@
 import { Types } from 'mongoose'
+import { User } from '@models/User.ts'
 
 export const validateUsername = async (uname: string, id?: Types.ObjectId) => {
     if (!uname) {

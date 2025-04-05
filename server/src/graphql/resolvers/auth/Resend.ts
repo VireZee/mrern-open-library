@@ -3,7 +3,7 @@ import Redis from '../../../database/Redis.ts'
 import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 import nodemailer from 'nodemailer'
 import { User } from '../../../models/User.ts'
-import { verifyToken } from '../../../utils/Validation.ts'
+import { verifyToken } from '../../../utils/security/jwt.ts'
 import crypto from 'crypto'
 import { GraphQLError } from 'graphql'
 
