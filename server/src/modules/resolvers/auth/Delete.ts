@@ -1,9 +1,8 @@
-import type {  Response } from 'express'
-import Redis from '../../../database/Redis.ts'
-import { User } from '../../../models/User.ts'
-import Collection from '../../../models/Collection.ts'
+import Redis from '@database/Redis.ts'
+import { User } from '@models/User.ts'
+import Collection from '@models/Collection.ts'
 
-const Delete = async (_: null, __: null, context: { res: Response, user: any }) => {
+const Delete = async (_: null, __: null, context: { res: Res, user: any }) => {
     const { res, user } = context
     try {
         await Collection.deleteMany({ user_id: user.id })

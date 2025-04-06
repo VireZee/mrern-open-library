@@ -2,17 +2,19 @@ import type { Request, Response } from 'express'
 import Redis from '../../../database/Redis.ts'
 import type { IUser } from '../../../models/User.ts'
 import { User } from '../../../models/User.ts'
-import { validateName, formatName, validateUsername, formatUsername, validateEmail, hash, verifyHash, generateToken, verifyToken } from '../../../utils/security/jwt.ts'
+import { validateName, formatName } from '@utils/validators/name.ts'
+import { validateUsername, formatUsername } from '@utils/validators/username.ts'
+import { validateEmail } from '@utils/validators/email.ts'
+import { hash, verifyHash } from '@utils/security/hash.ts'
+import { generateToken } from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
-const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { req: Request, res: Response }) => {
-    const { req, res } = context
-    const t = req.cookies['!']
+const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { req: Request, res: Response, user: any }) => {
+    const {  res } = context
     try {
-        const { id } = verifyToken(t)
         const { photo, name, uname, email, oldPass, newPass, rePass, show } = args
         const errs: Record<string, string> = {}
-        const user = await User.findById(id)
+        const user = await User.findById(context.user.id)
         const nameErr = validateName(name)
         const unameErr = await validateUsername(uname, user!._id)
         const emailErr = await validateEmail(email, user!._id)
@@ -33,11 +35,11 @@ const Settings = async (_: null, args: { photo: string, name: string, uname: str
         if (newPass) updatedUser.pass = await hash(newPass)
         if (Object.keys(updatedUser).length > 0) {
             updatedUser.updated = new Date()
-            const newCachedUser = await User.findByIdAndUpdate(id, updatedUser, { new: true })
-            if (updatedUser.photo) await Redis.call('JSON.SET', `user:${id}`, '$.photo', `${newCachedUser!.photo.toString()}`)
-            if (updatedUser.name) await Redis.call('JSON.SET', `user:${id}`, '$.name', `${newCachedUser!.name}`)
-            if (updatedUser.username) await Redis.call('JSON.SET', `user:${id}`, '$.username', `${newCachedUser!.username}`)
-            if (updatedUser.email) await Redis.call('JSON.SET', `user:${id}`, '$.email', `${newCachedUser!.email}`)
+            const newCachedUser = await User.findByIdAndUpdate(context.user.id, updatedUser, { new: true })
+            if (updatedUser.photo) await Redis.call('JSON.SET', `user:${context.user.id}`, '$.photo', `${newCachedUser!.photo.toString()}`)
+            if (updatedUser.name) await Redis.call('JSON.SET', `user:${context.user.id}`, '$.name', `${newCachedUser!.name}`)
+            if (updatedUser.username) await Redis.call('JSON.SET', `user:${context.user.id}`, '$.username', `${newCachedUser!.username}`)
+            if (updatedUser.email) await Redis.call('JSON.SET', `user:${context.user.id}`, '$.email', `${newCachedUser!.email}`)
             const t = generateToken(user!._id)
             res.cookie('!', t, {
                 maxAge: 1000 * 60 * 60 * 24 * 30,

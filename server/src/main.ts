@@ -1,5 +1,4 @@
 import './global.ts'
-import 'module-alias/register'
 import MongoDB from './database/MongoDB.ts'
 import './database/Redis.ts'
 import type { Request, Response } from 'express'

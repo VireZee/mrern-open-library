@@ -11,5 +11,3 @@ const Auth = async (_: null, __: null, context: { user: any }) => {
     return formatUserResponse(user)
 }
 export default Auth
-
-Redis.

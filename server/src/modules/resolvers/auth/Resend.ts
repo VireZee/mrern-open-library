@@ -1,9 +1,8 @@
-import type { Request } from 'express'
+
 import Redis from '../../../database/Redis.ts'
 import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 import nodemailer from 'nodemailer'
 import { User } from '../../../models/User.ts'
-import { verifyToken } from '../../../utils/security/jwt.ts'
 import crypto from 'crypto'
 import { GraphQLError } from 'graphql'
 
@@ -16,16 +15,14 @@ const transporter = nodemailer.createTransport({
         pass: process.env['MAIL_PASS']
     }
 } as SMTPTransport.Options)
-const Resend = async (_: null, __: null, context: { req: Request }) => {
-    const { req } = context
-    const t = req.cookies['!']
+const Resend = async (_: null, __: null, context: { user: any }) => {
+    const { user } = context
     try {
-        const { id } = verifyToken(t)
-        const resendKey = `resend:${id}`
-        const verifyKey = `verify:${id}`
+        const resendKey = `resend:${user.id}`
+        const verifyKey = `verify:${user.id}`
         const getResend = await Redis.hgetall(resendKey)
         const generateVerificationCode = async () => {
-            const user = await User.findById(id)
+            const user = await User.findById(context.user.id)
             const randomString = crypto.randomBytes(64).toString('hex')
             const verificationCode = crypto.createHash('sha512').update(randomString).digest('hex')
             await Redis.hset(verifyKey, 'code', verificationCode)

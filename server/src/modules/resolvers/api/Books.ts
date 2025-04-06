@@ -1,7 +1,6 @@
-import { Types } from 'mongoose'
-import Collection from '../../../models/Collection.ts'
+import Collection from '@models/Collection.ts'
 
-const Books = async (parent: { id: Types.ObjectId }) => {
+const Books = async (parent: { id: ObjectId }) => {
     try {
         const { id } = parent
         const books = await Collection.find({ user_id: id })

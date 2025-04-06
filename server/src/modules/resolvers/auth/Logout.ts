@@ -1,14 +1,9 @@
-import type { Request, Response } from 'express'
-import Redis from '../../../database/Redis.ts'
-import { verifyToken } from '../../../utils/security/jwt.ts'
+import Redis from '@database/Redis.ts'
 
-const Logout = async (_: null, __: null, context: { req: Request, res: Response }) => {
-    const { req, res } = context
-    const t = req.cookies['!']
+const Logout = async (_: null, __: null, context: { res: Res, user: any }) => {
     try {
-        const { id } = verifyToken(t)
-        await Redis.del(`user:${id}`)
-        res.clearCookie('!')
+        await Redis.del(`user:${context.user.id}`)
+        context.res.clearCookie('!')
         return true
     } catch (e) {
         throw e

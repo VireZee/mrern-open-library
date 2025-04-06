@@ -1,4 +1,8 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import http from 'http'
+import crypto from 'crypto'
+import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import cp from 'cookie-parser'
@@ -12,7 +16,11 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 
+globalThis.path = path
+globalThis.fileURLToPath = fileURLToPath
 globalThis.http = http
+globalThis.nodeCrypto = crypto
+globalThis.dotenv = dotenv
 globalThis.express = express
 globalThis.cors = cors
 globalThis.cp = cp

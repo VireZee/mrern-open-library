@@ -1,17 +1,12 @@
-import type { Request } from 'express'
 import Redis from '../../../database/Redis.ts'
 import { User } from '../../../models/User.ts'
-import { verifyToken } from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
-const Verify = async (_: null, args: { code: string }, context: { req: Request }) => {
-    const { req } = context
-    const t = req.cookies['!']
+const Verify = async (_: null, args: { code: string }, context: { user: any }) => {
     try {
-        const { id } = verifyToken(t)
         const { code } = args
-        const user = await User.findById(id)
-        const verifyKey = `verify:${id}`
+        const user = await User.findById(context.user.id)
+        const verifyKey = `verify:${context.user.id}`
         const getVerify = await Redis.hgetall(verifyKey)
         await Redis.hsetnx(verifyKey, 'attempts', 0)
         const formatTimeLeft = (seconds: number) => {
@@ -39,9 +34,9 @@ const Verify = async (_: null, args: { code: string }, context: { req: Request }
             }
             throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         }
-        const verifiedUser = await User.findByIdAndUpdate(id, { verified: true }, { new: true })
-        await Redis.call('JSON.SET', `user:${id}`, '$.verified', `${verifiedUser!.verified}`)
-        await Redis.del(verifyKey, `resend:${id}`)
+        const verifiedUser = await User.findByIdAndUpdate(context.user.id, { verified: true }, { new: true })
+        await Redis.call('JSON.SET', `user:${context.user.id}`, '$.verified', `${verifiedUser!.verified}`)
+        await Redis.del(verifyKey, `resend:${context.user.id}`)
         return true
     } catch (e) {
         throw e
