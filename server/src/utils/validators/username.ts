@@ -1,7 +1,6 @@
-import { Types } from 'mongoose'
 import { User } from '@models/User.ts'
 
-export const validateUsername = async (uname: string, id?: Types.ObjectId) => {
+export const validateUsername = async (uname: string, id?: ObjectId) => {
     if (!uname) {
         return "Username can't be empty!"
     } else if (!/^[\w\d]+$/.test(uname)) {

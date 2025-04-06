@@ -1,7 +1,7 @@
 import './global.ts'
 import MongoDB from './database/MongoDB.ts'
 import './database/Redis.ts'
-import type { Request, Response } from 'express'
+import express from 'express'
 import http from 'http'
 import cors from 'cors'
 import cp from 'cookie-parser'

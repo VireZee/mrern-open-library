@@ -1,8 +1,7 @@
-import type { Request, Response } from 'express'
-import { User } from '../models/User.ts'
+import { User } from '@models/User.ts'
 import Books from '@modules/resolvers/api/Books.ts'
 
-const API = async (req: Request, res: Response) => {
+const API = async (req: Req, res: Res) => {
     try {
         const { hash } = req.params
         const hashBuffer = Buffer.from(hash!, 'hex')

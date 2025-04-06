@@ -1,7 +1,6 @@
-import { Types } from 'mongoose'
 import { User } from '@models/User.ts'
 
-export const validateEmail = async (email: string, id?: Types.ObjectId) => {
+export const validateEmail = async (email: string, id?: ObjectId) => {
     if (!email) {
         return "Email can't be empty!"
     } else if (!/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {

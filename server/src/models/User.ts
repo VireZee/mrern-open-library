@@ -1,7 +1,5 @@
-import mongoose, { Document, Schema, Types } from 'mongoose'
-
-export interface IUser extends Document {
-    _id: Types.ObjectId
+export interface IUser extends mongoDocument {
+    _id: ObjectId
     photo: Buffer
     name: string
     username: string

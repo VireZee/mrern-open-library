@@ -1,6 +1,7 @@
 import type { Response } from 'express'
 import Redis from '../../../database/Redis.ts'
-import type SMTPTransport from 'nodemailer/lib/smtp-transport'
+// import type SMTPTransport from 'nodemailer/lib/smtp-transport'
+// import type { SentMessageInfo } from 'nodemailer'
 import nodemailer from 'nodemailer'
 import { User } from '../../../models/User.ts'
 import generateSvg from '@utils/misc/generateSvg.ts'
@@ -20,7 +21,7 @@ const transporter = nodemailer.createTransport({
         user: process.env['MAIL_USER'],
         pass: process.env['MAIL_PASS']
     }
-} as SMTPTransport.Options)
+} as Parameters<typeof nodemailer.createTransport>[0])
 const Register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Response }) => {
     try {
         const { name, uname, email, pass, rePass, show } = args

@@ -1,8 +1,6 @@
-import type { Request } from 'express'
 import { Types } from 'mongoose'
 import Redis from '../../../database/Redis.ts'
 import CollectionModel from '../../../models/Collection.ts'
-import { verifyToken } from '../../../utils/security/jwt.ts'
 
 interface Query {
     user_id: Types.ObjectId
@@ -11,17 +9,15 @@ interface Query {
         $options: 'i'
     }
 }
-const Collection = async (_: null, args: { search: string, page: number }, context: { req: Request }) => {
-    const { req } = context
-    const t = req.cookies['!']
+const Collection = async (_: null, args: { search: string, page: number }, context: { user: any }) => {
+    const { user } = context
     try {
-        const { id } = verifyToken(t)
         const { search, page } = args
-        const redisKey = `collection:${id}|${search}|${page}`
+        const redisKey = `collection:${user.id}|${search}|${page}`
         const cachedCollection = await Redis.call('JSON.GET', redisKey) as string
         if (cachedCollection) return JSON.parse(cachedCollection)
         const limit = 9
-        const query: Query = { user_id: id }
+        const query: Query = { user_id: user.id }
         if (search) query.title = { $regex: search, $options: 'i' }
         const [bookCollection, totalCollection] = await Promise.all([
             CollectionModel.find(query).sort({ created: -1 }).skip((page - 1) * limit).limit(limit),

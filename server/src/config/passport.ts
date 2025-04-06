@@ -1,13 +1,14 @@
+import passport from 'passport'
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
+import type { StrategyOptionsWithoutRequest } from 'passport-jwt'
 import Redis from '@database/Redis.ts'
 import { User } from '@models/User.ts'
 
 const opt: StrategyOptionsWithoutRequest = {
-    jwtFromRequest: ExtractJwt.fromExtractors([
-        req => req?.cookies['!']
-    ]),
+    jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
     secretOrKey: process.env['SECRET_KEY']!
 }
-passport.use(new JwtStrategy(opt, async (payload, done: VerifiedCallback) => {
+passport.use(new JwtStrategy(opt, async (payload, done) => {
     try {
         const redisKey = `user:${payload.id}`
         const cached = await Redis.call('JSON.GET', redisKey) as string

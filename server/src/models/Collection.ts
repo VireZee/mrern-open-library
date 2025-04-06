@@ -1,8 +1,6 @@
-import mongoose, { Document, Schema, Types } from 'mongoose'
-
 interface ICollection extends Document {
-    _id: Types.ObjectId
-    user_id: Types.ObjectId
+    _id: ObjectId
+    user_id: ObjectId
     author_key: string[]
     cover_edition_key: string
     cover_i: number

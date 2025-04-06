@@ -1,6 +1,5 @@
 
 import Redis from '../../../database/Redis.ts'
-import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 import nodemailer from 'nodemailer'
 import { User } from '../../../models/User.ts'
 import crypto from 'crypto'
@@ -14,7 +13,7 @@ const transporter = nodemailer.createTransport({
         user: process.env['MAIL_USER'],
         pass: process.env['MAIL_PASS']
     }
-} as SMTPTransport.Options)
+} as Parameters<typeof nodemailer.createTransport>[0])
 const Resend = async (_: null, __: null, context: { user: any }) => {
     const { user } = context
     try {
