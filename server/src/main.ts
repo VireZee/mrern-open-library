@@ -1,15 +1,14 @@
 import './global.ts'
-import MongoDB from './database/MongoDB.ts'
-import './database/Redis.ts'
-import express from 'express'
 import http from 'http'
 import cors from 'cors'
 import cp from 'cookie-parser'
+import MongoDB from '@database/MongoDB.ts'
+import '@database/Redis.ts'
 import passport from '@config/passport.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import { typeDefs, resolvers } from './modules/Resolver.ts'
+import { typeDefs, resolvers } from '@modules/Resolver.ts'
 import APIRt from './routes/API.ts'
 
 interface UserType {
@@ -21,15 +20,15 @@ interface UserType {
 }
 
 interface MyContext {
-    req: Request
-    res: Response
+    req: Req
+    res: Res
     user: UserType | null
 }
 
 await MongoDB()
 const app = express()
 const httpServer = http.createServer(app)
-const server = new ApolloServer({
+const server = new ApolloServer<MyContext>({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]

@@ -3,7 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "tsx watch src/main.ts"
+        "dev": "tsx watch src/main.ts",
+        "build": "tsc"
     },
     "devDependencies": {
         "@types/cookie-parser": "^1.4.8",

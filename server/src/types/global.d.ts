@@ -11,7 +11,7 @@ declare global {
     type Req = Request
     type Res = Response
     var mongoose: typeof mongoose
-    var Schema = mongoose.Schema
+    var Schema: typeof Schema
     var Redis: typeof Redis
     var express: typeof express
     var nodeCrypto: typeof crypto
