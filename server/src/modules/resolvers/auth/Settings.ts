@@ -6,7 +6,7 @@ import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import { validateEmail } from '@utils/validators/email.ts'
 import { hash, verifyHash } from '@utils/security/hash.ts'
-import { generateToken } from '../../../utils/security/jwt.ts'
+import generateToken from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
 const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { req: Request, res: Response, user: any }) => {

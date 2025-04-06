@@ -9,7 +9,7 @@ import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import { validateEmail } from '@utils/validators/email.ts'
 import { hash } from '@utils/security/hash.ts'
-import { generateToken } from '../../../utils/security/jwt.ts'
+import generateToken from '@utils/security/jwt.ts'
 import crypto from 'crypto'
 import { GraphQLError } from 'graphql'
 
