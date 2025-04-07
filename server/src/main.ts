@@ -9,7 +9,7 @@ import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
 import { typeDefs, resolvers } from '@modules/Resolver.ts'
-import APIRt from './routes/API.ts'
+import APIRt from './routes/api.ts'
 
 interface UserType {
     photo: string
