@@ -24,7 +24,10 @@ passport.use(new JwtStrategy(opt, async (payload, done) => {
             verified: user.verified
         })
         await Redis.expire(key, 86400)
-        return done(null, user)
+        return done(null, {
+            ...user.toObject(),
+            photo: Buffer.from(user.photo).toString()
+        })
     } catch (e) {
         return done(e, false)
     }
