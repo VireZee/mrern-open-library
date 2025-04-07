@@ -1,7 +1,7 @@
-import type { Request, Response } from 'express'
+import type {  Response } from 'express'
 import Redis from '../../../database/Redis.ts'
-import type { IUser } from '../../../models/User.ts'
-import { User } from '../../../models/User.ts'
+import type { IUser } from '../../../models/user.ts'
+import { User } from '../../../models/user.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import { validateEmail } from '@utils/validators/email.ts'
@@ -9,7 +9,7 @@ import { hash, verifyHash } from '@utils/security/hash.ts'
 import generateToken from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
-const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { req: Request, res: Response, user: any }) => {
+const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: {  res: Response, user: any }) => {
     const {  res } = context
     try {
         const { photo, name, uname, email, oldPass, newPass, rePass, show } = args

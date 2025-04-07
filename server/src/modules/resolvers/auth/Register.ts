@@ -3,11 +3,11 @@ import Redis from '../../../database/Redis.ts'
 // import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 // import type { SentMessageInfo } from 'nodemailer'
 import nodemailer from 'nodemailer'
-import { User } from '../../../models/User.ts'
+import user from '../../../models/user.ts'
 import generateSvg from '@utils/misc/generateSvg.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
-import { validateEmail } from '@utils/validators/email.ts'
+import validateEmail from '@utils/validators/email.ts'
 import { hash } from '@utils/security/hash.ts'
 import generateToken from '@utils/security/jwt.ts'
 import crypto from 'crypto'
@@ -37,7 +37,7 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
         if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
         const randomString = crypto.randomBytes(64).toString('hex')
         const verificationCode = crypto.createHash('sha512').update(randomString).digest('hex')
-        const newUser = new User({
+        const newUser = new user({
             photo: Buffer.from(generateSvg(name), 'base64'),
             name: formatName(name),
             username: formatUsername(uname),
@@ -46,8 +46,8 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
         })
         const newUserKey = `verify:${newUser._id}`
         await newUser.save()
-        await Redis.hset(newUserKey, 'code', verificationCode)
-        await Redis.call('HEXPIRE', newUserKey, 300, 'FIELDS', 1, 'code')
+        // await Redis.hset(newUserKey, 'code', verificationCode)
+        // await Redis.call('HEXPIRE', newUserKey, 300, 'FIELDS', 1, 'code')
         await transporter.sendMail({
             from: process.env['MAIL_FROM'],
             to: email,

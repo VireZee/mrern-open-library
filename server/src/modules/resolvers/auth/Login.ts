@@ -1,5 +1,5 @@
 import type { Response } from 'express'
-import { User } from '@models/User.ts'
+import { User } from '@models/user.ts'
 import { verifyHash } from '@utils/security/hash.ts'
 import generateToken from '@utils/security/jwt.ts'
 

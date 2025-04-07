@@ -1,9 +1,10 @@
-import Collection from '@models/Collection.ts'
+import collection from '@models/collection.ts'
+import type ICollection from '@type/models/collection.d.ts'
 
-const Books = async (parent: { id: ObjectId }) => {
+const books = async (parent: { id: ObjectId }) => {
     try {
         const { id } = parent
-        const books = await Collection.find({ user_id: id })
+        const books: ICollection[] = await collection.find({ user_id: id })
         return books.map(book => ({
             author_key: book.author_key,
             cover_edition_key: book.cover_edition_key,
@@ -15,4 +16,4 @@ const Books = async (parent: { id: ObjectId }) => {
         throw e
     }
 }
-export default Books
+export default books

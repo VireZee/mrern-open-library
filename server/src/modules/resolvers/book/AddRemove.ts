@@ -1,4 +1,4 @@
-import Collection from '../../../models/Collection.ts'
+import Collection from '../../../models/collection.ts'
 
 const AddRemove = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[] }, context: { user: any }) => {
     const { user } = context

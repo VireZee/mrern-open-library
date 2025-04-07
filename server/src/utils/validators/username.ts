@@ -1,4 +1,4 @@
-import { User } from '@models/User.ts'
+import user from '@models/user.ts'
 
 export const validateUsername = async (uname: string, id?: ObjectId) => {
     if (!uname) {
@@ -7,7 +7,7 @@ export const validateUsername = async (uname: string, id?: ObjectId) => {
         return "Username can only contain Latin Alphabets, Numbers, and Underscores!"
     } else if (uname.length >= 20) {
         return "Username is too long!"
-    } else if (await User.findOne({
+    } else if (await user.findOne({
         username: formatUsername(uname),
         ...(id && { _id: { $ne: id } })
     })) {

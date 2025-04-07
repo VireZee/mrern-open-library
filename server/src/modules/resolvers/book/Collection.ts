@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 import Redis from '../../../database/Redis.ts'
-import CollectionModel from '../../../models/Collection.ts'
+import CollectionModel from '../../../models/collection.ts'
 
 interface Query {
     user_id: Types.ObjectId

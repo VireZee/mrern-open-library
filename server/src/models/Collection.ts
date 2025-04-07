@@ -1,13 +1,5 @@
-interface ICollection extends Document {
-    _id: ObjectId
-    user_id: ObjectId
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string[]
-    created: Date
-}
+import type ICollection from '@type/models/collection.d.ts'
+
 const CollectionSchema = new Schema<ICollection>({
     user_id: { type: Schema.Types.ObjectId, required: true },
     author_key: { type: [String], required: true },
@@ -17,5 +9,4 @@ const CollectionSchema = new Schema<ICollection>({
     author_name: { type: [String], required: true },
     created: { type: Date, required: true }
 }, { versionKey: false })
-const Collection = mongoose.model<ICollection>('Collection', CollectionSchema)
-export default Collection
+export default mongoose.model<ICollection>('collection', CollectionSchema)

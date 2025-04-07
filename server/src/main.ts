@@ -46,6 +46,7 @@ const server = new ApolloServer<MyContext>({
                 return new Promise((resolve, reject) => {
                     passport.authenticate('jwt', { session: false }, (err: Error, user: UserType) => {
                         if (err) return reject(err)
+                        console.log(user)
                         return resolve({ req, res, user })
                     })(req, res, () => null)
                 })

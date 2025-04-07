@@ -1,4 +1,4 @@
-import { User } from '@models/User.ts'
+import { User } from '@models/user.ts'
 
 const Generate = async (_: null, __: null, context: { user: any }) => {
     try {

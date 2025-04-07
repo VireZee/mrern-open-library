@@ -1,4 +1,4 @@
-const generateSvg = (name: string) => {
+export default (name: string) => {
     const initials = name.split(' ').map(w => w.charAt(0).toUpperCase()).slice(0, 5).join('')
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
             <circle cx="256" cy="256" r="256" fill="#000" />
@@ -7,4 +7,3 @@ const generateSvg = (name: string) => {
     `
     return Buffer.from(svg).toString('base64')
 }
-export default generateSvg
