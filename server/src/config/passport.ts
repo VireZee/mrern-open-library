@@ -3,7 +3,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
 import type { StrategyOptionsWithoutRequest } from 'passport-jwt'
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
-import sanitize from '@utils/misc/sanitizedRedisKey.ts'
+import { sanitize, sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 
 const opt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
@@ -11,23 +11,16 @@ const opt: StrategyOptionsWithoutRequest = {
 }
 passport.use(new JwtStrategy(opt, async (payload, done) => {
     try {
-        const key = sanitize('user', payload.id)
-        const result = await Redis.json.GET(key)
-        if (result) return done(null, result)
-        const user = await userModel.findById(payload.id)
-        if (!user) return done(null, false)
-        await Redis.json.SET(key, '$', {
-            photo: Buffer.from(user.photo).toString(),
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            verified: user.verified
-        })
-        await Redis.expire(key, 86400)
-        return done(null, {
-            ...user.toObject(),
-            photo: Buffer.from(user.photo).toString()
-        })
+        const key = sanitizeRedisKey('user', payload.id)
+        let result = await Redis.json.GET(key)
+        if (!result) {
+            const exists = await userModel.findById(sanitize(payload.id))
+            if (!exists) return done(null, false)
+            result = { id: payload.id }
+            await Redis.json.SET(key, '$', result)
+            await Redis.expire(key, 86400)
+        }
+        return done(null, result)
     } catch (e) {
         return done(e, false)
     }

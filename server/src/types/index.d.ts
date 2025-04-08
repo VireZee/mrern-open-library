@@ -1,3 +1,6 @@
+export type Id = {
+    id: string
+}
 export type User = {
     photo: string
     name: string
@@ -8,5 +11,5 @@ export type User = {
 export type Context = {
     req: Req
     res: Res
-    user: User | false
+    user: Id | false
 }

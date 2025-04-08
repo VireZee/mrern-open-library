@@ -5,54 +5,38 @@ import cp from 'cookie-parser'
 import MongoDB from '@database/MongoDB.ts'
 import '@database/Redis.ts'
 import passport from '@config/passport.ts'
+import { typeDefs, resolvers } from '@modules/Resolver.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import { typeDefs, resolvers } from '@modules/Resolver.ts'
-import APIRt from './routes/api.ts'
-
-interface UserType {
-    photo: string
-    name: string
-    username: string
-    email: string
-    verified: boolean
-}
-
-interface MyContext {
-    req: Req
-    res: Res
-    user: UserType | null
-}
+import apiRoute from './routes/api.ts'
+import type { Id, Context } from '@type/index.d.ts'
 
 await MongoDB()
 const app = express()
 const httpServer = http.createServer(app)
-const server = new ApolloServer<MyContext>({
+const server = new ApolloServer<Context>({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
-});
-(async () => {
-    await server.start()
-    app.use(
-        '/gql',
-        cors<cors.CorsRequest>({ origin: `http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`, credentials: true }),
-        express.json({ limit: '5mb' }),
-        cp(),
-        passport.initialize(),
-        expressMiddleware(server, {
-            context: async ({ req, res }): Promise<MyContext> => {
-                return new Promise((resolve, reject) => {
-                    passport.authenticate('jwt', { session: false }, (err: Error, user: UserType) => {
-                        if (err) return reject(err)
-                        console.log(user)
-                        return resolve({ req, res, user })
-                    })(req, res, () => null)
-                })
-            }
-        })
-    )
-    app.use(APIRt)
-})()
+})
+await server.start()
+app.use(cors({ origin: `http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`, credentials: true }))
+app.use(cp())
+app.use(express.json({ limit: '5mb' }))
+app.use(passport.initialize())
+app.use(
+    '/gql',
+    expressMiddleware(server, {
+        context: async ({ req, res }): Promise<Context> => {
+            return new Promise((resolve, reject) => {
+                passport.authenticate('jwt', { session: false }, (err: Error, user: Id) => {
+                    if (err) return reject(err)
+                    return resolve({ req, res, user })
+                })(req, res, () => null)
+            })
+        }
+    })
+)
+app.use(apiRoute)
 httpServer.listen(process.env['PORT'])

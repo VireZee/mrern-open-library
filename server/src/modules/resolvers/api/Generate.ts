@@ -1,9 +1,10 @@
 import userModel from '@models/user.ts'
-import type { User } from '@type/index.d.ts'
+import type { Id } from '@type/index.d.ts'
 
-const generate = async (_: null, __: null, context: { user: User }) => {
+const generate = async (_: null, __: null, context: { user: Id }) => {
     try {
-        const user = await userModel.findById(context.user.id)
+        const { user: authUser } = context
+        const user = await userModel.findById(authUser.id)
         let apiKey: string
         let isDuplicate: boolean
         do {
