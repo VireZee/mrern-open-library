@@ -9,11 +9,14 @@ const booksParent = async (req: Req, res: Res) => {
         const hashBuffer = Buffer.from(hash!, 'hex')
         const key = sanitizeRedisKey('api', hash!)
         const cache = await Redis.json.GET(key)
-        if (cache) return res.status(200).json({
-            name: cache.name,
-            username: cache.username,
-            books: await booksChild({ id: cache._id })
-        })
+        if (cache) {
+            const books = await booksChild({ id: cache._id })
+            return res.status(200).json({
+                name: cache.name,
+                username: cache.username,
+                books
+            })
+        }
         const user = await userModel.findOne({ api_key: hashBuffer })
         if (!user) return res.status(404).json({ message: 'Invalid API Key!' })
         const books = await booksChild({ id: user!._id })

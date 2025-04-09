@@ -4,7 +4,7 @@ import type { StrategyOptionsWithoutRequest } from 'passport-jwt'
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import { sanitize, sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
-import helper from '@utils/helper.ts'
+import { helper } from '@utils/helper.ts'
 
 const opt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
