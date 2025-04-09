@@ -1,9 +1,9 @@
-import { Id } from '@type/index..d.ts'
+// import { Id } from '@type/index..d.ts'
 
-const Auth = async (_: null, __: null, context: { user: Id }) => {
-    const { user } = context
-    if (!user) throw new GraphQLError('Unauthorized', { extensions: { code: 401 } })
-    return formatUserResponse(user)
+const Auth = async (_: null, __: null, context: { user: any }) => {
+    // const { user } = context
+    if (!context.user) throw new GraphQLError('Unauthorized', { extensions: { code: 401 } })
+    // return formatUserResponse(user)
 }
 export default Auth
 // const user = await userModel.findById(payload.id)

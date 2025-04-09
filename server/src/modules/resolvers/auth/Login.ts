@@ -1,12 +1,12 @@
 import type { Response } from 'express'
-import { User } from '@models/user.ts'
+import userModel from '@models/user.ts'
 import { verifyHash } from '@utils/security/hash.ts'
 import generateToken from '@utils/security/jwt.ts'
 
 const Login = async (_: null, args: { emailOrUname: string, pass: string }, context: { res: Response }) => {
     try {
         const { emailOrUname, pass } = args
-        const user = await User.findOne({
+        const user = await userModel.findOne({
             $or: [
                 { email: emailOrUname.toLowerCase() },
                 { username: emailOrUname.toLowerCase() }

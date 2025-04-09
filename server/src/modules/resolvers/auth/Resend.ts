@@ -79,7 +79,6 @@ const Resend = async (_: null, __: null, context: { user: any }) => {
         //         throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
         //     }
         //     await generateVerificationCode()
-        }
         return true
     } catch (e) {
         throw e
