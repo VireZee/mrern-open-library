@@ -1,4 +1,4 @@
-import booksChild from '@modules/resolvers/api/books.ts'
+import booksChild from '@modules/resolvers/api/booksChild.ts'
 
 export const helper = (user: { _id: ObjectId, photo: Buffer, name: string, username: string, email: string, verified: boolean, api_key?: string }) => {
     const { _id, photo, name, username, email, verified, api_key } = user
