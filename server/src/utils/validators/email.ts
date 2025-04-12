@@ -1,6 +1,6 @@
 import user from '@models/user.ts'
 
-const validateEmail = async (email: string, id?: ObjectId) => {
+export default async (email: string, id?: ObjectId) => {
     if (!email) {
         return "Email can't be empty!"
     } else if (!/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
@@ -13,4 +13,3 @@ const validateEmail = async (email: string, id?: ObjectId) => {
     }
     return
 }
-export default validateEmail
