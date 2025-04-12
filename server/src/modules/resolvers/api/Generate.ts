@@ -1,4 +1,4 @@
-import userModel from '@models/users.ts'
+import userModel from '@models/user.ts'
 import type { Id } from '@type/index.d.ts'
 
 const generate = async (_: null, __: null, context: { user: Id }) => {

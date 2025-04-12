@@ -1,4 +1,4 @@
-import Collection from '../../../models/collections.ts'
+import Collection from '../../../models/collection.ts'
 
 const Fetch = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number }, context: { user: any }) => {
     const { user } = context

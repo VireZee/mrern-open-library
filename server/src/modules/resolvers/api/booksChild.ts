@@ -1,7 +1,7 @@
-import userModel from '@models/users.ts'
-import collection from '@models/collections.ts'
-import type ICollection from '@type/models/collection.d.ts'
-import type ICollection from '@type/models/collection.d.ts'
+import userModel from '@models/user.ts'
+import collection from '@models/collection.ts'
+import type User from '@type/models/user.d.ts'
+import type ICollection from '@type/models/collection.ds.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 
 const booksChild = async (parent: { api: string }, _: null, context: { user: User } ) => {
