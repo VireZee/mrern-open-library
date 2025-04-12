@@ -1,33 +1,17 @@
 import Redis from '@database/Redis.ts'
-import userModel from '@models/user.ts'
 import collection from '@models/collection.ts'
-import type User from '@type/models/user.d.ts'
 import type Collection from '@type/models/collection.d.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
+import { formatBooksChild } from '@utils/formatter/formatBooks.ts'
 
-const booksChild = async (parent: { api: string }, _: null, context: { user: User }) => {
+const booksChild = async (parent: { id: string }) => {
     try {
-        const { api } = parent
-        const { user: authUser } = context
-        const hashBuffer = Buffer.from(api, 'hex')
-        const key = sanitizeRedisKey('collection', authUser._id)
-        const cache: Collection[] | null = await Redis.json.GET(key)
-        if (cache) return cache.map(book => ({
-            author_key: book.author_key,
-            cover_edition_key: book.cover_edition_key,
-            cover_i: book.cover_i,
-            title: book.title,
-            author_name: book.author_name
-        }))
-        const user = await userModel.findOne({ api_key: hashBuffer })
-        const books: Collection[] = await collection.find({ user_id: user!._id })
-        return books.map(book => ({
-            author_key: book.author_key,
-            cover_edition_key: book.cover_edition_key,
-            cover_i: book.cover_i,
-            title: book.title,
-            author_name: book.author_name
-        }))
+        const { id } = parent
+        const key = sanitizeRedisKey('collection', id)
+        const cache = await Redis.json.GET(key) as Collection[] | []
+        if (cache) return formatBooksChild(cache)
+        const books = await collection.find({ user_id: id })
+        return formatBooksChild(books)
     } catch (e) {
         throw e
     }
