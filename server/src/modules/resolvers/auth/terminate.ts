@@ -7,9 +7,10 @@ import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 const terminate = async (_: null, __: null, context: { res: Res, user: User }) => {
     try {
         const { res, user } = context
+        const key = sanitizeRedisKey('*', user._id)
         await collection.deleteMany({ user_id: user._id })
         await userModel.findByIdAndDelete(user._id)
-        const keys = await Redis.KEYS(sanitizeRedisKey('*', user._id))
+        const keys = await Redis.KEYS(key)
         if (keys.length > 0) await Redis.DEL(keys)
         res.clearCookie('!')
         return true

@@ -1,5 +1,4 @@
-import type { Response } from 'express'
-import Redis from '../../../database/Redis.ts'
+import Redis from '@database/Redis.ts'
 // import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 // import type { SentMessageInfo } from 'nodemailer'
 import nodemailer from 'nodemailer'
@@ -11,7 +10,6 @@ import validateEmail from '@utils/validators/email.ts'
 import { hash } from '@utils/security/hash.ts'
 import generateToken from '@utils/security/jwt.ts'
 import crypto from 'crypto'
-import { GraphQLError } from 'graphql'
 
 const transporter = nodemailer.createTransport({
     host: process.env['MAIL_HOST'],
@@ -22,7 +20,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env['MAIL_PASS']
     }
 } as Parameters<typeof nodemailer.createTransport>[0])
-const Register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Response }) => {
+const register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {
         const { name, uname, email, pass, rePass, show } = args
         const errs: Record<string, string> = {}
@@ -81,4 +79,4 @@ const Register = async (_: null, args: { name: string, uname: string, email: str
         throw e
     }
 }
-export default Register
+export default register
