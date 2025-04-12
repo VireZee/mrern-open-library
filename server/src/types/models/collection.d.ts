@@ -1,5 +1,5 @@
 type Collection = {
-    user_id: ObjectId
+    user_id: string
     author_key: string[]
     cover_edition_key: string
     cover_i: number

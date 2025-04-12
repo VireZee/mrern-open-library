@@ -1,5 +1,5 @@
 import Schema from './Schema.ts'
-import Auth from './resolvers/middleware/Auth.ts'
+import Auth from './resolvers/middleware/auth.ts'
 import Home from './resolvers/book/Home.ts'
 import Register from './resolvers/auth/Register.ts'
 import Verify from './resolvers/auth/Verify.ts'

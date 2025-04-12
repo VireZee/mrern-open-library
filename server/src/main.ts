@@ -9,8 +9,9 @@ import { typeDefs, resolvers } from '@modules/Resolver.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import apiRoute from './routes/router.ts'
-import type { Id, Context } from '@type/index.d.ts'
+import apiRoute from '@routes/router.ts'
+import type Context from '@type/index.d.ts'
+import type User from '@type/models/user.d.ts'
 
 await MongoDB()
 const app = express()
@@ -30,7 +31,7 @@ app.use(
     expressMiddleware(server, {
         context: async ({ req, res }): Promise<Context> => {
             return new Promise((resolve, reject) => {
-                passport.authenticate('jwt', { session: false }, (err: Error, user: Id) => {
+                passport.authenticate('jwt', { session: false }, (err: Error, user: User) => {
                     if (err) return reject(err)
                     return resolve({ req, res, user })
                 })(req, res, () => null)
