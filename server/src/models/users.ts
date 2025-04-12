@@ -1,19 +1,3 @@
-// import type IUser from '@type/models/user.d.ts'
-import mongoose, { Document, Schema, Types } from 'mongoose'
-
-export interface IUser extends mongoDocument {
-    _id: ObjectId
-    photo: Buffer
-    name: string
-    username: string
-    email: string
-    pass: string
-    verified: boolean
-    api_key: Buffer
-    created: Date
-    updated: Date
-}
-
 const UserSchema = new Schema({
     photo: { type: Buffer, required: true },
     name: { type: String, maxlength: 75, required: true, },

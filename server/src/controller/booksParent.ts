@@ -1,5 +1,5 @@
 import Redis from '@database/Redis.ts'
-import userModel from '@models/user.ts'
+import userModel from '@models/users.ts'
 import booksChild from '@modules/resolvers/api/booksChild.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 

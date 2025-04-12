@@ -1,4 +1,4 @@
-import user from '@models/user.ts'
+import user from '@models/users.ts'
 
 export const validateUsername = async (uname: string, id?: ObjectId) => {
     if (!uname) {

@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
-import userModel from '@models/user.ts'
-import Collection from '@models/collection.ts'
+import userModel from '@models/users.ts'
+import Collection from '@models/collections.ts'
 
 const Delete = async (_: null, __: null, context: { res: Res, user: any }) => {
     const { res, user } = context

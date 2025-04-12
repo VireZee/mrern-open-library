@@ -1,4 +1,4 @@
-import user from '@models/user.ts'
+import user from '@models/users.ts'
 
 const validateEmail = async (email: string, id?: ObjectId) => {
     if (!email) {

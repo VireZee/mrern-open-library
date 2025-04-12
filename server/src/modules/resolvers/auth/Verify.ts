@@ -1,5 +1,5 @@
 import Redis from '../../../database/Redis.ts'
-import user from '../../../models/user.ts'
+import user from '../../../models/users.ts'
 import { GraphQLError } from 'graphql'
 
 const Verify = async (_: null, args: { code: string }, context: { user: any }) => {

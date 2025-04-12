@@ -1,4 +1,4 @@
-import userModel from '@models/user.ts'
+import userModel from '@models/users.ts'
 import type { Id } from '@type/index.d.ts'
 
 const check = async (_: null, __: null, context: { user: Id }) => {

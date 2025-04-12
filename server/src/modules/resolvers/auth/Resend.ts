@@ -1,7 +1,7 @@
 
 import Redis from '../../../database/Redis.ts'
 import nodemailer from 'nodemailer'
-import a from '../../../models/user.ts'
+import a from '../../../models/users.ts'
 import crypto from 'crypto'
 import { GraphQLError } from 'graphql'
 
