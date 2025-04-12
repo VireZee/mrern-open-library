@@ -1,14 +1,8 @@
-export type User = {
-    _id: string
-    photo: string
-    name: string
-    username: string
-    email: string
-    verified: boolean
-    api_key?: string
-}
-export type Context = {
+import User from '@type/models/user.d.ts'
+
+type Context = {
     req: Req
     res: Res
-    user: Id | false
+    user: User | false
 }
+export default Context

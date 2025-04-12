@@ -1,17 +1,26 @@
+import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import collection from '@models/collection.ts'
 import type User from '@type/models/user.d.ts'
-import type ICollection from '@type/models/collection.ds.ts'
+import type Collection from '@type/models/collection.d.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 
-const booksChild = async (parent: { api: string }, _: null, context: { user: User } ) => {
+const booksChild = async (parent: { api: string }, _: null, context: { user: User }) => {
     try {
         const { api } = parent
         const { user: authUser } = context
         const hashBuffer = Buffer.from(api, 'hex')
-        const key = sanitizeRedisKey('collection', authUser.id)
+        const key = sanitizeRedisKey('collection', authUser._id)
+        const cache: Collection[] = await Redis.json.GET(key)
+        if (cache) return cache.map(book => ({
+            author_key: book.author_key,
+            cover_edition_key: book.cover_edition_key,
+            cover_i: book.cover_i,
+            title: book.title,
+            author_name: book.author_name
+        }))
         const user = await userModel.findOne({ api_key: hashBuffer })
-        const books: ICollection[] = await collection.find({ user_id: user!._id })
+        const books: Collection[] = await collection.find({ user_id: user!._id })
         return books.map(book => ({
             author_key: book.author_key,
             cover_edition_key: book.cover_edition_key,
