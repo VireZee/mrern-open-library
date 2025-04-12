@@ -11,7 +11,7 @@ const booksChild = async (parent: { api: string }, _: null, context: { user: Use
         const { user: authUser } = context
         const hashBuffer = Buffer.from(api, 'hex')
         const key = sanitizeRedisKey('collection', authUser._id)
-        const cache: Collection[] = await Redis.json.GET(key)
+        const cache: Collection[] | null = await Redis.json.GET(key)
         if (cache) return cache.map(book => ({
             author_key: book.author_key,
             cover_edition_key: book.cover_edition_key,
