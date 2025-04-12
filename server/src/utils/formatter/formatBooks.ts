@@ -1,6 +1,6 @@
 import type Collection from '@type/models/collection.js'
 
-export const formatBooksChild = async (data: Collection[]) => {
+export default async (data: Collection[]) => {
     return data.map(book => ({
         author_key: book.author_key,
         cover_edition_key: book.cover_edition_key,

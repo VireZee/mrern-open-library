@@ -9,7 +9,7 @@ import { typeDefs, resolvers } from '@modules/Resolver.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import apiRoute from './routes/api.ts'
+import apiRoute from './routes/router.ts'
 import type { Id, Context } from '@type/index.d.ts'
 
 await MongoDB()

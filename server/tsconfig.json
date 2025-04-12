@@ -35,6 +35,7 @@
       "@database/*": ["database/*"],
       "@models/*": ["models/*"],
       "@modules/*": ["modules/*"],
+      "@controller/*": ["controller/*"],
       "@utils/*": ["utils/*"],
       "@type/*": ["types/*"]
     },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
