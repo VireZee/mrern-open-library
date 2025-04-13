@@ -1,4 +1,3 @@
-import Redis from '@database/Redis.ts'
 // import type SMTPTransport from 'nodemailer/lib/smtp-transport'
 // import type { SentMessageInfo } from 'nodemailer'
 import nodemailer from 'nodemailer'
