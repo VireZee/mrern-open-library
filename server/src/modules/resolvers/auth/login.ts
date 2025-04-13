@@ -2,7 +2,7 @@ import userModel from '@models/user.ts'
 import { verifyHash } from '@utils/security/hash.ts'
 import generateToken from '@utils/security/jwt.ts'
 
-const Login = async (_: null, args: { emailOrUname: string, pass: string }, context: { res: Res }) => {
+const login = async (_: null, args: { emailOrUname: string, pass: string }, context: { res: Res }) => {
     try {
         const { emailOrUname, pass } = args
         const { res } = context
@@ -26,4 +26,4 @@ const Login = async (_: null, args: { emailOrUname: string, pass: string }, cont
         throw e
     }
 }
-export default Login
+export default login
