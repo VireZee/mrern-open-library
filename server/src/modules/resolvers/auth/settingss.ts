@@ -10,8 +10,8 @@ import generateToken from '../../../utils/security/jwt.ts'
 import { GraphQLError } from 'graphql'
 
 const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: {  res: Response, user: any }) => {
-    const {  res } = context
     try {
+        const {  res } = context
         const { photo, name, uname, email, oldPass, newPass, rePass, show } = args
         const errs: Record<string, string> = {}
         const user = await userModel.findById(context.user.id)
