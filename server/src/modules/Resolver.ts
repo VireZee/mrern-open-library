@@ -10,7 +10,7 @@ import Collection from './resolvers/book/Collection.ts'
 import AddRemove from './resolvers/book/AddRemove.ts'
 import Check from './resolvers/api/check.ts'
 import Generate from './resolvers/api/generate.ts'
-import Settings from './resolvers/auth/settingss.ts'
+import Settings from './resolvers/auth/settings.ts'
 import Logout from './resolvers/auth/Logout.ts'
 import Delete from './resolvers/auth/Delete.ts'
 
