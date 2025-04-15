@@ -1,19 +1,13 @@
-import Redis from '../../../database/Redis.ts'
+import Redis from '@database/Redis.ts'
 import got from 'got'
+import type Books from '@type/modules/collection.d.ts'
 
-interface Books {
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string[]
-}
 const Home = async (_: null, args: { search: string, page: number }) => {
     try {
         const { search, page } = args
-        const redisKey = `book:${search}|${page}`
-        const cachedBooks = await Redis.call('JSON.GET', redisKey) as string
-        if (cachedBooks) return JSON.parse(cachedBooks)
+        const key = `book:${search}|${page}`
+        const cache = await Redis.json.GET(key)
+        if (cache) return cache
         const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')
         const response = await got(`https://openlibrary.org/search.json?${type}=${formattedQuery}&page=${page}`).json<{ numFound: number, docs: Books[] }>()
@@ -27,8 +21,8 @@ const Home = async (_: null, args: { search: string, page: number }) => {
                 author_name: book.author_name ?? ['Unknown Author']
             }))
         }
-        await Redis.call('JSON.SET', redisKey, '$', JSON.stringify(books))
-        await Redis.expire(redisKey, 86400)
+        await Redis.json.SET(key, '$', books)
+        await Redis.EXPIRE(key, 86400)
         return books
     } catch (e) {
         throw e

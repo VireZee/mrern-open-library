@@ -1,8 +1,4 @@
-type Books = {
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string[]
-}
+import type Collection from "@type/models/collection.d.ts"
+
+type Books = Omit<Collection, 'user_id'>
 export default Books
