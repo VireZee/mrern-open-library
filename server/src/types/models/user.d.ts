@@ -1,4 +1,4 @@
-type User = {
+export type User = {
     _id: string
     photo: string
     name: string
@@ -7,4 +7,11 @@ type User = {
     verified: boolean
     api_key?: string
 }
-export default User
+export type UserSettings = {
+    photo: string
+    name: string
+    username: string
+    email: string
+    pass: string
+    updated: Date
+}

@@ -1,19 +1,19 @@
 import Redis from '@database/Redis.ts'
-import user from '@models/user.ts'
-import type User from '@type/models/user.d.ts'
+import userModel from '@models/user.ts'
+import type { User } from '@type/models/user.d.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 import formatTimeLeft from '@utils/formatter/timeLeft.ts'
 
 const Verify = async (_: null, args: { code: string }, context: { user: User }) => {
     try {
         const { code } = args
-        const { user: authUser } = context
-        const verifyKey = sanitizeRedisKey('verify', authUser._id)
-        const resendKey = sanitizeRedisKey('resend', authUser._id)
-        const userKey = sanitizeRedisKey('user', authUser._id)
+        const { user } = context
+        const verifyKey = sanitizeRedisKey('verify', user._id)
+        const resendKey = sanitizeRedisKey('resend', user._id)
+        const userKey = sanitizeRedisKey('user', user._id)
         const getVerify = await Redis.HGETALL(verifyKey)
         await Redis.HSETNX(verifyKey, 'attempts', '0')
-        if (authUser!.verified) throw new GraphQLError('Already verified!', { extensions: { code: 409 } })
+        if (user!.verified) throw new GraphQLError('Already verified!', { extensions: { code: 409 } })
         if (!getVerify['code']) throw new GraphQLError('Verification code expired!', { extensions: { code: 400 } })
         const block = await Redis.HEXISTS(verifyKey, 'block')
         if (block) {
@@ -32,7 +32,7 @@ const Verify = async (_: null, args: { code: string }, context: { user: User }) 
             }
             throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         }
-        const verifiedUser = await user.findByIdAndUpdate(authUser._id, { verified: true }, { new: true })
+        const verifiedUser = await userModel.findByIdAndUpdate(user._id, { verified: true }, { new: true })
         await Redis.json.SET(userKey, '$.verified', `${verifiedUser!.verified}`)
         await Redis.DEL([verifyKey, resendKey])
         return true

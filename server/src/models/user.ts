@@ -1,3 +1,4 @@
+import mongoose,{ Schema } from "mongoose"
 const UserSchema = new Schema({
     photo: { type: Buffer, required: true },
     name: { type: String, maxlength: 75, required: true, },
