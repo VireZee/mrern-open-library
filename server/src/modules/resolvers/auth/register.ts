@@ -33,7 +33,7 @@ const register = async (_: null, args: { name: string, uname: string, email: str
             pass: await hash(pass)
         })
         await newUser.save()
-        const key = sanitizeRedisKey('verify', newUser._id)
+        const key = sanitizeRedisKey('verify', newUser._id.toString())
         await Redis.HSET(key, 'code', verificationCode)
         await Redis.HEXPIRE(key, 'code', 300)
         await emailService(email, verificationCode, newUser)
