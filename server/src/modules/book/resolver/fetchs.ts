@@ -1,11 +1,12 @@
-import Collection from '../../../models/collection.ts'
+import Collection from '@models/collection.ts'
+import type { User } from '@type/models/user.d.ts'
 
-const Fetch = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number }, context: { user: any }) => {
+const fetch = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number }, context: { user: User }) => {
     const { user } = context
     try {
         const { author_key, cover_edition_key, cover_i } = args
         const bookCollection = await Collection.findOne({
-            user_id: user.id,
+            user_id: user._id,
             author_key: { $in: author_key },
             cover_edition_key,
             cover_i
@@ -18,4 +19,4 @@ const Fetch = async (_: null, args: { author_key: string[], cover_edition_key: s
         throw e
     }
 }
-export default Fetch
+export default fetch

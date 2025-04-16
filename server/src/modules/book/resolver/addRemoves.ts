@@ -1,6 +1,6 @@
 import Collection from '../../../models/collection.ts'
 
-const AddRemove = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[] }, context: { user: any }) => {
+const addRemove = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[] }, context: { user: any }) => {
     const { user } = context
     try {
         const { author_key, cover_edition_key, cover_i, title, author_name } = args
@@ -27,4 +27,4 @@ const AddRemove = async (_: null, args: { author_key: string[], cover_edition_ke
         throw e
     }
 }
-export default AddRemove
+export default addRemove
