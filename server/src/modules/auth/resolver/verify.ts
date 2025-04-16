@@ -4,7 +4,7 @@ import type { User } from '@type/models/user.d.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 import formatTimeLeft from '@utils/formatter/timeLeft.ts'
 
-const Verify = async (_: null, args: { code: string }, context: { user: User }) => {
+const verify = async (_: null, args: { code: string }, context: { user: User }) => {
     try {
         const { code } = args
         const { user } = context
@@ -40,4 +40,4 @@ const Verify = async (_: null, args: { code: string }, context: { user: User }) 
         throw e
     }
 }
-export default Verify
+export default verify

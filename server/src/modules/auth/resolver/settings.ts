@@ -8,7 +8,7 @@ import validateEmail from '@utils/validators/email.ts'
 import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
 import authService from '@services/auth.ts'
 
-const Settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { res: Res, user: User }) => {
+const settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { res: Res, user: User }) => {
     try {
         const { photo, name, uname, email, oldPass, newPass, rePass, show } = args
         const { res, user: authUser } = context
@@ -47,4 +47,4 @@ const Settings = async (_: null, args: { photo: string, name: string, uname: str
         throw e
     }
 }
-export default Settings
+export default settings

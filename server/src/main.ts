@@ -9,14 +9,13 @@ import { typeDefs, resolvers } from '@modules/Resolver.ts'
 import { ApolloServer } from '@apollo/server'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 import { expressMiddleware } from '@apollo/server/express4'
-import apiRoute from '@routes/router.ts'
-import type Context from '@type/index.d.ts'
+import route from '@routes/router.ts'
 import type { User } from '@type/models/user.d.ts'
 
 await MongoDB()
 const app = express()
 const httpServer = http.createServer(app)
-const server = new ApolloServer<Context>({
+const server = new ApolloServer({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
@@ -29,7 +28,7 @@ app.use(passport.initialize())
 app.use(
     '/gql',
     expressMiddleware(server, {
-        context: async ({ req, res }): Promise<Context> => {
+        context: async ({ req, res }) => {
             return new Promise((resolve, reject) => {
                 passport.authenticate('jwt', { session: false }, (err: Error, user: User) => {
                     if (err) return reject(err)
@@ -39,5 +38,5 @@ app.use(
         }
     })
 )
-app.use(apiRoute)
+app.use(route)
 httpServer.listen(process.env['PORT'])

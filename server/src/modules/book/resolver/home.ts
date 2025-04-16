@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
+import type { Books } from '@type/modules/collection.d.ts'
 import got from 'got'
-import type Books from '@type/modules/collection.d.ts'
 
 const home = async (_: null, args: { search: string, page: number }) => {
     try {
