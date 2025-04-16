@@ -1,4 +1,4 @@
-import type Collection from '@type/models/collection.js'
+import type Collection from '@type/models/collection.d.ts'
 
 export default async (data: Collection[]) => {
     return data.map(book => ({

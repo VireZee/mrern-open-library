@@ -1,3 +1,4 @@
+import mongoose, {Schema} from "mongoose"
 const CollectionSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, required: true },
     author_key: { type: [String], required: true },
