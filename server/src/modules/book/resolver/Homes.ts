@@ -2,7 +2,7 @@ import Redis from '@database/Redis.ts'
 import got from 'got'
 import type Books from '@type/modules/collection.d.ts'
 
-const Home = async (_: null, args: { search: string, page: number }) => {
+const home = async (_: null, args: { search: string, page: number }) => {
     try {
         const { search, page } = args
         const key = `book:${search}|${page}`
@@ -28,4 +28,4 @@ const Home = async (_: null, args: { search: string, page: number }) => {
         throw e
     }
 }
-export default Home
+export default home
