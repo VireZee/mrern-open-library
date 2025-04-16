@@ -1,7 +1,7 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import type { User } from '@type/models/user.d.ts'
-import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 
 const generate = async (_: null, __: null, context: { user: User }) => {
     try {

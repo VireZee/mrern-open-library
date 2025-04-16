@@ -1,8 +1,9 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import type { User } from '@type/models/user.d.ts'
-import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
-import formatTimeLeft from '@utils/formatter/timeLeft.ts'
+import checkBlockService from '@services/block.ts'
+import rateLimiterService from '@services/rateLimiter.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 
 const verify = async (_: null, args: { code: string }, context: { user: User }) => {
     try {
@@ -15,21 +16,9 @@ const verify = async (_: null, args: { code: string }, context: { user: User }) 
         await Redis.HSETNX(verifyKey, 'attempts', '0')
         if (user!.verified) throw new GraphQLError('Already verified!', { extensions: { code: 409 } })
         if (!getVerify['code']) throw new GraphQLError('Verification code expired!', { extensions: { code: 400 } })
-        const block = await Redis.HEXISTS(verifyKey, 'block')
-        if (block) {
-            const blockTTL = await Redis.HTTL(verifyKey, 'block')
-            const timeLeft = formatTimeLeft(blockTTL![0]!)
-            throw new GraphQLError(`You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
-        } if (code !== getVerify['code']) {
-            const increment = await Redis.HINCRBY(verifyKey, 'attempts', 1)
-            if (increment % 3 === 0) {
-                await Redis.HDEL(verifyKey, 'code')
-                await Redis.HSET(verifyKey, 'block', '')
-                const blockDuration = 60 * 30 * (2 ** ((increment / 3) - 1))
-                Redis.HEXPIRE(verifyKey, 'block', blockDuration)
-                const timeLeft = formatTimeLeft(blockDuration)
-                throw new GraphQLError(`Too many attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
-            }
+        checkBlockService(verifyKey, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
+        if (code !== getVerify['code']) {
+            rateLimiterService(verifyKey, 60)
             throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         }
         const verifiedUser = await userModel.findByIdAndUpdate(user._id, { verified: true }, { new: true })

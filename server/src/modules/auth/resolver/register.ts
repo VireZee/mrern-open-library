@@ -1,12 +1,12 @@
 import user from '@models/user.ts'
+import authService from '@services/auth.ts'
 import { hash } from '@utils/security/hash.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
-import generateSvg from '@utils/misc/generateSvg.ts'
-import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
-import generateVerificationCode from '@utils/misc/generateVerificationCode.ts'
-import authService from '@services/auth.ts'
+import generateSvg from '@utils/generator/generateSvg.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import generateVerificationCode from '@utils/generator/generateVerificationCode.ts'
 
 const register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {

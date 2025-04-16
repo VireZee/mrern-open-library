@@ -2,14 +2,15 @@ import Redis from '@database/Redis.ts'
 import collectionModel from '@models/collection.ts'
 import type { User } from '@type/models/user.d.ts'
 import type { Query } from '@type/modules/collection.d.ts'
-import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 
 const Collection = async (_: null, args: { search: string, page: number }, context: { user: User }) => {
     try {
         const { search, page } = args
         const { user } = context
-        const key = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
-        const cache = await Redis.json.GET(key)
+        const collectionSearchKey = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
+        const collectionKey = sanitizeRedisKey('collection', user._id)
+        const cache = await Redis.json.GET(collectionSearchKey)
         if (cache) return cache
         const limit = 9
         const query: Query = { user_id: user._id }

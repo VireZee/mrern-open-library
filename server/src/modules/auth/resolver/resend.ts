@@ -1,9 +1,10 @@
 
 import Redis from '@database/Redis.ts'
 import type { User } from '@type/models/user.d.ts'
-import { sanitizeRedisKey } from '@utils/misc/sanitizer.ts'
-import generateVerificationCode from '@utils/misc/generateVerificationCode.ts'
-import formatTimeLeft from '@utils/formatter/timeLeft.ts'
+import checkBlockService from '@services/block.ts'
+import rateLimiterService from '@services/rateLimiter.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import generateVerificationCode from '@utils/generator/generateVerificationCode.ts'
 
 const resend = async (_: null, __: null, context: { user: User }) => {
     try {
@@ -11,31 +12,13 @@ const resend = async (_: null, __: null, context: { user: User }) => {
         const resendKey = sanitizeRedisKey('resend', user._id)
         const verifyKey = sanitizeRedisKey('verify', user._id)
         const getResend = await Redis.HGETALL(resendKey)
-        const block = await Redis.HEXISTS(verifyKey, 'block')
-        if (block) {
-            const blockTTL = await Redis.HTTL(verifyKey, 'block')
-            const timeLeft = formatTimeLeft(blockTTL![0]!)
-            throw new GraphQLError(`You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
-        }
+        checkBlockService(verifyKey, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
         if (!Object.keys(getResend).length) {
             await generateVerificationCode(verifyKey, user)
             await Redis.HSET(resendKey, 'attempts', 1)
         } else {
-            const block = await Redis.HEXISTS(resendKey, 'block')
-            if (block) {
-                const blockTTL = await Redis.HTTL(resendKey, 'block')
-                const timeLeft = formatTimeLeft(blockTTL![0]!)
-                throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
-            }
-            const increment = await Redis.HINCRBY(resendKey, 'attempts', 1)
-            if (increment % 3 === 0) {
-                await Redis.HDEL(verifyKey, 'code')
-                await Redis.HSET(resendKey, 'block', '')
-                const blockDuration = 60 * 60 * (2 ** ((increment / 3) - 1))
-                await Redis.HEXPIRE(resendKey, 'block', blockDuration)
-                const timeLeft = formatTimeLeft(blockDuration)
-                throw new GraphQLError(`Too many resend attempts! Try again in ${timeLeft}!`, { extensions: { code: 429 } })
-            }
+            checkBlockService(resendKey, 'Too many resend attempts! Try again in')
+            rateLimiterService(resendKey, 60, verifyKey)
         }
         await generateVerificationCode(verifyKey, user)
         return true
