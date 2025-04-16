@@ -16,12 +16,13 @@ const fetch = async (_: null, args: { author_key: string[], cover_edition_key: s
             bookCollection = cache.find(book =>
                 book.cover_edition_key === cover_edition_key &&
                 book.cover_i === cover_i &&
-                book.author_key.some(key => author_key.includes(key))
+                book.author_key.length === author_key.length &&
+                book.author_key.every((val, i) => val === author_key[i])
             )
         }
         bookCollection = await collection.findOne({
             user_id: user._id,
-            author_key: { $in: author_key },
+            author_key,
             cover_edition_key,
             cover_i
         })
