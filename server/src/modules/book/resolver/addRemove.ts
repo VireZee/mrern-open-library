@@ -11,14 +11,21 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
         const { user } = context
         const key = sanitizeRedisKey('collection', user._id)
         const cache = await Redis.json.GET(key) as Collection[] | []
-        if (cache) return formatBooksChild(cache)
         const bookCollection = await collection.findOne({
             user_id: user._id,
             author_key,
             cover_edition_key,
             cover_i
         })
-        if (bookCollection) await collection.deleteOne({ _id: bookCollection._id })
+        if (bookCollection) {
+            await collection.findByIdAndDelete(bookCollection._id)
+            const updated = cache.filter(book =>
+                !(book.cover_edition_key === cover_edition_key &&
+                    book.cover_i === cover_i &&
+                    JSON.stringify(book.author_key) === JSON.stringify(author_key))
+            )
+            await Redis.json.SET
+        }
         else {
             await collection.create({
                 user_id: user._id,
