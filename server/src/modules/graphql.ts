@@ -1,4 +1,4 @@
-import schema from '@modules/schemas.ts'
+import schema from '@modules/schema.ts'
 import middlewareSchema from '@modules/middleware/schema.ts'
 import authSchema from '@modules/auth/schema.ts'
 import bookSchema from '@modules/book/schema.ts'
