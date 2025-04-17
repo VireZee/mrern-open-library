@@ -16,9 +16,9 @@ const verify = async (_: null, args: { code: string }, context: { user: User }) 
         await Redis.HSETNX(verifyKey, 'attempts', '0')
         if (user!.verified) throw new GraphQLError('Already verified!', { extensions: { code: 409 } })
         if (!getVerify['code']) throw new GraphQLError('Verification code expired!', { extensions: { code: 400 } })
-        checkBlockService(verifyKey, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
+        checkBlockService('verify', user, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
         if (code !== getVerify['code']) {
-            rateLimiterService(verifyKey, 60)
+            rateLimiterService('verify', user, 60)
             throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         }
         const verifiedUser = await userModel.findByIdAndUpdate(user._id, { verified: true }, { new: true })

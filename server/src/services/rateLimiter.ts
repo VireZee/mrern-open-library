@@ -1,7 +1,10 @@
 import Redis from '@database/Redis.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import formatTimeLeft from '@utils/formatter/timeLeft.ts'
 
-export default async (key: string, minutes: number, verifyKey = key) => {
+export default async (keyName: string, user: { _id: string }, minutes: number, otherKeyName = keyName) => {
+    const key = sanitizeRedisKey(keyName, user._id)
+    const verifyKey = sanitizeRedisKey(otherKeyName, user._id)
     const increment = await Redis.HINCRBY(key, 'attempts', 1)
     if (increment % 3 === 0) {
         await Redis.HDEL(verifyKey, 'code')

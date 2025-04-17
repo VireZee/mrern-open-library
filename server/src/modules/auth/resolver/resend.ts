@@ -9,18 +9,17 @@ import generateVerificationCode from '@utils/generator/generateVerificationCode.
 const resend = async (_: null, __: null, context: { user: User }) => {
     try {
         const { user } = context
-        const resendKey = sanitizeRedisKey('resend', user._id)
-        const verifyKey = sanitizeRedisKey('verify', user._id)
-        const getResend = await Redis.HGETALL(resendKey)
-        checkBlockService(verifyKey, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
+        const key = sanitizeRedisKey('resend', user._id)
+        const getResend = await Redis.HGETALL(key)
+        checkBlockService('verify', user, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
         if (!Object.keys(getResend).length) {
-            await generateVerificationCode(verifyKey, user)
-            await Redis.HSET(resendKey, 'attempts', 1)
+            await generateVerificationCode('verify', user)
+            await Redis.HSET(key, 'attempts', 1)
         } else {
-            checkBlockService(resendKey, 'Too many resend attempts! Try again in')
-            rateLimiterService(resendKey, 60, verifyKey)
+            checkBlockService('verify', user, 'Too many resend attempts! Try again in')
+            rateLimiterService('resend', user, 60, 'verify')
         }
-        await generateVerificationCode(verifyKey, user)
+        await generateVerificationCode('verify', user)
         return true
     } catch (e) {
         throw e

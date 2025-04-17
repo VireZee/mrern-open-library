@@ -5,7 +5,6 @@ import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
 import generateSvg from '@utils/generator/generateSvg.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import generateVerificationCode from '@utils/generator/generateVerificationCode.ts'
 
 const register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
@@ -30,8 +29,7 @@ const register = async (_: null, args: { name: string, uname: string, email: str
             pass: await hash(pass)
         })
         await newUser.save()
-        const key = sanitizeRedisKey('verify', newUser._id.toString())
-        generateVerificationCode(key, newUser)
+        generateVerificationCode('verify', newUser)
         authService(newUser, res)
         return true
     } catch (e) {

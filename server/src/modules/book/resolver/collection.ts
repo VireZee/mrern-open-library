@@ -8,8 +8,10 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
     try {
         const { search, page } = args
         const { user } = context
-        const key = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
-        const cache = await Redis.json.GET(key)
+        const collectionKey = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
+        const collectionApiKey = sanitizeRedisKey('collection', user._id)
+        await Redis.json.SET(collectionApiKey, '$', [], { NX: true })
+        const cache = await Redis.json.GET(collectionKey)
         if (cache) return cache
         const limit = 9
         const query: Query = { user_id: user._id }
@@ -29,8 +31,8 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
             })),
             totalCollection
         }
-        await Redis.json.SET(key, '$', collection)
-        await Redis.EXPIRE(key, 86400)
+        await Redis.json.SET(collectionKey, '$', collection)
+        await Redis.EXPIRE(collectionKey, 86400)
         return collection
     } catch (e) {
         throw e
