@@ -5,7 +5,7 @@ const AUTH = gql`
         auth {
             photo
             name
-            uname
+            username
             email
             verified
         }

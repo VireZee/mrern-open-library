@@ -22,7 +22,7 @@ const Register: React.FC = () => {
             const { data } = await register({
                 variables: {
                     name: regState.name,
-                    uname: regState.uname,
+                    username: regState.uname,
                     email: regState.email,
                     pass: regState.pass,
                     rePass: regState.show ? null : regState.rePass,

@@ -18,6 +18,7 @@ passport.use(new JwtStrategy(opt, async (payload, done) => {
         const user: Parameters<typeof formatUser>[0] | null = await userModel.findById(sanitize(payload.id))
         if (!user) return done(null, false)
         await Redis.json.SET(key, '$', formatUser(user))
+        await Redis.EXPIRE(key, 86400)
         return done(null, formatUser(user))
     } catch (e) {
         return done(e, false)

@@ -10,7 +10,7 @@ interface Props {
     isUser: {
         photo: string
         name: string
-        uname: string
+        username: string
         email: string
     }
 }
@@ -22,7 +22,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
     React.useEffect(() => {
         dispatch(change({ name: 'photo', value: isUser.photo }))
         dispatch(change({ name: 'name', value: isUser.name }))
-        dispatch(change({ name: 'uname', value: isUser.uname }))
+        dispatch(change({ name: 'uname', value: isUser.username }))
         dispatch(change({ name: 'email', value: isUser.email }))
     }, [isUser])
     const inputFileRef = React.useRef<HTMLInputElement>(null)
@@ -69,7 +69,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                 variables: {
                     photo: setState.photo,
                     name: setState.name,
-                    uname: setState.uname,
+                    username: setState.uname,
                     email: setState.email,
                     oldPass: setState.oldPass,
                     newPass: setState.newPass,
@@ -160,7 +160,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                             value={setState.uname}
                             onChange={handleChange}
                         />
-                        {setState.errors.uname && <p className="text-red-500 text-sm mt-1">{setState.errors.uname}</p>}
+                        {setState.errors.username && <p className="text-red-500 text-sm mt-1">{setState.errors.username}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Email</label>

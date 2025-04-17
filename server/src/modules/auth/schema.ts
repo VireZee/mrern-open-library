@@ -2,7 +2,7 @@ export default `#graphql
     extend type Mutation {
         register(
             name: String!
-            uname: String!
+            username: String!
             email: String!
             pass: String!
             rePass: String
@@ -11,13 +11,13 @@ export default `#graphql
         verify(code: String!): Boolean!
         resend: Boolean!
         login(
-            emailOrUname: String!
+            emailOrUsername: String!
             pass: String!
         ): Boolean!
         settings(
             photo: String!
             name: String!
-            uname: String!
+            username: String!
             email: String!
             oldPass: String
             newPass: String

@@ -8,19 +8,19 @@ import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
 import type { User, UserSettings } from '@type/models/user.d.ts'
 
-const settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { res: Res, user: User }) => {
+const settings = async (_: null, args: { photo: string, name: string, username: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { res: Res, user: User }) => {
     try {
-        const { photo, name, uname, email, oldPass, newPass, rePass, show } = args
+        const { photo, name, username, email, oldPass, newPass, rePass, show } = args
         const { res, user: authUser } = context
         const key = sanitizeRedisKey('user', authUser._id)
         const errs: Record<string, string> = {}
         const user = await userModel.findById(authUser._id)
         const nameErr = validateName(name)
-        const unameErr = await validateUsername(uname, user!._id)
+        const usernameErr = await validateUsername(username, user!._id)
         const emailErr = await validateEmail(email, user!._id)
         if (Buffer.byteLength(photo, 'base64') > 5592405) errs['photo'] = "Image size must not exceed 8MB (MiB)"
         if (nameErr) errs['name'] = nameErr
-        if (unameErr) errs['uname'] = unameErr
+        if (usernameErr) errs['username'] = usernameErr
         if (emailErr) errs['email'] = emailErr
         if (oldPass && !newPass) errs['newPass'] = "New password can't be empty!"
         if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass)))) errs['oldPass'] = "Invalid current password"
@@ -30,7 +30,7 @@ const settings = async (_: null, args: { photo: string, name: string, uname: str
         const updatedUser: Partial<UserSettings> = {}
         if (photo && photo !== authUser.photo) updatedUser.photo = photo
         if (name && name !== authUser.name) updatedUser.name = formatName(name)
-        if (uname && uname !== authUser.username) updatedUser.username = formatUsername(uname)
+        if (username && username !== authUser.username) updatedUser.username = formatUsername(username)
         if (email && email !== authUser.email) updatedUser.email = email
         if (newPass) updatedUser.pass = await hash(newPass)
         if (Object.keys(updatedUser).length > 0) {
