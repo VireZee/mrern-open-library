@@ -1,15 +1,13 @@
-import Redis from '@database/Redis.ts'
 import collection from '@models/collection.ts'
+import setCollection from '@services/book/setCollection.ts'
+import updateCollectionService from '@services/book/updateCollection.ts'
 import type { User } from '@type/models/user.d.ts'
-import updateCollectionService from '@services/updateCollection.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 
 const addRemove = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[] }, context: { user: User }) => {
     try {
         const { author_key, cover_edition_key, cover_i, title, author_name } = args
         const { user } = context
-        const key = sanitizeRedisKey('collection', user._id)
-        await Redis.json.SET(key, '$', [], { NX: true })
+        setCollection('collection', user)
         const bookCollection = await collection.findOne({
             user_id: user._id,
             author_key,

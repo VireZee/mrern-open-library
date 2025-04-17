@@ -1,8 +1,8 @@
 import Redis from '@database/Redis.ts'
 import collection from '@models/collection.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import type Collection from '@type/models/collection.d.ts'
 import type { User } from '@type/models/user.d.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 
 const fetch = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number }, context: { user: User }) => {
     try {

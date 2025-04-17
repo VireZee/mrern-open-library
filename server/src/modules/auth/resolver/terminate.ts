@@ -1,8 +1,8 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import collection from '@models/collection.ts'
-import type { User } from '@type/models/user.d.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import type { User } from '@type/models/user.d.ts'
 
 const terminate = async (_: null, __: null, context: { res: Res, user: User }) => {
     try {

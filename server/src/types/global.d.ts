@@ -10,6 +10,7 @@ declare global {
     type Res = Response
     var mongoose: typeof mongoose
     var Schema: typeof Schema
+    var TypesObjectId = Types.ObjectId
     var express: typeof express
     var nodeCrypto: typeof crypto
     var GraphQLError: typeof GraphQLError

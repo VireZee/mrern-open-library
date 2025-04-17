@@ -1,11 +1,11 @@
 import user from '@models/user.ts'
-import authService from '@services/auth.ts'
+import generateVerificationCodeService from '@services/user/generateVerificationCode.ts'
+import authService from '@services/user/auth.ts'
 import { hash } from '@utils/security/hash.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
-import generateSvg from '@utils/generator/generateSvg.ts'
-import generateVerificationCode from '@utils/generator/generateVerificationCode.ts'
+import generateSvg from '@utils/misc/generateSvg.ts'
 
 const register = async (_: null, args: { name: string, uname: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {
@@ -29,7 +29,7 @@ const register = async (_: null, args: { name: string, uname: string, email: str
             pass: await hash(pass)
         })
         await newUser.save()
-        generateVerificationCode('verify', newUser)
+        generateVerificationCodeService('verify', newUser)
         authService(newUser, res)
         return true
     } catch (e) {

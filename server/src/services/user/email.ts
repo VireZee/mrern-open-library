@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-export default async (email: string, verificationCode: string, user: { _id: ObjectId | string }) => {
+export default async (email: string, verificationCode: string, user: { _id: string }) => {
     const transporter = nodemailer.createTransport({
         host: process.env['MAIL_HOST'],
         port: process.env['MAIL_PORT'],

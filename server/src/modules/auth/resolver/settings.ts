@@ -1,12 +1,12 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
-import type { User, UserSettings } from '@type/models/user.d.ts'
-import authService from '@services/auth.ts'
+import authService from '@services/user/auth.ts'
 import { hash, verifyHash } from '@utils/security/hash.ts'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import type { User, UserSettings } from '@type/models/user.d.ts'
 
 const settings = async (_: null, args: { photo: string, name: string, uname: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { res: Res, user: User }) => {
     try {
