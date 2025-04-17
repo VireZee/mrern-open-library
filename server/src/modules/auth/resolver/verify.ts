@@ -22,7 +22,7 @@ const verify = async (_: null, args: { code: string }, context: { user: User }) 
             throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
         }
         const verifiedUser = await userModel.findByIdAndUpdate(user._id, { verified: true }, { new: true })
-        await Redis.json.SET(userKey, '$.verified', `${verifiedUser!.verified}`)
+        await Redis.json.SET(userKey, '$.verified', verifiedUser!.verified)
         await Redis.DEL([verifyKey, resendKey])
         return true
     } catch (e) {

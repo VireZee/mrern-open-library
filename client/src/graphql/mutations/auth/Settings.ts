@@ -7,6 +7,6 @@ export const SETTINGS = gql`
 `
 export const DELETE = gql`
     mutation {
-        delete
+        terminate
     }
 `

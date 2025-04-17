@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         try {
             const { data } = await login({
                 variables: {
-                    emailOrUname: logState.emailOrUname,
+                    emailOrUsername: logState.emailOrUname,
                     pass: logState.pass
                 }
             })
