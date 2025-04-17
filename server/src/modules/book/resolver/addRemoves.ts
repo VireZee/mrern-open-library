@@ -9,6 +9,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
         const { author_key, cover_edition_key, cover_i, title, author_name } = args
         const { user } = context
         const key = sanitizeRedisKey('collection', user._id)
+        const keysToDelete = sanitizeRedisKey('collection', `${user._id}|*`)
         await Redis.json.SET(key, '$', [], { NX: true })
         const bookCollection = await collection.findOne({
             user_id: user._id,
@@ -21,6 +22,8 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
             const updatedBooks = await collection.find({ user_id: user._id })
             await Redis.json.SET(key, '$', formatBooksChild(updatedBooks))
             await Redis.EXPIRE(key, 86400)
+            const keys = await Redis.KEYS(keysToDelete)
+            if (keys.length > 0) await Redis.DEL(keys)
         }
         else {
             await collection.create({
@@ -35,6 +38,8 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
             const updatedBooks = await collection.find({ user_id: user._id })
             await Redis.json.SET(key, '$', formatBooksChild(updatedBooks))
             await Redis.EXPIRE(key, 86400)
+            const keys = await Redis.KEYS(keysToDelete)
+            if (keys.length > 0) await Redis.DEL(keys)
         }
         return true
     } catch (e) {
