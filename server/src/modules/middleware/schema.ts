@@ -1,5 +1,5 @@
 export default `#graphql
-    extend type Auth {
+    type Auth {
         photo: String!
         name: String!
         uname: String!
