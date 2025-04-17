@@ -1,3 +1,4 @@
+import schema from '@modules/schemas.ts'
 import middlewareSchema from '@modules/middleware/schema.ts'
 import authSchema from '@modules/auth/schema.ts'
 import bookSchema from '@modules/book/schema.ts'
@@ -7,7 +8,7 @@ import authResolver from '@modules/auth/resolver.ts'
 import bookResolver from '@modules/book/resolver.ts'
 import apiResolver from '@modules/api/resolver.ts'
 
-export const typeDefs = [middlewareSchema, authSchema, bookSchema, apiSchema].join('\n')
+export const typeDefs = [schema, middlewareSchema, authSchema, bookSchema, apiSchema].join('\n')
 export const resolvers = {
     Query: {
         ...middlewareResolver.Query,
