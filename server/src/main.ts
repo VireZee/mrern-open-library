@@ -11,11 +11,12 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { expressMiddleware } from '@apollo/server/express4'
 import route from '@routes/router.ts'
 import type { User } from '@type/models/user.d.ts'
+import type Context from '@type/index.d.ts'
 
 await MongoDB()
 const app = express()
 const httpServer = http.createServer(app)
-const server = new ApolloServer({
+const server = new ApolloServer<Context>({
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]

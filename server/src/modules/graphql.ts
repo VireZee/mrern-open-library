@@ -8,24 +8,15 @@ import bookResolver from '@modules/book/resolver.ts'
 import apiResolver from '@modules/api/resolver.ts'
 
 export const typeDefs = [middlewareSchema, authSchema, bookSchema, apiSchema].join('\n')
-export const resolvers = {}
-//     Query: {
-//         // auth: Auth,
-//         home: Home,
-//         fetch: Fetch,
-//         collection: Collection,
-//         // check: Check
-//     },
-//     Mutation: {
-//         // register: Register,
-//         // verify: Verify,
-//         // resend: Resend,
-//         // login: Login,
-//         add: AddRemove,
-//         remove: AddRemove,
-//         // generate: Generate,
-//         // settings: Settings,
-//         // logout: Logout,
-//         // delete: Delete
-//     }
-// }
+export const resolvers = {
+    Query: {
+        ...middlewareResolver.Query,
+        ...bookResolver.Query,
+        ...apiResolver.Query
+    },
+    Mutation: {
+        ...authResolver.Mutation,
+        ...bookResolver.Mutation,
+        ...apiResolver.Mutation
+    }
+}
