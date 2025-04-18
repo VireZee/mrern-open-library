@@ -10,5 +10,5 @@ export default async (keyName: string, user: { _id: string }) => {
     await Redis.json.SET(key, '$', formatBooksMap(updatedBooks))
     await Redis.EXPIRE(key, 86400, 'NX')
     const keys = await Redis.KEYS(keysToDelete)
-    await Redis.DEL(keys)
+    if (keys.length) await Redis.DEL(keys)
 }

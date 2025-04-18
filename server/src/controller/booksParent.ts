@@ -9,7 +9,6 @@ const booksParent = async (req: Req, res: Res) => {
         if (!user) return res.status(404).json({ message: 'Invalid API Key!' })
         const books = await booksChild({ id: user._id })
         return res.status(200).json({
-            api: user!.api_key,
             name: user!.name,
             username: user!.username,
             books
