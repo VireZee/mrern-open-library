@@ -7,8 +7,8 @@ const check = async (_: null, __: null, context: { user: User }) => {
         const { user: authUser } = context
         const key = sanitizeRedisKey('user', authUser._id)
         const cache = await Redis.json.GET(key) as User
-        if (cache) return cache!.api_key ? cache!.api_key.toString() : null
-        return authUser!.api_key ? authUser!.api_key.toString() : null
+        if (cache) return cache.api_key ? cache.api_key.toString() : null
+        return authUser.api_key ? authUser.api_key.toString() : null
     } catch (e) {
         throw e
     }
