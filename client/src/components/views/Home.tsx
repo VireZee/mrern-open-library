@@ -167,7 +167,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                                                             checked={(book.author_key && book.cover_edition_key && book.cover_i) ? homeState.status[getValidKey(book.author_key, book.cover_edition_key, book.cover_i)] || false : false}
                                                             onChange={() => { if (book.author_key && book.cover_edition_key && book.cover_i) addToCollection(book.author_key, book.cover_edition_key, book.cover_i, book.title, book.author_name) }}
                                                             disabled={!(book.author_key && book.cover_edition_key && book.cover_i)}
-                                                        />
+                                                            />
                                                         <span>Add to Collection</span>
                                                     </label>
                                                 </div>

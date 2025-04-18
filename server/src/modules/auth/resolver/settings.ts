@@ -26,7 +26,7 @@ const settings = async (_: null, args: { photo: string, name: string, username: 
         if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass)))) errs['oldPass'] = "Invalid current password"
         if (newPass && await verifyHash(newPass, user!.pass)) errs['newPass'] = "The new password can't be the same as the current password!"
         if (!show && newPass !== rePass) errs['rePass'] = "Password do not match!"
-        if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: '422' } })
+        if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
         const updatedUser: Partial<UserSettings> = {}
         if (photo && photo !== authUser.photo) updatedUser.photo = photo
         if (name && name !== authUser.name) updatedUser.name = formatName(name)

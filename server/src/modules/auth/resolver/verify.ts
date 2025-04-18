@@ -19,7 +19,7 @@ const verify = async (_: null, args: { code: string }, context: { user: User }) 
         checkBlockService('verify', user, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
         if (code !== getVerify['code']) {
             rateLimiterService('verify', user, 60)
-            throw new GraphQLError('Invalid verification code!', { extensions: { code: '400' } })
+            throw new GraphQLError('Invalid verification code!', { extensions: { code: 400 } })
         }
         const verifiedUser = await userModel.findByIdAndUpdate(user._id, { verified: true }, { new: true })
         await Redis.json.SET(userKey, '$.verified', verifiedUser!.verified)

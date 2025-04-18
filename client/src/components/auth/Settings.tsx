@@ -91,7 +91,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
     const handleDeleteAccount = async () => {
         try {
             const { data } = await terminate()
-            if (data.delete) {
+            if (data.terminate) {
                 alert('Account deleted!')
                 location.href = '/'
             }
