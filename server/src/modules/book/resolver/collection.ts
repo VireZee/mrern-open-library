@@ -1,6 +1,5 @@
 import Redis from '@database/Redis.ts'
 import collectionModel from '@models/collection.ts'
-import setCollection from '@services/book/setCollection.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import type { User } from '@type/models/user.d.ts'
 import type { Query } from '@type/modules/collection.d.ts'
@@ -9,9 +8,8 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
     try {
         const { search, page } = args
         const { user } = context
-        const collectionKey = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
-        setCollection('collection', user)
-        const cache = await Redis.json.GET(collectionKey)
+        const key = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
+        const cache = await Redis.json.GET(key)
         if (cache) return cache
         const limit = 9
         const query: Query = { user_id: user._id }
@@ -31,8 +29,8 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
             })),
             totalCollection
         }
-        await Redis.json.SET(collectionKey, '$', collection)
-        await Redis.EXPIRE(collectionKey, 86400)
+        await Redis.json.SET(key, '$', collection)
+        await Redis.EXPIRE(key, 86400)
         return collection
     } catch (e) {
         throw e

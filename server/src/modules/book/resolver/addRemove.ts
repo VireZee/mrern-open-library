@@ -1,5 +1,4 @@
 import collection from '@models/collection.ts'
-import setCollection from '@services/book/setCollection.ts'
 import updateCollectionService from '@services/book/updateCollection.ts'
 import type { User } from '@type/models/user.d.ts'
 
@@ -7,7 +6,6 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
     try {
         const { author_key, cover_edition_key, cover_i, title, author_name } = args
         const { user } = context
-        setCollection('collection', user)
         const bookCollection = await collection.findOne({
             user_id: user._id,
             author_key,

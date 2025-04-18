@@ -11,7 +11,7 @@ export default `#graphql
         docs: [Book!]!
     }
     type Fetch {
-        key: String!
+        id: String!
         added: Boolean!
     }
     type Collection {
