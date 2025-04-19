@@ -1,5 +1,5 @@
 import collection from '@models/collection.ts'
-import updateCollectionService from '@services/book/updateCollection.ts'
+import updateService from '@services/state/update.ts'
 import type { User } from '@type/models/user.d.ts'
 
 const addRemove = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[] }, context: { user: User }) => {
@@ -14,7 +14,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
         })
         if (bookCollection) {
             await collection.findByIdAndDelete(bookCollection._id)
-            updateCollectionService('collection', user)
+            updateService('collection', user)
         }
         else {
             await collection.create({
@@ -26,7 +26,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
                 author_name,
                 created: new Date()
             })
-            updateCollectionService('collection', user)
+            updateService('collection', user)
         }
         return true
     } catch (e) {

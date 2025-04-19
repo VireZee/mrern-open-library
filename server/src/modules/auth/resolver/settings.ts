@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
-import authService from '@services/user/auth.ts'
+import authService from '@services/account/auth.ts'
 import { hash, verifyHash } from '@utils/security/hash.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'

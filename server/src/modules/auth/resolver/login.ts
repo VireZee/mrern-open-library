@@ -1,5 +1,5 @@
 import userModel from '@models/user.ts'
-import authService from '@services/user/auth.ts'
+import authService from '@services/account/auth.ts'
 import { verifyHash } from '@utils/security/hash.ts'
 
 const login = async (_: null, args: { emailOrUsername: string, pass: string }, context: { res: Res }) => {

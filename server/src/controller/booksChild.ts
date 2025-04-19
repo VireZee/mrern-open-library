@@ -1,10 +1,10 @@
 
-import collectionService from '@services/book/collection.ts'
+import createService from '@services/state/create.ts'
 
 const booksChild = async (parent: { id: ObjectId }) => {
     try {
         const { id } = parent
-        return collectionService('collection', { _id: id.toString() })
+        return createService('collection', { _id: id.toString() })
     } catch (e) {
         throw e
     }

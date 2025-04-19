@@ -1,7 +1,7 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
-import checkBlockService from '@services/user/block.ts'
-import rateLimiterService from '@services/user/rateLimiter.ts'
+import checkBlockService from '@services/account/block.ts'
+import rateLimiterService from '@services/verification/rateLimiter.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import type { User } from '@type/models/user.d.ts'
 

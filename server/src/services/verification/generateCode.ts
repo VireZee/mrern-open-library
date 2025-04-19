@@ -1,5 +1,5 @@
 import Redis from '@database/Redis.ts'
-import emailService from '@services/user/email.ts'
+import emailService from '@services/account/email.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 
 export default async (keyName: string, user: { _id: ObjectId | string, email: string }) => {
