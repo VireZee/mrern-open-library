@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-const AUTH = gql`
+export default gql`
     query Auth {
         auth {
             photo
@@ -11,4 +11,3 @@ const AUTH = gql`
         }
     }
 `
-export default AUTH

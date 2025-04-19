@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-const FETCH = gql`
+export default gql`
     query Collection($search: String, $page: Int!) {
         collection(search: $search, page: $page) {
             found
@@ -15,4 +15,3 @@ const FETCH = gql`
         }
     }
 `
-export default FETCH

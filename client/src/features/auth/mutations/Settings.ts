@@ -5,7 +5,7 @@ export const SETTINGS = gql`
         settings(photo: $photo, name: $name, username: $username, email: $email, oldPass: $oldPass, newPass: $newPass, rePass: $rePass, show: $show)
     }
 `
-export const DELETE = gql`
+export const TERMINATE = gql`
     mutation {
         terminate
     }

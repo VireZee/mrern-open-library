@@ -1,8 +1,7 @@
 import { gql } from '@apollo/client'
 
-const GENERATE = gql`
+export default gql`
     mutation Generate {
         generate
     }
 `
-export default GENERATE

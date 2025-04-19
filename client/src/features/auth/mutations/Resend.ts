@@ -1,8 +1,7 @@
 import { gql } from '@apollo/client'
 
-const RESEND = gql`
+export default gql`
     mutation Resend {
         resend
     }
 `
-export default RESEND

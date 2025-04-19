@@ -1,8 +1,7 @@
 import { gql } from '@apollo/client'
 
-const CHECK = gql`
+export default gql`
     query Check {
         check
     }
 `
-export default CHECK

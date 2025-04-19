@@ -1,8 +1,7 @@
 import { gql } from '@apollo/client'
 
-const VERIFY = gql`
+export default gql`
     mutation Verify($code: String!) {
         verify(code: $code)
     }
 `
-export default VERIFY
