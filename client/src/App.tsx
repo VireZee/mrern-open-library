@@ -19,7 +19,7 @@ import NotFound from '@components/common/NotFound'
 import Main from '@routes/Main'
 import Protected from '@routes/Protected'
 import Auth from '@routes/Auth'
-import VerifyRoute from '@routes/Verified'
+import Verified from '@routes/Verified'
 import Load from '@components/common/Load'
 
 const App: FC = () => {
@@ -59,7 +59,7 @@ const App: FC = () => {
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
                     </Route>
-                    <Route element={<VerifyRoute verified={appState.verified} />}>
+                    <Route element={<Verified verified={appState.verified} />}>
                         <Route path='/verify' element={<Verify />} />
                     </Route>
                     <Route element={<Protected user={appState.user} verified={appState.verified} />}>
