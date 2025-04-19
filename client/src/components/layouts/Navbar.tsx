@@ -4,7 +4,7 @@ import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
 import { setActive, setIsDropdownOpen } from '../../store/slices/layouts/Navbar'
-import LogoutGQL from '../../graphql/mutations/auth/Logout'
+import LogoutGQL from '@features/auth/mutations/Logout'
 
 interface Props {
     isUser: {

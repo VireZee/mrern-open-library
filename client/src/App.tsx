@@ -19,7 +19,7 @@ import NotFound from '@components/common/NotFound'
 import Main from '@routes/Main'
 import Protected from '@routes/Protected'
 import Auth from '@routes/Auth'
-import VerifyRoute from '@routes/Verify'
+import VerifyRoute from '@routes/Verified'
 import Load from '@components/common/Load'
 
 const App: FC = () => {

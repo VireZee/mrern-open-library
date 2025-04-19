@@ -4,8 +4,8 @@ import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
 import { change, setError } from '../../store/slices/auth/Verify'
-import VERIFY from '../../graphql/mutations/auth/Verify'
-import RESEND from '../../graphql/mutations/auth/Resend'
+import VERIFY from '@features/auth/mutations/Verify'
+import RESEND from '@features/auth/mutations/Resend'
 
 const Verify: React.FC = () => {
     const [verify, { loading: verLoad }] = useMutation(VERIFY)

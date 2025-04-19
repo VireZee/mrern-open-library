@@ -3,8 +3,8 @@ import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
 import { setOnline, setApiKey } from '../../store/slices/views/API'
-import CheckGQL from '../../graphql/queries/api/Check'
-import GenerateGQL from '../../graphql/mutations/api/Generate'
+import CheckGQL from '@features/api/queries/Check'
+import GenerateGQL from '@features/api/mutations/Generate'
 import Net from '../common/Internet'
 
 const API: React.FC = () => {

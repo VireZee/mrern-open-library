@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
 import type { Errors } from '../../store/slices/auth/Register'
 import { change, setShow, setErrors } from '../../store/slices/auth/Register'
-import RegisterGQL from '../../graphql/mutations/auth/Register'
+import RegisterGQL from '@features/auth/mutations/Register'
 
 const Register: React.FC = () => {
     const [register, { loading }] = useMutation(RegisterGQL)

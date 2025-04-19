@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
 import type { Errors } from '../../store/slices/auth/Settings'
 import { setIsDropdownOpen, change, setShow, setErrors } from '../../store/slices/auth/Settings'
-import { SETTINGS as SettingsGQL, DELETE as DeleteGQL } from '../../graphql/mutations/auth/Settings'
+import { SETTINGS as SettingsGQL, TERMINATE as DeleteGQL } from '@features/auth/mutations/Settings'
 
 interface Props {
     isUser: {

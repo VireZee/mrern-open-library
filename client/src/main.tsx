@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { Provider } from 'react-redux'
-import Store from '@store/index.ts'
+import Store from '@store/index'
 import App from './App.tsx'
 
 const Client = new ApolloClient({
