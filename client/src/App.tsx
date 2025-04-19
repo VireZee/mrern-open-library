@@ -1,34 +1,35 @@
-import React from 'react'
+import { useEffect } from 'react'
+import type { FC } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
+import AuthGQL from '@features/auth/queries/Auth'
 import { useDispatch, useSelector } from 'react-redux'
-import type { RootState } from './store/index'
-import { setUser, setVerified, setSearch } from './store/slices/core/App'
-import AuthGQL from './graphql/queries/auth/Auth'
-import './assets/styles/global.css'
-import Nav from './components/layouts/Navbar'
-import Home from './components/views/Home'
-import Reg from './components/auth/Register'
-import Ver from './components/auth/Verify'
-import Log from './components/auth/Login'
-import Col from './components/views/Collection'
-import API from './components/views/API'
-import Set from './components/auth/Settings'
-import NF from './components/common/NotFound'
-import HomeRoute from './HomeRoute'
-import ProtectedRoute from './ProtectedRoute'
-import AuthRoute from './AuthRoute'
-import VerifyRoute from './VerifyRoute'
-import Load from './components/common/Load'
+import { setUser, setVerified, setSearch } from '@store/slices/core/App'
+import type { RootState } from '@store/index'
+import '@assets/styles/global.css'
+import Navbar from '@components/layouts/Navbar'
+import Home from '@components/views/Home'
+import Register from '@components/auth/Register'
+import Verify from '@components/auth/Verify'
+import Login from '@components/auth/Login'
+import Collection from '@components/views/Collection'
+import API from '@components/views/API'
+import Settings from '@components/auth/Settings'
+import NotFound from '@components/common/NotFound'
+import Main from '@routes/Main'
+import Protected from '@routes/Protected'
+import Auth from '@routes/Auth'
+import VerifyRoute from '@routes/Verify'
+import Load from '@components/common/Load'
 
-const App: React.FC = () => {
+const App: FC = () => {
     const { loading, data, error } = useQuery(AuthGQL)
     const dispatch = useDispatch()
     const appState = useSelector((state: RootState) => state.APP)
     const showBackLink = ['/register', '/verify', '/login'].includes(location.pathname)
     const hideHeader = location.pathname === '/settings'
     const searchHandler = (s: string) => dispatch(setSearch(s))
-    React.useEffect(() => {
+    useEffect(() => {
         if (!loading) {
             if (data) {
                 dispatch(setUser(data.auth))
@@ -45,28 +46,28 @@ const App: React.FC = () => {
                     {showBackLink ? (
                         <a href="/" className="absolute top-4 left-4 text-[1.2rem] text-white no-underline">&#8592; Back to home</a>
                     ) : (
-                        <Nav isUser={appState.user} onSearch={searchHandler} />
+                        <Navbar isUser={appState.user} onSearch={searchHandler} />
                     )}
                 </header>
             )}
             <main>
                 <Routes>
-                    <Route element={<HomeRoute user={appState.user} verified={appState.verified}></HomeRoute>}>
-                        <Route path='' element={<Home isUser={appState.user} search={appState.search} />} />
+                    <Route element={<Main user={appState.user} verified={appState.verified} />}>
+                        <Route path='/' element={<Home isUser={appState.user} search={appState.search} />} />
                     </Route>
-                    <Route element={<AuthRoute verified={appState.verified}></AuthRoute>}>
-                        <Route path='register' element={<Reg />} />
-                        <Route path='login' element={<Log />} />
+                    <Route element={<Auth verified={appState.verified} />}>
+                        <Route path='/register' element={<Register />} />
+                        <Route path='/login' element={<Login />} />
                     </Route>
-                    <Route element={<VerifyRoute verified={appState.verified}></VerifyRoute>}>
-                        <Route path='verify' element={<Ver />} />
+                    <Route element={<VerifyRoute verified={appState.verified} />}>
+                        <Route path='/verify' element={<Verify />} />
                     </Route>
-                    <Route element={<ProtectedRoute user={appState.user} verified={appState.verified} />}>
-                        <Route path='collection' element={<Col search={appState.search} />} />
+                    <Route element={<Protected user={appState.user} verified={appState.verified} />}>
+                        <Route path='collection' element={<Collection search={appState.search} />} />
                         <Route path='API' element={<API />} />
-                        <Route path='settings' element={<Set isUser={appState.user} />} />
+                        <Route path='settings' element={<Settings isUser={appState.user} />} />
                     </Route>
-                    <Route path='*' element={<NF />} />
+                    <Route path='*' element={<NotFound />} />
                 </Routes>
             </main>
         </BrowserRouter>

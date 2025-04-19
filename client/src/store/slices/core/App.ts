@@ -9,12 +9,12 @@ export interface UserData {
     verified: boolean
 }
 interface State {
-    [key: string]: string | undefined | null | UserData | boolean
+    [key: string]: string | null | undefined | UserData | boolean
 }
 const initialState: State = {
     search: '',
     user: undefined,
-    verified: undefined
+    verified: null
 }
 const App = createSlice({
     name: 'APP',
