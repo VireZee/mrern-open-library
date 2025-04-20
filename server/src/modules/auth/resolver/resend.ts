@@ -11,13 +11,13 @@ const resend = async (_: null, __: null, context: { user: User }) => {
         const { user } = context
         const key = sanitizeRedisKey('resend', user._id)
         const getResend = await Redis.HGETALL(key)
-        checkBlockService('verify', user, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
+        await checkBlockService('verify', user, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')
         if (!Object.keys(getResend).length) {
             await generateCodeService('verify', user)
             await Redis.HSET(key, 'attempts', 1)
         } else {
-            checkBlockService('verify', user, 'Too many resend attempts! Try again in')
-            rateLimiterService('resend', user, 60, 'verify')
+            await checkBlockService('resend', user, 'Too many resend attempts! Try again in')
+            await rateLimiterService('resend', user, 60, 'verify')
         }
         await generateCodeService('verify', user)
         return true
