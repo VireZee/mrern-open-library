@@ -63,9 +63,9 @@ const App: FC = () => {
                         <Route path='/verify' element={<Verify />} />
                     </Route>
                     <Route element={<Protected user={appState.user} verified={appState.verified} />}>
-                        <Route path='collection' element={<Collection search={appState.search} />} />
-                        <Route path='API' element={<API />} />
-                        <Route path='settings' element={<Settings isUser={appState.user} />} />
+                        <Route path='/collection' element={<Collection search={appState.search} />} />
+                        <Route path='/API' element={<API />} />
+                        <Route path='/settings' element={<Settings isUser={appState.user} />} />
                     </Route>
                     <Route path='*' element={<NotFound />} />
                 </Routes>
