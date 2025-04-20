@@ -22,7 +22,7 @@ export default async (email: string, verificationCode: string, user: { _id: stri
                     ${verificationCode}
                 </div>
                 <p style="color: #555;">Or click the button below:</p>
-                <a href="http://localhost:5173/verify/${user._id}/${verificationCode}"
+                <a href="http://${process.env['DOMAIN']}:${process.env['PORT']}/verify/${user._id}/${verificationCode}"
                     style="display: inline-block; background: #007BFF; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-weight: bold;">
                     Verify Now
                 </a>
