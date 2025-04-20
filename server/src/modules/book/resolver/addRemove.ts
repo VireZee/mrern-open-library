@@ -14,7 +14,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
         })
         if (bookCollection) {
             await collection.findByIdAndDelete(bookCollection._id)
-            updateService('collection', user)
+            await updateService('collection', user)
         }
         else {
             await collection.create({
@@ -26,7 +26,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
                 author_name,
                 created: new Date()
             })
-            updateService('collection', user)
+            await updateService('collection', user)
         }
         return true
     } catch (e) {
