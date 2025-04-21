@@ -2,8 +2,8 @@ import React from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
-import type { Errors } from '../../store/slices/auth/registers'
-import { change, setShow, setErrors } from '../../store/slices/auth/registers'
+import type { Errors } from '../../store/slices/auth/register'
+import { change, setShow, setErrors } from '../../store/slices/auth/register'
 import RegisterGQL from '@features/auth/mutations/Register'
 
 const Register: React.FC = () => {

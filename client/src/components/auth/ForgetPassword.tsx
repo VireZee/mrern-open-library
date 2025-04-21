@@ -3,7 +3,7 @@ import React from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '@store/index'
-import { change, setError } from '@store/slices/auth/verifys'
+import { change, setError } from '@store/slices/auth/verify'
 import VERIFY from '@features/auth/mutations/Verify'
 
 const ForgetPassword: React.FC = () => {

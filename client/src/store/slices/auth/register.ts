@@ -1,16 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import type { Errors, State } from '@type/redux/auth/register'
 
-export interface Errors {
-    name?: string
-    uname?: string
-    email?: string
-    pass?: string
-    rePass?: string
-}
-interface State {
-    [key: string]: string | boolean | Errors
-}
 const initialState: State = {
     name: '',
     uname: '',
