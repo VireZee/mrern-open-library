@@ -2,7 +2,7 @@ import React from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
-import { change, setShow, setError } from '../../store/slices/auth/Login'
+import { change, setShow, setError } from '../../store/slices/auth/logins'
 import LoginGQL from '@features/auth/mutations/Login'
 
 const Login: React.FC = () => {

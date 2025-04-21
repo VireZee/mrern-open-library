@@ -3,7 +3,7 @@ import React from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
-import { change, setError } from '../../store/slices/auth/Verify'
+import { change, setError } from '../../store/slices/auth/verifys'
 import VERIFY from '@features/auth/mutations/Verify'
 import RESEND from '@features/auth/mutations/Resend'
 

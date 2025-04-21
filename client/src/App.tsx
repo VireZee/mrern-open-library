@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import type { FC } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import AuthGQL from '@features/auth/queries/Auth'
+import AUTH from '@features/auth/queries/Auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser, setVerified, setSearch } from '@store/slices/core/app'
 import type { RootState } from '@store/index'
@@ -24,7 +24,7 @@ import Protected from '@routes/Protected'
 import Load from '@components/common/Load'
 
 const App: FC = () => {
-    const { loading, data, error } = useQuery(AuthGQL)
+    const { loading, data, error } = useQuery(AUTH)
     const dispatch = useDispatch()
     const appState = useSelector((state: RootState) => state.app)
     const showBackLink = ['/register', '/verify', '/login'].includes(location.pathname)

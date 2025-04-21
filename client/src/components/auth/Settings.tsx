@@ -2,8 +2,8 @@ import React from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../../store/index'
-import type { Errors } from '../../store/slices/auth/Settings'
-import { setIsDropdownOpen, change, setShow, setErrors } from '../../store/slices/auth/Settings'
+import type { Errors } from '../../store/slices/auth/settings'
+import { setIsDropdownOpen, change, setShow, setErrors } from '../../store/slices/auth/settings'
 import { SETTINGS as SettingsGQL, TERMINATE as DeleteGQL } from '@features/auth/mutations/Settings'
 
 interface Props {
