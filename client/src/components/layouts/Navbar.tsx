@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useMutation, ApolloError } from '@apollo/client'
 import LOGOUT from '@features/auth/mutations/Logout'
 import { useSelector, useDispatch } from 'react-redux'
-import { setActive, setIsDropdownOpen } from '@store/slices/layouts/navbars'
+import { setActive, setIsDropdownOpen } from '@store/slices/layouts/navbar'
 import type { RootState } from '@store/index'
 
 interface Props {
