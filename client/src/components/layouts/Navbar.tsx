@@ -1,10 +1,11 @@
-import React from 'react'
+import { useEffect } from 'react'
+import type { FC, KeyboardEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, ApolloError } from '@apollo/client'
+import LOGOUT from '@features/auth/mutations/Logout'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
-import { setActive, setIsDropdownOpen } from '../../store/slices/layouts/Navbar'
-import LogoutGQL from '@features/auth/mutations/Logout'
+import { setActive, setIsDropdownOpen } from '@store/slices/layouts/Navbar'
+import type { RootState } from '@store/index'
 
 interface Props {
     isUser: {
@@ -13,18 +14,18 @@ interface Props {
     } | null
     onSearch: (v: string) => void
 }
-const Navbar: React.FC<Props> = ({ isUser, onSearch }) => {
-    const [logout] = useMutation(LogoutGQL)
+const Navbar: FC<Props> = ({ isUser, onSearch }) => {
+    const [logout] = useMutation(LOGOUT)
     const dispatch = useDispatch()
     const navState = useSelector((state: RootState) => state.NAV)
     const { title, isbn } = Object.fromEntries(new URLSearchParams(window.location.search))
     const str = title || isbn
-    React.useEffect(() => {
+    useEffect(() => {
         const path = window.location.pathname
         if (path === '/collection') dispatch(setActive('col'))
         else if (path === '/API') dispatch(setActive('api'))
     }, [])
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onSearch(e.currentTarget.value)
     }
     const imgFormat = (base64String: string) => {

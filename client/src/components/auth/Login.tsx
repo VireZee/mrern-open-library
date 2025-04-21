@@ -1,21 +1,21 @@
-import React from 'react'
+import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
+import LOGIN from '@features/auth/mutations/Login'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
-import { change, setShow, setError } from '../../store/slices/auth/login'
-import LoginGQL from '@features/auth/mutations/Login'
+import { change, setShow, setError } from '@store/slices/auth/login'
+import type { RootState } from '@store/index'
 
-const Login: React.FC = () => {
-    const [login, { loading }] = useMutation(LoginGQL)
+const Login: FC = () => {
+    const [login, { loading }] = useMutation(LOGIN)
     const dispatch = useDispatch()
     const logState = useSelector((state: RootState) => state.LOG)
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
         dispatch(setError(''))
     }
     const toggle = () => dispatch(setShow(!logState.show))
-    const submit = async (e: React.FormEvent) => {
+    const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
             const { data } = await login({

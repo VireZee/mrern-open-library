@@ -2,7 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 interface State {
-    [key: string]: string | undefined | boolean
+    [key: string]: string | boolean
 }
 const initialState: State = {
     active: 'home',

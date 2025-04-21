@@ -1,22 +1,22 @@
-import React from 'react'
+import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
+import REGISTER from '@features/auth/mutations/Register'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
-import type { Errors } from '../../store/slices/auth/register'
-import { change, setShow, setErrors } from '../../store/slices/auth/register'
-import RegisterGQL from '@features/auth/mutations/Register'
+import { change, setShow, setErrors } from '@store/slices/auth/register'
+import type { RootState } from '@store/index'
+import type { Errors } from '@type/redux/auth/register'
 
-const Register: React.FC = () => {
-    const [register, { loading }] = useMutation(RegisterGQL)
+const Register: FC = () => {
+    const [register, { loading }] = useMutation(REGISTER)
     const dispatch = useDispatch()
     const regState = useSelector((state: RootState) => state.REG)
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
         dispatch(setErrors({ ...regState.errors, [name]: '' }))
     }
     const toggle = () => dispatch(setShow(!regState.show))
-    const submit = async (e: React.FormEvent) => {
+    const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
             const { data } = await register({

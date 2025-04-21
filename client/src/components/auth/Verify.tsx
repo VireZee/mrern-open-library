@@ -1,18 +1,17 @@
-import type { FormEvent } from 'react'
-import React from 'react'
+import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
-import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
-import { change, setError } from '../../store/slices/auth/verify'
 import VERIFY from '@features/auth/mutations/Verify'
 import RESEND from '@features/auth/mutations/Resend'
+import { useSelector, useDispatch } from 'react-redux'
+import { change, setError } from '@store/slices/auth/verify'
+import type { RootState } from '@store/index'
 
-const Verify: React.FC = () => {
+const Verify: FC = () => {
     const [verify, { loading: verLoad }] = useMutation(VERIFY)
     const [resend, { loading: resLoad }] = useMutation(RESEND)
     const dispatch = useDispatch()
     const verState = useSelector((state: RootState) => state.VER)
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
         dispatch(setError(''))
