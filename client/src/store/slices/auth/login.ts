@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type State from '@type/redux/auth/login'
+import type GlobalState from '@type/redux/globalState'
 
-const initialState: State = {
+const initialState: GlobalState = {
     emailOrUname: '',
     pass: '',
     show: false,
@@ -12,7 +12,7 @@ const login = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: string }>) => {
+        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalState, value: string }>) => {
             state[name] = value
         },
         setShow: (state, { payload }: PayloadAction<boolean>) => {

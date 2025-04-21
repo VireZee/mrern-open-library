@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import type { Store } from '@reduxjs/toolkit'
 import app from '@store/slices/core/app'
-import Nav from '@store/slices/layouts/Navbar'
+import Nav from '@store/slices/layouts/navbars'
 import register from '@store/slices/auth/register'
 import verify from '@store/slices/auth/verify'
 import login from '@store/slices/auth/login'

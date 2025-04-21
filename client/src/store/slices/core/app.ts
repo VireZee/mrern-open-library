@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { User, State } from '@type/redux/core/app'
+import type GlobalState from '@type/redux/globalState'
+import type User from '@type/redux/user/user'
 
-const initialState: State = {
+const initialState: GlobalState = {
     search: '',
     user: undefined,
     verified: null

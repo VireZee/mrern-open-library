@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { Errors, State } from '@type/redux/auth/register'
+import type GlobalState from '@type/redux/globalState'
+import type BaseError from '@type/redux/user/baseError'
 
-const initialState: State = {
+const initialState: GlobalState = {
     name: '',
     uname: '',
     email: '',
@@ -15,13 +16,13 @@ const register = createSlice({
     name: 'register',
     initialState,
     reducers: {
-        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: string }>) => {
+        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalState, value: string }>) => {
             state[name] = value
         },
         setShow: (state, { payload }: PayloadAction<boolean>) => {
             state['show'] = payload
         },
-        setErrors: (state, { payload }: PayloadAction<Errors>) => {
+        setErrors: (state, { payload }: PayloadAction<BaseError>) => {
             state['errors'] = payload
         }
     }

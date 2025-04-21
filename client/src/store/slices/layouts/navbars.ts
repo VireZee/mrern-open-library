@@ -1,15 +1,13 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type GlobalState from '@type/redux/globalState'
 
-interface State {
-    [key: string]: string | boolean
-}
-const initialState: State = {
+const initialState: GlobalState = {
     active: 'home',
     isDropdownOpen: false
 }
-const Navbar = createSlice({
-    name: 'NAV',
+const navbar = createSlice({
+    name: 'navbar',
     initialState,
     reducers: {
         setActive: (state, { payload }: PayloadAction<string>) => {
@@ -20,5 +18,5 @@ const Navbar = createSlice({
         }
     }
 })
-export const { setActive, setIsDropdownOpen } = Navbar.actions
-export default Navbar.reducer
+export const { setActive, setIsDropdownOpen } = navbar.actions
+export default navbar.reducer
