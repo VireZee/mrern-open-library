@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import AuthGQL from '@features/auth/queries/Auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUser, setVerified, setSearch } from '@store/slices/core/apps'
+import { setUser, setVerified, setSearch } from '@store/slices/core/app'
 import type { RootState } from '@store/index'
 import '@assets/styles/global.css'
 import Navbar from '@components/layouts/Navbar'
@@ -26,7 +26,7 @@ import Load from '@components/common/Load'
 const App: FC = () => {
     const { loading, data, error } = useQuery(AuthGQL)
     const dispatch = useDispatch()
-    const appState = useSelector((state: RootState) => state.APP)
+    const appState = useSelector((state: RootState) => state.app)
     const showBackLink = ['/register', '/verify', '/login'].includes(location.pathname)
     const hideHeader = location.pathname === '/settings'
     const searchHandler = (s: string) => dispatch(setSearch(s))

@@ -1,18 +1,18 @@
-import type { Store } from '@reduxjs/toolkit'
 import { configureStore } from '@reduxjs/toolkit'
-import App from './slices/core/app'
-import Nav from './slices/layouts/Navbar'
-import Reg from './slices/auth/Register'
-import Ver from './slices/auth/Verify'
-import Log from './slices/auth/Login'
-import Home from './slices/views/Home'
-import Col from './slices/views/Collection'
-import API from './slices/views/API'
-import Set from './slices/auth/Settings'
+import type { Store } from '@reduxjs/toolkit'
+import app from '@store/slices/core/app'
+import Nav from '@store/slices/layouts/Navbar'
+import Reg from '@store/slices/auth/Register'
+import Ver from '@store/slices/auth/Verify'
+import Log from '@store/slices/auth/Login'
+import Home from '@store/slices/views/Home'
+import Col from '@store/slices/views/Collection'
+import API from '@store/slices/views/API'
+import Set from '@store/slices/auth/Settings'
 
 const ReduxStore: Store = configureStore({
     reducer: {
-        APP: App,
+        app,
         NAV: Nav,
         REG: Reg,
         VER: Ver,
