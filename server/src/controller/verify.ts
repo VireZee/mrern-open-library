@@ -10,7 +10,7 @@ const verify = async (req: Req, res: Res) => {
         const verifyKey = sanitizeRedisKey('verify', objectId!)
         const user = await Redis.json.GET(userKey) as User
         const code = await Redis.HGET(verifyKey, 'code')
-        if (!user!.verified && hash !== code) return res.redirect('/error')
+        if (!user!.verified && hash !== code) return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}/error`)
         await verifiedService(objectId!)
         return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`)
     } catch (e) {
