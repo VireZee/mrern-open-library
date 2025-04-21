@@ -1,15 +1,13 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type State from '@type/redux/auth/verify'
 
-interface State {
-    [key: string]: string
-}
 const initialState: State = {
     code: '',
     error: ''
 }
-const Verify = createSlice({
-    name: 'VER',
+const verify = createSlice({
+    name: 'verify',
     initialState,
     reducers: {
         change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: string }>) => {
@@ -20,5 +18,5 @@ const Verify = createSlice({
         }
     }
 })
-export const { change, setError } = Verify.actions
-export default Verify.reducer
+export const { change, setError } = verify.actions
+export default verify.reducer

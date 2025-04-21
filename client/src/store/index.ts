@@ -2,9 +2,9 @@ import { configureStore } from '@reduxjs/toolkit'
 import type { Store } from '@reduxjs/toolkit'
 import app from '@store/slices/core/app'
 import Nav from '@store/slices/layouts/Navbar'
-import Reg from '@store/slices/auth/registers'
-import Ver from '@store/slices/auth/verify'
-import Log from '@store/slices/auth/login'
+import register from '@store/slices/auth/register'
+import verify from '@store/slices/auth/verify'
+import login from '@store/slices/auth/login'
 import Home from '@store/slices/views/Home'
 import Col from '@store/slices/views/Collection'
 import API from '@store/slices/views/API'
@@ -14,9 +14,9 @@ const ReduxStore: Store = configureStore({
     reducer: {
         app,
         NAV: Nav,
-        REG: Reg,
-        VER: Ver,
-        LOG: Log,
+        register,
+        verify,
+        login,
         HOME: Home,
         COL: Col,
         API: API,

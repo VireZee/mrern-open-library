@@ -11,8 +11,8 @@ const initialState: State = {
     show: false,
     errors: {}
 }
-const Register = createSlice({
-    name: 'REG',
+const register = createSlice({
+    name: 'register',
     initialState,
     reducers: {
         change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: string }>) => {
@@ -26,5 +26,5 @@ const Register = createSlice({
         }
     }
 })
-export const { change, setShow, setErrors } = Register.actions
-export default Register.reducer
+export const { change, setShow, setErrors } = register.actions
+export default register.reducer

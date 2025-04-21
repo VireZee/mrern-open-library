@@ -1,18 +1,7 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type { Errors, State } from '@type/redux/auth/settings'
 
-export interface Errors {
-    photo?: string
-    name?: string
-    uname?: string
-    email?: string
-    oldPass?: string
-    newPass?: string
-    rePass?: string
-}
-interface State {
-    [key: string]: boolean | number | string | { old: boolean, new: boolean } | Errors
-}
 const initialState: State = {
     isDropdownOpen: false,
     photo: '',
@@ -25,14 +14,14 @@ const initialState: State = {
     show: { old: false, new: false },
     errors: {}
 }
-const Settings = createSlice({
-    name: 'SET',
+const settings = createSlice({
+    name: 'settings',
     initialState,
     reducers: {
         setIsDropdownOpen: (state, { payload }: PayloadAction<boolean>) => {
             state['isDropdownOpen'] = payload
         },
-        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: number | string }>) => {
+        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: string }>) => {
             state[name] = value
         },
         setShow: (state, { payload }: PayloadAction<{ old: boolean, new: boolean }>) => {
@@ -43,5 +32,5 @@ const Settings = createSlice({
         }
     }
 })
-export const { setIsDropdownOpen, change, setShow, setErrors } = Settings.actions
-export default Settings.reducer
+export const { setIsDropdownOpen, change, setShow, setErrors } = settings.actions
+export default settings.reducer

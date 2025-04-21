@@ -1,17 +1,15 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import type State from '@type/redux/auth/login'
 
-interface State {
-    [key: string]: string | boolean
-}
 const initialState: State = {
     emailOrUname: '',
     pass: '',
     show: false,
     error: ''
 }
-const Login = createSlice({
-    name: 'LOG',
+const login = createSlice({
+    name: 'login',
     initialState,
     reducers: {
         change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof State, value: string }>) => {
@@ -25,5 +23,5 @@ const Login = createSlice({
         }
     }
 })
-export const { change, setShow, setError } = Login.actions
-export default Login.reducer
+export const { change, setShow, setError } = login.actions
+export default login.reducer
