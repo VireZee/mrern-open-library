@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import AuthGQL from '@features/auth/queries/Auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUser, setVerified, setSearch } from '@store/slices/core/App'
+import { setUser, setVerified, setSearch } from '@store/slices/core/apps'
 import type { RootState } from '@store/index'
 import '@assets/styles/global.css'
 import Navbar from '@components/layouts/Navbar'
@@ -12,14 +12,15 @@ import Home from '@components/views/Home'
 import Register from '@components/auth/Register'
 import Verify from '@components/auth/Verify'
 import Login from '@components/auth/Login'
+import ForgetPassword from '@components/auth/ForgetPassword'
 import Collection from '@components/views/Collection'
 import API from '@components/views/API'
 import Settings from '@components/auth/Settings'
 import NotFound from '@components/common/NotFound'
 import Main from '@routes/Main'
-import Protected from '@routes/Protected'
 import Auth from '@routes/Auth'
 import Verified from '@routes/Verified'
+import Protected from '@routes/Protected'
 import Load from '@components/common/Load'
 
 const App: FC = () => {
@@ -58,6 +59,7 @@ const App: FC = () => {
                     <Route element={<Auth verified={appState.verified} />}>
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
+                        <Route path='/forget-password' element={<ForgetPassword />} />
                     </Route>
                     <Route element={<Verified verified={appState.verified} />}>
                         <Route path='/verify' element={<Verify />} />

@@ -1,26 +1,17 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { User, State } from '@type/redux/core/app'
 
-export interface UserData {
-    photo: string
-    name: string
-    uname: string
-    email: string
-    verified: boolean
-}
-interface State {
-    [key: string]: string | null | undefined | UserData | boolean
-}
 const initialState: State = {
     search: '',
     user: undefined,
     verified: null
 }
-const App = createSlice({
-    name: 'APP',
+const app = createSlice({
+    name: 'app',
     initialState,
     reducers: {
-        setUser: (state, { payload }: PayloadAction<null | UserData>) => {
+        setUser: (state, { payload }: PayloadAction<null | User>) => {
             state['user'] = payload
         },
         setVerified: (state, { payload }: PayloadAction<boolean>) => {
@@ -31,5 +22,5 @@ const App = createSlice({
         }
     }
 })
-export const { setUser, setVerified, setSearch } = App.actions
-export default App.reducer
+export const { setUser, setVerified, setSearch } = app.actions
+export default app.reducer

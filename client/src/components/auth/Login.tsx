@@ -80,10 +80,13 @@ const Login: React.FC = () => {
                     {/* <div className="flex justify-center mb-4">
                         <a href="fp" className="font-medium text-black hover:text-black">Forgot your password?</a>
                     </div> */}
-                    <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading} >{loading ? 'Loading...' : 'Login'}</button>
+                    <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
                 </form>
                 <div className="mt-4 text-sm text-gray-700 text-center">
                     Don't have an account? <a href="/register" className="font-medium text-black hover:text-black">Register</a>
+                </div>
+                <div className="mt-4 text-sm text-gray-700 text-center">
+                    <a href="/forget-password" className="font-medium text-black hover:text-black">Forget your password?</a>
                 </div>
             </div>
         </div>

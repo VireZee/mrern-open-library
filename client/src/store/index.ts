@@ -1,6 +1,6 @@
 import type { Store } from '@reduxjs/toolkit'
 import { configureStore } from '@reduxjs/toolkit'
-import App from './slices/core/App'
+import App from './slices/core/apps'
 import Nav from './slices/layouts/Navbar'
 import Reg from './slices/auth/Register'
 import Ver from './slices/auth/Verify'
