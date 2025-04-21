@@ -8,7 +8,7 @@ import login from '@store/slices/auth/login'
 import Home from '@store/slices/views/Home'
 import Col from '@store/slices/views/Collection'
 import API from '@store/slices/views/API'
-import Set from '@store/slices/auth/ssettings'
+import settings from '@store/slices/auth/settings'
 
 const ReduxStore: Store = configureStore({
     reducer: {
@@ -20,7 +20,7 @@ const ReduxStore: Store = configureStore({
         HOME: Home,
         COL: Col,
         API: API,
-        SET: Set
+        settings
     }
 })
 export type RootState = ReturnType<typeof ReduxStore.getState>
