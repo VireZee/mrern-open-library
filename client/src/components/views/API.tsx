@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
+import type { RootState } from '../../store/store'
 import { setOnline, setApiKey } from '../../store/slices/views/API'
 import CheckGQL from '@features/api/queries/Check'
 import GenerateGQL from '@features/api/mutations/Generate'
@@ -42,7 +42,7 @@ const API: React.FC = () => {
             {apiState.online ? (
                 <div className="mt-16">
                     {apiState.apiKey !== null ? (
-                        <p className="bg-black text-white px-4 py-3 rounded-lg w-[90vw] max-w-[600px] text-center break-all absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg sm:text-xl">http://{import.meta.env.VITE_DOMAIN}:{import.meta.env.VITE_SERVER_PORT}/api/{apiState.apiKey}</p>
+                        <p className="bg-black text-white px-4 py-3 rounded-lg w-[90vw] max-w-[600px] text-center break-all absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg sm:text-xl">http://{import.meta.env['VITE_DOMAIN']}:{import.meta.env['VITE_SERVER_PORT']}/api/{apiState.apiKey}</p>
                     ) : (
                         <button
                             onClick={generateApi}

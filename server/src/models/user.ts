@@ -1,5 +1,6 @@
-import mongoose, {Schema} from "mongoose"
-const UserSchema = new Schema({
+import mongoose, { Schema } from 'mongoose'
+
+const userSchema = new Schema({
     photo: { type: Buffer, required: true },
     name: { type: String, maxlength: 75, required: true, },
     username: { type: String, unique: true, maxlength: 20, required: true },
@@ -10,4 +11,4 @@ const UserSchema = new Schema({
     updated: { type: Date },
     created: { type: Date, default: new Date(), required: true }
 }, { versionKey: false })
-export default mongoose.model('user', UserSchema)
+export default mongoose.model('User', userSchema)

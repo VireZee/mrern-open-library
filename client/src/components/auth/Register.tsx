@@ -3,7 +3,7 @@ import { useMutation, ApolloError } from '@apollo/client'
 import REGISTER from '@features/auth/mutations/Register'
 import { useSelector, useDispatch } from 'react-redux'
 import { change, setShow, setErrors } from '@store/slices/auth/register'
-import type { RootState } from '@store/index'
+import type { RootState } from '@store/store'
 import type BaseError from '@type/redux/auth/baseError'
 
 const Register: FC = () => {

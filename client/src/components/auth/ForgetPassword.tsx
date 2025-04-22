@@ -1,7 +1,7 @@
 import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '@store/index'
+import type { RootState } from '@store/store'
 import { change, setError } from '@store/slices/auth/verify'
 import FORGET from '@features/auth/mutations/Forget'
 
@@ -18,9 +18,9 @@ const ForgetPassword: FC = () => {
         e.preventDefault()
         try {
             const { data } = await forget({ variables: { email: forgetState.email } })
-            if (data.forget) location.href = '/'
-        } catch (err) {
-            if (err instanceof ApolloError) dispatch(setError(err.message))
+            // if (data.forget) location.href = '/'
+        } catch (e) {
+            if (e instanceof ApolloError) dispatch(setError(e.message))
             else alert('An unexpected error occurred.')
         }
     }

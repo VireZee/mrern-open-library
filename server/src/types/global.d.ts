@@ -1,4 +1,4 @@
-import type mongoose, { Schema, Types } from 'mongoose'
+import type { Types } from 'mongoose'
 import type express, { Request, Response } from 'express'
 import type crypto from 'crypto'
 import type { GraphQLError } from 'graphql'
@@ -8,8 +8,6 @@ declare global {
     type ObjectId = Types.ObjectId
     type Req = Request
     type Res = Response
-    var mongoose: typeof mongoose
-    var Schema: typeof Schema
     var TypesObjectId = Types.ObjectId
     var express: typeof express
     var nodeCrypto: typeof crypto

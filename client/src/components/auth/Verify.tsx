@@ -4,7 +4,7 @@ import VERIFY from '@features/auth/mutations/Verify'
 import RESEND from '@features/auth/mutations/Resend'
 import { useSelector, useDispatch } from 'react-redux'
 import { change, setError } from '@store/slices/auth/verify'
-import type { RootState } from '@store/index'
+import type { RootState } from '@store/store'
 
 const Verify: FC = () => {
     const [verify, { loading: verLoad }] = useMutation(VERIFY)

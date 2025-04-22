@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '@store/index'
+import type { RootState } from '@store/store'
 import type { Books } from '@store/slices/views/Home'
 import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } from '../../store/slices/views/Home'
 import { HOME as HomeGQL } from '@features/book/queries/Home'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
+import type { RootState } from '../../store/store'
 import type { Books } from '../../store/slices/views/Collection'
 import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } from '../../store/slices/views/Collection'
 import FetchGQL from '@features/book/queries/Collection'

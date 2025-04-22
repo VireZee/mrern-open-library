@@ -4,7 +4,7 @@ import { useMutation, ApolloError } from '@apollo/client'
 import { SETTINGS, TERMINATE } from '@features/auth/mutations/Settings'
 import { useSelector, useDispatch } from 'react-redux'
 import { setIsDropdownOpen, change, setShow, setErrors } from '@store/slices/auth/settings'
-import type { RootState } from '@store/index'
+import type { RootState } from '@store/store'
 import type ExtendedError from '@type/redux/auth/extendedError'
 
 interface Props {

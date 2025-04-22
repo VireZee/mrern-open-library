@@ -3,7 +3,7 @@ import { useMutation, ApolloError } from '@apollo/client'
 import LOGIN from '@features/auth/mutations/Login'
 import { useSelector, useDispatch } from 'react-redux'
 import { change, setShow, setError } from '@store/slices/auth/login'
-import type { RootState } from '@store/index'
+import type { RootState } from '@store/store'
 
 const Login: FC = () => {
     const [login, { loading }] = useMutation(LOGIN)

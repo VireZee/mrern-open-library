@@ -10,7 +10,7 @@ import Col from '@store/slices/views/Collection'
 import API from '@store/slices/views/API'
 import settings from '@store/slices/auth/settings'
 
-const ReduxStore: Store = configureStore({
+const store: Store = configureStore({
     reducer: {
         app,
         navbar,
@@ -23,5 +23,5 @@ const ReduxStore: Store = configureStore({
         settings
     }
 })
-export type RootState = ReturnType<typeof ReduxStore.getState>
-export default ReduxStore
+export type RootState = ReturnType<typeof store.getState>
+export default store
