@@ -29,7 +29,7 @@ const register = async (_: null, args: { name: string, username: string, email: 
             pass: await hash(pass)
         })
         await newUser.save()
-        generateCodeService('verify', newUser)
+        await generateCodeService('verify', newUser)
         authService(newUser, res)
         return true
     } catch (e) {
