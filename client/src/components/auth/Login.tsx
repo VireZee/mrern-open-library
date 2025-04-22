@@ -20,13 +20,13 @@ const Login: FC = () => {
         try {
             const { data } = await login({
                 variables: {
-                    emailOrUsername: loginState.emailOrUname,
+                    emailOrUsername: loginState.emailOrUsername,
                     pass: loginState.pass
                 }
             })
             if (data.login) location.href = '/'
-        } catch (err) {
-            if (err instanceof ApolloError) dispatch(setError(err.message))
+        } catch (e) {
+            if (e instanceof ApolloError) dispatch(setError(e.message))
             else alert('An unexpected error occurred.')
         }
     }
@@ -39,8 +39,8 @@ const Login: FC = () => {
                         <label className="text-md text-gray-700">Email / Username</label>
                         <input
                             type="text"
-                            name="emailOrUname"
-                            value={loginState.emailOrUname}
+                            name="emailOrUsername"
+                            value={loginState.emailOrUsername}
                             onChange={handleChange}
                             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-black"
                         />
@@ -77,16 +77,13 @@ const Login: FC = () => {
                         </div>
                         {loginState.error && <p className="text-red-500 text-sm mt-1">{loginState.error}</p>}
                     </div>
-                    {/* <div className="flex justify-center mb-4">
-                        <a href="fp" className="font-medium text-black hover:text-black">Forgot your password?</a>
-                    </div> */}
+                    <div className="flex justify-center mb-4">
+                        <a href="/forget-password" className="font-medium text-black hover:text-black">Forgot your password?</a>
+                    </div>
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
                 </form>
                 <div className="mt-4 text-sm text-gray-700 text-center">
                     Don't have an account? <a href="/register" className="font-medium text-black hover:text-black">Register</a>
-                </div>
-                <div className="mt-4 text-sm text-gray-700 text-center">
-                    <a href="/forget-password" className="font-medium text-black hover:text-black">Forget your password?</a>
                 </div>
             </div>
         </div>

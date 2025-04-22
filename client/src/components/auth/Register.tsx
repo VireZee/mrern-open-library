@@ -22,7 +22,7 @@ const Register: FC = () => {
             const { data } = await register({
                 variables: {
                     name: registerState.name,
-                    username: registerState.uname,
+                    username: registerState.username,
                     email: registerState.email,
                     pass: registerState.pass,
                     rePass: registerState.show ? null : registerState.rePass,
@@ -30,10 +30,10 @@ const Register: FC = () => {
                 }
             })
             if (data.register) location.href = '/verify'
-        } catch (err) {
-            if (err instanceof ApolloError) {
-                const GQLErr = err.cause!.extensions as { errs: BaseError }
-                dispatch(setErrors(GQLErr.errs))
+        } catch (e) {
+            if (e instanceof ApolloError) {
+                const { errs } = e.cause!.extensions as { errs: BaseError }
+                dispatch(setErrors(errs))
             } else alert('An unexpected error occurred.')
         }
     }
@@ -57,12 +57,12 @@ const Register: FC = () => {
                         <label className="text-md text-gray-700">Username</label>
                         <input
                             type="text"
-                            name="uname"
-                            value={registerState.uname}
+                            name="username"
+                            value={registerState.username}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!registerState.errors.uname ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!registerState.errors.username ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {registerState.errors.uname && <p className="text-red-500 text-sm mt-1">{registerState.errors.uname}</p>}
+                        {registerState.errors.username && <p className="text-red-500 text-sm mt-1">{registerState.errors.username}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-md text-gray-700">Email</label>

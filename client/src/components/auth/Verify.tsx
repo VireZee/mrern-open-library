@@ -21,8 +21,8 @@ const Verify: FC = () => {
         try {
             const { data } = await verify({ variables: { code: verifyState.code } })
             if (data.verify) location.href = '/'
-        } catch (err) {
-            if (err instanceof ApolloError) dispatch(setError(err.message))
+        } catch (e) {
+            if (e instanceof ApolloError) dispatch(setError(e.message))
             else alert('An unexpected error occurred.')
         }
     }
@@ -31,8 +31,8 @@ const Verify: FC = () => {
         try {
             const { data } = await resend()
             if (data.resend) dispatch(setError('Code has been sent!'))
-        } catch (err) {
-            if (err instanceof ApolloError) dispatch(setError(err.message))
+        } catch (e) {
+            if (e instanceof ApolloError) dispatch(setError(e.message))
             else alert('An unexpected error occurred.')
         }
     }

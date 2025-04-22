@@ -1,15 +1,15 @@
-import type { FC, FormEvent } from 'react'
+import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '@store/index'
 import { change, setError } from '@store/slices/auth/verify'
-import VERIFY from '@features/auth/mutations/Verify'
+import FORGET from '@features/auth/mutations/Forget'
 
 const ForgetPassword: FC = () => {
-    const [forget, { loading }] = useMutation(VERIFY)
+    const [forget, { loading }] = useMutation(FORGET)
     const dispatch = useDispatch()
-    const forState = useSelector((state: RootState) => state.FOR)
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const forgetState = useSelector((state: RootState) => state.forget)
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
         dispatch(setError(''))
@@ -17,7 +17,7 @@ const ForgetPassword: FC = () => {
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
-            const { data } = await forget({ variables: { code: forState.code } })
+            const { data } = await forget({ variables: { email: forgetState.email } })
             if (data.forget) location.href = '/'
         } catch (err) {
             if (err instanceof ApolloError) dispatch(setError(err.message))
@@ -34,11 +34,11 @@ const ForgetPassword: FC = () => {
                         <input
                             type="email"
                             name="email"
-                            value={forState.code}
+                            value={forgetState.email}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!forState.errors ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!forgetState.errors ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {forState.error && <p className="text-red-500 text-sm mt-1">{forState.error}</p>}
+                        {forgetState.error && <p className="text-red-500 text-sm mt-1">{forgetState.error}</p>}
                     </div>
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading} >{loading ? 'Loading...' : 'Send'}</button>
                 </form>

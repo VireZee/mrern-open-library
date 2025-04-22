@@ -82,10 +82,10 @@ const Settings: FC<Props> = ({ isUser }) => {
                 alert('Changes saved!')
                 location.href = '/'
             }
-        } catch (err) {
-            if (err instanceof ApolloError) {
-                const GQLErr = err.cause!.extensions as { errs: ExtendedError }
-                dispatch(setErrors(GQLErr.errs))
+        } catch (e) {
+            if (e instanceof ApolloError) {
+                const{ errs } = e.cause!.extensions as { errs: ExtendedError }
+                dispatch(setErrors(errs))
             } else alert('An unexpected error occurred.')
         }
     }
@@ -96,8 +96,8 @@ const Settings: FC<Props> = ({ isUser }) => {
                 alert('Account deleted!')
                 location.href = '/'
             }
-        } catch (err) {
-            if (err instanceof ApolloError) alert(err.message)
+        } catch (e) {
+            if (e instanceof ApolloError) alert(e.message)
             else alert('An unexpected error occurred.')
         }
     }
