@@ -1,5 +1,5 @@
 import collection from '@models/collection.ts'
-import updateService from '@services/redis/update.ts'
+import updateCollection from '@services/redis/updateCollection.ts'
 import type { User } from '@type/models/user.d.ts'
 
 const addRemove = async (_: null, args: { author_key: string[], cover_edition_key: string, cover_i: number, title: string, author_name: string[] }, context: { user: User }) => {
@@ -14,7 +14,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
         })
         if (bookCollection) {
             await collection.findByIdAndDelete(bookCollection._id)
-            await updateService('collection', user)
+            await updateCollection('collection', user)
         }
         else {
             await collection.create({
@@ -26,7 +26,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
                 author_name,
                 created: new Date()
             })
-            await updateService('collection', user)
+            await updateCollection('collection', user)
         }
         return true
     } catch (e) {

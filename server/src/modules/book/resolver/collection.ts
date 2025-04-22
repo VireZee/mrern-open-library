@@ -8,7 +8,8 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
     try {
         const { search, page } = args
         const { user } = context
-        const key = sanitizeRedisKey('collection', `${user._id}|${search}|${page}`)
+        let key = sanitizeRedisKey('collection', user._id)
+        key = `${key}|${search}|${page}`
         const cache = await Redis.json.GET(key)
         if (cache) return cache
         const limit = 9

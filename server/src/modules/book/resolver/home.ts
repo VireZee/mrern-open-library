@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
 import got from 'got'
-import type { Books } from '@type/modules/collection.d.ts'
+import type Collection from '@type/models/collection.d.ts'
 
 const home = async (_: null, args: { search: string, page: number }) => {
     try {
@@ -10,10 +10,10 @@ const home = async (_: null, args: { search: string, page: number }) => {
         if (cache) return cache
         const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')
-        const response = await got(`https://openlibrary.org/search.json?${type}=${formattedQuery}&page=${page}`).json<{ numFound: number, docs: Books[] }>()
+        const response = await got(`https://openlibrary.org/search.json?${type}=${formattedQuery}&page=${page}`).json<{ numFound: number, docs: Collection[] }>()
         const books = {
             numFound: response.numFound,
-            docs: response.docs.map((book: Books) => ({
+            docs: response.docs.map(book => ({
                 author_key: book.author_key ?? [],
                 cover_edition_key: book.cover_edition_key ?? '',
                 cover_i: book.cover_i ?? 0,
