@@ -4,35 +4,35 @@ import REGISTER from '@features/auth/mutations/Register'
 import { useSelector, useDispatch } from 'react-redux'
 import { change, setShow, setErrors } from '@store/slices/auth/register'
 import type { RootState } from '@store/index'
-import type { Errors } from '@type/redux/auth/register'
+import type BaseError from '@type/redux/auth/baseError'
 
 const Register: FC = () => {
     const [register, { loading }] = useMutation(REGISTER)
     const dispatch = useDispatch()
-    const regState = useSelector((state: RootState) => state.REG)
+    const registerState = useSelector((state: RootState) => state.register)
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
-        dispatch(setErrors({ ...regState.errors, [name]: '' }))
+        dispatch(setErrors({ ...registerState.errors, [name]: '' }))
     }
-    const toggle = () => dispatch(setShow(!regState.show))
+    const toggle = () => dispatch(setShow(!registerState.show))
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
             const { data } = await register({
                 variables: {
-                    name: regState.name,
-                    username: regState.uname,
-                    email: regState.email,
-                    pass: regState.pass,
-                    rePass: regState.show ? null : regState.rePass,
-                    show: regState.show,
+                    name: registerState.name,
+                    username: registerState.uname,
+                    email: registerState.email,
+                    pass: registerState.pass,
+                    rePass: registerState.show ? null : registerState.rePass,
+                    show: registerState.show,
                 }
             })
             if (data.register) location.href = '/verify'
         } catch (err) {
             if (err instanceof ApolloError) {
-                const GQLErr = err.cause!.extensions as { errs: Errors }
+                const GQLErr = err.cause!.extensions as { errs: BaseError }
                 dispatch(setErrors(GQLErr.errs))
             } else alert('An unexpected error occurred.')
         }
@@ -47,50 +47,50 @@ const Register: FC = () => {
                         <input
                             type="text"
                             name="name"
-                            value={regState.name}
+                            value={registerState.name}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!regState.errors.name ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!registerState.errors.name ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {regState.errors.name && <p className="text-red-500 text-sm mt-1">{regState.errors.name}</p>}
+                        {registerState.errors.name && <p className="text-red-500 text-sm mt-1">{registerState.errors.name}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-md text-gray-700">Username</label>
                         <input
                             type="text"
                             name="uname"
-                            value={regState.uname}
+                            value={registerState.uname}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!regState.errors.uname ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!registerState.errors.uname ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {regState.errors.uname && <p className="text-red-500 text-sm mt-1">{regState.errors.uname}</p>}
+                        {registerState.errors.uname && <p className="text-red-500 text-sm mt-1">{registerState.errors.uname}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-md text-gray-700">Email</label>
                         <input
                             type="email"
                             name="email"
-                            value={regState.email}
+                            value={registerState.email}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!regState.errors.email ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!registerState.errors.email ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {regState.errors.email && <p className="text-red-500 text-sm mt-1">{regState.errors.email}</p>}
+                        {registerState.errors.email && <p className="text-red-500 text-sm mt-1">{registerState.errors.email}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-md text-gray-700">Password</label>
                         <div className="relative">
                             <input
-                                type={regState.show ? "text" : "password"}
+                                type={registerState.show ? "text" : "password"}
                                 name="pass"
-                                value={regState.pass}
+                                value={registerState.pass}
                                 onChange={handleChange}
-                                className={`mt-1 p-2 border ${!regState.errors.pass ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                                className={`mt-1 p-2 border ${!registerState.errors.pass ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                             />
                             <button
                                 type="button"
                                 onClick={toggle}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {regState.show ? (
+                                {registerState.show ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -105,19 +105,19 @@ const Register: FC = () => {
                                 )}
                             </button>
                         </div>
-                        {regState.errors.pass && <p className="text-red-500 text-sm mt-1">{regState.errors.pass}</p>}
+                        {registerState.errors.pass && <p className="text-red-500 text-sm mt-1">{registerState.errors.pass}</p>}
                     </div>
-                    {!regState.show && (
+                    {!registerState.show && (
                         <div className="mb-4">
                             <label className="text-md text-gray-700">Retype Password</label>
                             <input
                                 type="password"
                                 name="rePass"
-                                value={regState.rePass}
+                                value={registerState.rePass}
                                 onChange={handleChange}
-                                className={`mt-1 p-2 border ${!regState.errors.rePass ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                                className={`mt-1 p-2 border ${!registerState.errors.rePass ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                             />
-                            {regState.errors.rePass && <p className="text-red-500 text-sm mt-1">{regState.errors.rePass}</p>}
+                            {registerState.errors.rePass && <p className="text-red-500 text-sm mt-1">{registerState.errors.rePass}</p>}
                         </div>
                     )}
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Register'}</button>

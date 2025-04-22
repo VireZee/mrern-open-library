@@ -10,7 +10,7 @@ const Verify: FC = () => {
     const [verify, { loading: verLoad }] = useMutation(VERIFY)
     const [resend, { loading: resLoad }] = useMutation(RESEND)
     const dispatch = useDispatch()
-    const verState = useSelector((state: RootState) => state.VER)
+    const verifyState = useSelector((state: RootState) => state.verify)
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
@@ -19,7 +19,7 @@ const Verify: FC = () => {
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
-            const { data } = await verify({ variables: { code: verState.code } })
+            const { data } = await verify({ variables: { code: verifyState.code } })
             if (data.verify) location.href = '/'
         } catch (err) {
             if (err instanceof ApolloError) dispatch(setError(err.message))
@@ -46,11 +46,11 @@ const Verify: FC = () => {
                         <input
                             type="text"
                             name="code"
-                            value={verState.code}
+                            value={verifyState.code}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!verState.errors ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!verifyState.errors ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {verState.error && <p className="text-red-500 text-sm mt-1">{verState.error}</p>}
+                        {verifyState.error && <p className="text-red-500 text-sm mt-1">{verifyState.error}</p>}
                     </div>
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={verLoad} >{verLoad ? 'Loading...' : 'Verify'}</button>
                     <button type="button" className="w-full bg-black text-white py-2 px-4 rounded-md mt-1" disabled={resLoad} onClick={resendCode}>{resLoad ? 'Loading...' : 'Resend Code'}</button>

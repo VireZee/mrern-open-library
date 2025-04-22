@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type GlobalState from '@type/redux/globalState'
-import type BaseError from '@type/redux/user/baseError'
+import type { GlobalUserState } from '@type/redux/state'
+import type BaseError from '@type/redux/auth/baseError'
 
-const initialState: GlobalState = {
+const initialState: GlobalUserState = {
     name: '',
     uname: '',
     email: '',
@@ -16,7 +16,7 @@ const register = createSlice({
     name: 'register',
     initialState,
     reducers: {
-        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalState, value: string }>) => {
+        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalUserState, value: string }>) => {
             state[name] = value
         },
         setShow: (state, { payload }: PayloadAction<boolean>) => {

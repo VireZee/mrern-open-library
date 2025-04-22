@@ -1,10 +1,11 @@
-import React from 'react'
+import type { FC, ChangeEvent, FormEvent } from 'react'
+import { useEffect, useRef } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
+import { SETTINGS, TERMINATE } from '@features/auth/mutations/Settings'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/index'
-import type { Errors } from '../../store/slices/auth/settings'
-import { setIsDropdownOpen, change, setShow, setErrors } from '../../store/slices/auth/settings'
-import { SETTINGS as SettingsGQL, TERMINATE as DeleteGQL } from '@features/auth/mutations/Settings'
+import { setIsDropdownOpen, change, setShow, setErrors } from '@store/slices/auth/settings'
+import type { RootState } from '@store/index'
+import type ExtendedError from '@type/redux/auth/extendedError'
 
 interface Props {
     isUser: {
@@ -14,18 +15,18 @@ interface Props {
         email: string
     }
 }
-const Settings: React.FC<Props> = ({ isUser }) => {
-    const [settings, { loading: setLoad }] = useMutation(SettingsGQL)
-    const [terminate, { loading: delLoad }] = useMutation(DeleteGQL)
+const Settings: FC<Props> = ({ isUser }) => {
+    const [settings, { loading: settingsLoad }] = useMutation(SETTINGS)
+    const [terminate, { loading: terminateLoad }] = useMutation(TERMINATE)
     const dispatch = useDispatch()
-    const setState = useSelector((state: RootState) => state.SET)
-    React.useEffect(() => {
+    const settingsState = useSelector((state: RootState) => state.settings)
+    useEffect(() => {
         dispatch(change({ name: 'photo', value: isUser.photo }))
         dispatch(change({ name: 'name', value: isUser.name }))
-        dispatch(change({ name: 'uname', value: isUser.username }))
+        dispatch(change({ name: 'username', value: isUser.username }))
         dispatch(change({ name: 'email', value: isUser.email }))
     }, [isUser])
-    const inputFileRef = React.useRef<HTMLInputElement>(null)
+    const inputFileRef = useRef<HTMLInputElement>(null)
     const imgFormat = (base64String: string) => {
         const decodedString = atob(base64String)
         const hexString = Array.from(decodedString).map(char => char.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')).join('')
@@ -35,7 +36,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
         else if (hexString.startsWith('474946383761') || hexString.startsWith('474946383961')) return 'gif'
         return
     }
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files![0]
         if (!file) return
         const reader = new FileReader()
@@ -46,35 +47,35 @@ const Settings: React.FC<Props> = ({ isUser }) => {
             if (format) dispatch(change({ name: 'photo', value: base64String! }))
             else alert('Invalid file format. Please upload an JPG/JPEG, PNG, GIF, or SVG image!')
         }
-        dispatch(setErrors({ ...setState.errors, photo: '' }))
+        dispatch(setErrors({ ...settingsState.errors, photo: '' }))
     }
     const removeImage = () => {
-        const initials = setState.name.split(' ').map((w: string) => w.charAt(0).toUpperCase()).slice(0, 5).join('')
+        const initials = settingsState.name.split(' ').map((w: string) => w.charAt(0).toUpperCase()).slice(0, 5).join('')
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
             <circle cx="256" cy="256" r="256" fill="#000" />
             <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Times New Roman" font-size="128" fill="white">${initials}</text>
         </svg>`
         dispatch(change({ name: 'photo', value: btoa(svg) }))
     }
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
-        dispatch(setErrors({ ...setState.errors, [name]: '' }))
+        dispatch(setErrors({ ...settingsState.errors, [name]: '' }))
     }
-    const toggle = (name: 'old' | 'new') => dispatch(setShow({ ...setState.show, [name]: !setState.show[name] }))
-    const submit = async (e: React.FormEvent) => {
+    const toggle = (name: 'old' | 'new') => dispatch(setShow({ ...settingsState.show, [name]: !settingsState.show[name] }))
+    const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
             const { data } = await settings({
                 variables: {
-                    photo: setState.photo,
-                    name: setState.name,
-                    username: setState.uname,
-                    email: setState.email,
-                    oldPass: setState.oldPass,
-                    newPass: setState.newPass,
-                    rePass: setState.show['new'] ? null : setState.rePass,
-                    show: setState.show['new']
+                    photo: settingsState.photo,
+                    name: settingsState.name,
+                    username: settingsState.username,
+                    email: settingsState.email,
+                    oldPass: settingsState.oldPass,
+                    newPass: settingsState.newPass,
+                    rePass: settingsState.show['new'] ? null : settingsState.rePass,
+                    show: settingsState.show['new']
                 }
             })
             if (data.settings) {
@@ -83,7 +84,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
             }
         } catch (err) {
             if (err instanceof ApolloError) {
-                const GQLErr = err.cause!.extensions as { errs: Errors }
+                const GQLErr = err.cause!.extensions as { errs: ExtendedError }
                 dispatch(setErrors(GQLErr.errs))
             } else alert('An unexpected error occurred.')
         }
@@ -106,7 +107,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                 <h2 className="text-3xl font-extrabold text-center mb-4">Settings</h2>
                 <form onSubmit={submit}>
                     <div className="relative flex justify-center mb-6">
-                        <img src={`data:image/${imgFormat(setState.photo)};base64,${setState.photo}`} alt="Image" className="rounded-full w-72 h-72 cursor-pointer object-cover" onClick={() => dispatch(setIsDropdownOpen(!setState.isDropdownOpen))} />
+                        <img src={`data:image/${imgFormat(settingsState.photo)};base64,${settingsState.photo}`} alt="Image" className="rounded-full w-72 h-72 cursor-pointer object-cover" onClick={() => dispatch(setIsDropdownOpen(!settingsState.isDropdownOpen))} />
                         <input
                             type="file"
                             accept="image/jpeg, image/png, image/gif, image/svg+xml"
@@ -114,7 +115,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                             className="hidden"
                             onChange={handleFileChange}
                         />
-                        {setState.isDropdownOpen && (
+                        {settingsState.isDropdownOpen && (
                             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-black shadow-md rounded-md w-40 z-50">
                                 <ul className="text-center">
                                     <li
@@ -139,28 +140,28 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                             </div>
                         )}
                     </div>
-                    {setState.errors.photo && <p className="text-red-500 text-sm mt-1 text-center">{setState.errors.photo}</p>}
+                    {settingsState.errors.photo && <p className="text-red-500 text-sm mt-1 text-center">{settingsState.errors.photo}</p>}
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Name</label>
                         <input
                             type="text"
                             name="name"
                             className="w-full p-2 border rounded-md mt-1"
-                            value={setState.name}
+                            value={settingsState.name}
                             onChange={handleChange}
                         />
-                        {setState.errors.name && <p className="text-red-500 text-sm mt-1">{setState.errors.name}</p>}
+                        {settingsState.errors.name && <p className="text-red-500 text-sm mt-1">{settingsState.errors.name}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Username</label>
                         <input
                             type="text"
-                            name="uname"
+                            name="username"
                             className="w-full p-2 border rounded-md mt-1"
-                            value={setState.uname}
+                            value={settingsState.username}
                             onChange={handleChange}
                         />
-                        {setState.errors.username && <p className="text-red-500 text-sm mt-1">{setState.errors.username}</p>}
+                        {settingsState.errors.username && <p className="text-red-500 text-sm mt-1">{settingsState.errors.username}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Email</label>
@@ -168,20 +169,20 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                             type="email"
                             name="email"
                             className="w-full p-2 border rounded-md mt-1"
-                            value={setState.email}
+                            value={settingsState.email}
                             onChange={handleChange}
                         />
-                        {setState.errors.email && <p className="text-red-500 text-sm mt-1">{setState.errors.email}</p>}
+                        {settingsState.errors.email && <p className="text-red-500 text-sm mt-1">{settingsState.errors.email}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Change Password</label>
                         <div className="relative">
                             <input
-                                type={setState.show['old'] ? "text" : "password"}
+                                type={settingsState.show['old'] ? "text" : "password"}
                                 name="oldPass"
                                 placeholder="Old Password"
                                 className="w-full p-2 border rounded-md mt-1"
-                                value={setState.oldPass}
+                                value={settingsState.oldPass}
                                 onChange={handleChange}
                             />
                             <button
@@ -189,7 +190,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                                 onClick={() => toggle('old')}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {setState.show['old'] ? (
+                                {settingsState.show['old'] ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -204,14 +205,14 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                                 )}
                             </button>
                         </div>
-                        {setState.errors.oldPass && <p className="text-red-500 text-sm mt-1">{setState.errors.oldPass}</p>}
+                        {settingsState.errors.oldPass && <p className="text-red-500 text-sm mt-1">{settingsState.errors.oldPass}</p>}
                         <div className="relative">
                             <input
-                                type={setState.show['new'] ? "text" : "password"}
+                                type={settingsState.show['new'] ? "text" : "password"}
                                 name="newPass"
                                 placeholder="New Password"
                                 className="w-full p-2 border rounded-md mt-1"
-                                value={setState.newPass}
+                                value={settingsState.newPass}
                                 onChange={handleChange}
                             />
                             <button
@@ -219,7 +220,7 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                                 onClick={() => toggle('new')}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {setState.show['new'] ? (
+                                {settingsState.show['new'] ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -234,25 +235,25 @@ const Settings: React.FC<Props> = ({ isUser }) => {
                                 )}
                             </button>
                         </div>
-                        {setState.errors.newPass && <p className="text-red-500 text-sm mt-1">{setState.errors.newPass}</p>}
-                        {!setState.show['new'] && (
+                        {settingsState.errors.newPass && <p className="text-red-500 text-sm mt-1">{settingsState.errors.newPass}</p>}
+                        {!settingsState.show['new'] && (
                             <>
                                 <input
                                     type="password"
                                     name="rePass"
                                     placeholder="Retype New Password"
                                     className="w-full p-2 border rounded-md mt-1"
-                                    value={setState.rePass}
+                                    value={settingsState.rePass}
                                     onChange={handleChange}
                                 />
-                                {setState.errors.rePass && <p className="text-red-500 text-sm mt-1">{setState.errors.rePass}</p>}
+                                {settingsState.errors.rePass && <p className="text-red-500 text-sm mt-1">{settingsState.errors.rePass}</p>}
                             </>
                         )}
                     </div>
-                    <button className="w-full p-2 bg-black text-white rounded-md mt-5" disabled={setLoad}>
-                        {setLoad ? 'Loading...' : 'Save Changes'}
+                    <button className="w-full p-2 bg-black text-white rounded-md mt-5" disabled={settingsLoad}>
+                        {settingsLoad ? 'Loading...' : 'Save Changes'}
                     </button>
-                    <button className="w-full p-2 bg-red-500 text-white rounded-md mt-5" onClick={handleDeleteAccount} disabled={delLoad}>Delete Account</button>
+                    <button className="w-full p-2 bg-red-500 text-white rounded-md mt-5" onClick={handleDeleteAccount} disabled={terminateLoad}>Delete Account</button>
                 </form>
             </div>
         </div>

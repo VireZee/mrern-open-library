@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type GlobalState from '@type/redux/globalState'
+import type { GlobalUserState } from '@type/redux/state'
 
-const initialState: GlobalState = {
+const initialState: GlobalUserState = {
     code: '',
     error: ''
 }
@@ -10,7 +10,7 @@ const verify = createSlice({
     name: 'verify',
     initialState,
     reducers: {
-        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalState, value: string }>) => {
+        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalUserState, value: string }>) => {
             state[name] = value
         },
         setError: (state, { payload }: PayloadAction<string>) => {

@@ -2,7 +2,7 @@ import type User from '@type/redux/user/user'
 import type BaseError from '@type/redux/user/baseError'
 import type ExtendedError from '@type/redux/user/extendedError'
 
-type GlobalState = {
+export type GlobalUserState = {
     [_: string]:
     | User
     | BaseError
@@ -13,4 +13,3 @@ type GlobalState = {
     | null
     | undefined
 }
-export default GlobalState

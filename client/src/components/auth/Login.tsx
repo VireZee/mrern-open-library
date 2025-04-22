@@ -8,20 +8,20 @@ import type { RootState } from '@store/index'
 const Login: FC = () => {
     const [login, { loading }] = useMutation(LOGIN)
     const dispatch = useDispatch()
-    const logState = useSelector((state: RootState) => state.LOG)
+    const loginState = useSelector((state: RootState) => state.login)
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
         dispatch(setError(''))
     }
-    const toggle = () => dispatch(setShow(!logState.show))
+    const toggle = () => dispatch(setShow(!loginState.show))
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
             const { data } = await login({
                 variables: {
-                    emailOrUsername: logState.emailOrUname,
-                    pass: logState.pass
+                    emailOrUsername: loginState.emailOrUname,
+                    pass: loginState.pass
                 }
             })
             if (data.login) location.href = '/'
@@ -40,7 +40,7 @@ const Login: FC = () => {
                         <input
                             type="text"
                             name="emailOrUname"
-                            value={logState.emailOrUname}
+                            value={loginState.emailOrUname}
                             onChange={handleChange}
                             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-black"
                         />
@@ -49,18 +49,18 @@ const Login: FC = () => {
                         <label className="text-md text-gray-700">Password</label>
                         <div className="relative">
                             <input
-                                type={logState.show ? "text" : "password"}
+                                type={loginState.show ? "text" : "password"}
                                 name="pass"
-                                value={logState.pass}
+                                value={loginState.pass}
                                 onChange={handleChange}
-                                className={`mt-1 p-2 border ${!logState.error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                                className={`mt-1 p-2 border ${!loginState.error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                             />
                             <button
                                 type="button"
                                 onClick={toggle}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {logState.show ? (
+                                {loginState.show ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -75,7 +75,7 @@ const Login: FC = () => {
                                 )}
                             </button>
                         </div>
-                        {logState.error && <p className="text-red-500 text-sm mt-1">{logState.error}</p>}
+                        {loginState.error && <p className="text-red-500 text-sm mt-1">{loginState.error}</p>}
                     </div>
                     {/* <div className="flex justify-center mb-4">
                         <a href="fp" className="font-medium text-black hover:text-black">Forgot your password?</a>

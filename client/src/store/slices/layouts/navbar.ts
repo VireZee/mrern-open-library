@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type GlobalState from '@type/redux/globalState'
+import type { GlobalUserState } from '@type/redux/state'
 
-const initialState: GlobalState = {
+const initialState: GlobalUserState = {
     active: 'home',
     isDropdownOpen: false
 }

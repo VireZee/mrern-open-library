@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type GlobalState from '@type/redux/globalState'
-import type ExtendedError from '@type/redux/user/extendedError'
+import type { GlobalUserState } from '@type/redux/state'
+import type ExtendedError from '@type/redux/auth/extendedError'
 
-const initialState: GlobalState = {
+const initialState: GlobalUserState = {
     isDropdownOpen: false,
     photo: '',
     name: '',
@@ -22,7 +22,7 @@ const settings = createSlice({
         setIsDropdownOpen: (state, { payload }: PayloadAction<boolean>) => {
             state['isDropdownOpen'] = payload
         },
-        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalState, value: string }>) => {
+        change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalUserState, value: string }>) => {
             state[name] = value
         },
         setShow: (state, { payload }: PayloadAction<{ old: boolean, new: boolean }>) => {
