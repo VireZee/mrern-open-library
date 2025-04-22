@@ -1,5 +1,5 @@
 import Redis from '@database/Redis.ts'
-import createService from '@services/state/create.ts'
+import createCollection from '@services/redis/createCollection.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatBooksFind } from '@utils/formatter/books.ts'
 import type Collection from '@type/models/collection.d.ts'
@@ -14,7 +14,7 @@ const fetch = async (_: null, args: { author_key: string[], cover_edition_key: s
         let bookCollection: Collection | undefined
         if (Array.isArray(cache)) bookCollection = formatBooksFind(cache, author_key, cover_edition_key, cover_i)
         else {
-            const books = await createService('collection', user) as Collection[]
+            const books = await createCollection('collection', user) as Collection[]
             bookCollection = formatBooksFind(books, author_key, cover_edition_key, cover_i)
         }
         return {

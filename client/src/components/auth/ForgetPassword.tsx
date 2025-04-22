@@ -18,7 +18,7 @@ const ForgetPassword: FC = () => {
         e.preventDefault()
         try {
             const { data } = await forget({ variables: { email: forgetState.email } })
-            // if (data.forget) location.href = '/'
+            if (data.forget) dispatch(setError(data.forget))
         } catch (e) {
             if (e instanceof ApolloError) dispatch(setError(e.message))
             else alert('An unexpected error occurred.')

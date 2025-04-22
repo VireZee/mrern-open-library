@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
 import collection from '@models/collection.ts'
-import deleteService from '@services/state/delete.ts'
+import deleteService from '@services/redis/delete.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatBooksMap } from '@utils/formatter/books.ts'
 

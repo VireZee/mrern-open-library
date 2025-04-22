@@ -1,4 +1,5 @@
 import '@config/env.ts'
+import mongoose from 'mongoose'
 
 const MongoDB = async () => {
     try {

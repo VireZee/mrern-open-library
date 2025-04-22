@@ -1,6 +1,6 @@
 import userModel from '@models/user.ts'
 import collection from '@models/collection.ts'
-import deleteService from '@services/state/delete.ts'
+import deleteService from '@services/redis/delete.ts'
 import { sanitize } from '@utils/security/sanitizer.ts'
 import type { User } from '@type/models/user.d.ts'
 
