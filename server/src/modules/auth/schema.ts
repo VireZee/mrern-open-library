@@ -25,6 +25,9 @@ export default `#graphql
             show: Boolean!
         ): Boolean!
         logout: Boolean!
+        forget(
+            email: String!
+        ): String!
         terminate: Boolean!
     }
 `

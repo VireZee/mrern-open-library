@@ -29,7 +29,7 @@ const register = async (_: null, args: { name: string, username: string, email: 
             pass: await hash(pass)
         })
         await newUser.save()
-        await generateCode('verify', newUser)
+        await generateCode('verify', newUser, false)
         cookie(newUser, res)
         return true
     } catch (e) {

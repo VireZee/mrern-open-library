@@ -35,8 +35,8 @@ const settings = async (_: null, args: { photo: string, name: string, username: 
         if (newPass) updatedUser.pass = await hash(newPass)
         if (Object.keys(updatedUser).length > 0) {
             updatedUser.updated = new Date()
-            const newCache = await userModel.findByIdAndUpdate(authUser._id, { ...updatedUser, photo: Buffer.from(photo, 'base64') }, { new: true })
-            if (updatedUser.photo) await Redis.json.SET(key, '$.photo', Buffer.from(newCache!.photo).toString('base64'))
+            const newCache = await userModel.findByIdAndUpdate(authUser._id, { ...updatedUser, photo: Buffer.from(photo, 'base64') }, { new: true }).lean()
+            if (updatedUser.photo) await Redis.json.SET(key, '$.photo', newCache!.photo.toString('base64'))
             if (updatedUser.name) await Redis.json.SET(key, '$.name', newCache!.name)
             if (updatedUser.username) await Redis.json.SET(key, '$.username', newCache!.username)
             if (updatedUser.email) await Redis.json.SET(key, '$.email', newCache!.email)

@@ -4,6 +4,7 @@ import resend from '@modules/auth/resolver/resend.ts'
 import login from '@modules/auth/resolver/login.ts'
 import settings from '@modules/auth/resolver/settings.ts'
 import logout from '@modules/auth/resolver/logout.ts'
+import forget from '@modules/auth/resolver/forget.ts'
 import terminate from '@modules/auth/resolver/terminate.ts'
 
 export default {
@@ -14,6 +15,7 @@ export default {
         login,
         settings,
         logout,
+        forget,
         terminate
     }
 }
