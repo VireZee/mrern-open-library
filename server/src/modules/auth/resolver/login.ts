@@ -11,7 +11,7 @@ const login = async (_: null, args: { emailOrUsername: string, pass: string }, c
                 { email: emailOrUsername.toLowerCase() },
                 { username: emailOrUsername.toLowerCase() }
             ]
-        })
+        }).lean()
         if (!user || !(await verifyHash(pass, user!.pass))) throw new GraphQLError('Invalid login credentials!', { extensions: { code: 401 } })
         cookie(user, res)
         return true
