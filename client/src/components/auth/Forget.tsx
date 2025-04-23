@@ -2,7 +2,7 @@ import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '@store/store'
-import { change, setError } from '@store/slices/auth/verify'
+import { change, setError } from '@store/slices/auth/forget'
 import FORGET from '@features/auth/mutations/Forget'
 
 const Forget: FC = () => {

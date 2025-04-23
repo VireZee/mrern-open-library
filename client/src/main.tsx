@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { Provider } from 'react-redux'
 import store from '@store/store'
@@ -15,9 +16,11 @@ const client = new ApolloClient({
     cache: new InMemoryCache({ addTypename: false })
 })
 createRoot(document.getElementById('root')!).render(
-    <ApolloProvider client={client}>
-        <Provider store={store}>
-            <App />
-        </Provider>
-    </ApolloProvider>
+    <BrowserRouter>
+        <ApolloProvider client={client}>
+            <Provider store={store}>
+                <App />
+            </Provider>
+        </ApolloProvider>
+    </BrowserRouter>
 )

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import type { FC } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import AUTH from '@features/auth/queries/Auth'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,11 +24,13 @@ import Protected from '@routes/Protected'
 import Load from '@components/common/Load'
 
 const App: FC = () => {
+    const { pathname } = useLocation()
     const { loading, data, error } = useQuery(AUTH)
     const dispatch = useDispatch()
     const appState = useSelector((state: RootState) => state.app)
-    const showBackLink = ['/register', '/verify', '/login'].includes(location.pathname)
-    const hideHeader = location.pathname === '/settings'
+    const showNavbar = ['/', '/collection', '/API'].includes(pathname)
+    const showBackLink = ['/register', '/login', '/forget-password'].includes(pathname)
+    const noHeader = ['/settings', '/verify'].includes(pathname)
     const searchHandler = (s: string) => dispatch(setSearch(s))
     useEffect(() => {
         if (!loading) {
@@ -41,13 +43,12 @@ const App: FC = () => {
     }, [data, error])
     if (loading) return <Load />
     return (
-        <BrowserRouter>
-            {!hideHeader && (
+        <>
+            {!noHeader && (
                 <header className="fixed w-screen">
-                    {showBackLink ? (
+                    {showNavbar && <Navbar isUser={appState.user} onSearch={searchHandler} />}
+                    {showBackLink && (
                         <a href="/" className="absolute top-4 left-4 text-[1.2rem] text-white no-underline">&#8592; Back to home</a>
-                    ) : (
-                        <Navbar isUser={appState.user} onSearch={searchHandler} />
                     )}
                 </header>
             )}
@@ -72,7 +73,7 @@ const App: FC = () => {
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </main>
-        </BrowserRouter>
+        </>
     )
 }
 export default App

@@ -10,6 +10,6 @@ export default async (keyName: string, user: { _id: ObjectId | string }) => {
     const collection = await collectionModel.find({ user_id: new TypesObjectId(user._id) }).lean()
     const books = formatBooksMap(collection)
     await Redis.json.SET(key, '$', books)
-    await Redis.EXPIRE(key, 86400, 'NX')
+    await Redis.EXPIRE(key, 86400)
     return books
 }
