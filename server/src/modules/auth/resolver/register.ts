@@ -1,6 +1,6 @@
 import user from '@models/user.ts'
-import generateCodeService from '@services/verification/generateCode.ts'
-import authService from '@services/account/auth.ts'
+import generateCode from '@services/verification/generateCode.ts'
+import cookie from '@services/account/cookie.ts'
 import { hash } from '@utils/security/hash.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
@@ -29,8 +29,8 @@ const register = async (_: null, args: { name: string, username: string, email: 
             pass: await hash(pass)
         })
         await newUser.save()
-        await generateCodeService('verify', newUser)
-        authService(newUser, res)
+        await generateCode('verify', newUser)
+        cookie(newUser, res)
         return true
     } catch (e) {
         throw e

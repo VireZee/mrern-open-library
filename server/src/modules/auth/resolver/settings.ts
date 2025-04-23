@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
-import authService from '@services/account/auth.ts'
+import cookie from '@services/account/cookie.ts'
 import { hash, verifyHash } from '@utils/security/hash.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
@@ -40,7 +40,7 @@ const settings = async (_: null, args: { photo: string, name: string, username: 
             if (updatedUser.name) await Redis.json.SET(key, '$.name', newCache!.name)
             if (updatedUser.username) await Redis.json.SET(key, '$.username', newCache!.username)
             if (updatedUser.email) await Redis.json.SET(key, '$.email', newCache!.email)
-            authService(newCache!, res)
+            cookie(newCache!, res)
         }
         return true
     } catch (e) {
