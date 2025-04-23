@@ -8,5 +8,4 @@ const router = Router({
 })
 router.get('/api/:hash', apiController)
 router.get('/verify/:userId/:token', verifyController)
-router.get('/reset/:userId/:token', ()=> null)
 export default router

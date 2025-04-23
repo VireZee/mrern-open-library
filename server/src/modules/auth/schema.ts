@@ -28,6 +28,13 @@ export default `#graphql
         forget(
             email: String!
         ): String!
+        password(
+            id: string
+            token: string
+            pass: string
+            rePass: string
+            show: boolean
+        ): Boolean!
         terminate: Boolean!
     }
 `

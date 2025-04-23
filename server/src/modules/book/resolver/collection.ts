@@ -2,7 +2,7 @@ import Redis from '@database/Redis.ts'
 import collectionModel from '@models/collection.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import type { User } from '@type/models/user.d.ts'
-import type { Query } from '@type/modules/collection.d.ts'
+import type Query from '@type/misc/collection.d.ts'
 
 const Collection = async (_: null, args: { search: string, page: number }, context: { user: User }) => {
     try {

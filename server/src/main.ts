@@ -11,7 +11,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { expressMiddleware } from '@apollo/server/express4'
 import route from '@routes/router.ts'
 import type { User } from '@type/models/user.d.ts'
-import type Context from '@type/context/context.d.ts'
+import type Context from '@type/misc/context.d.ts'
 
 await MongoDB()
 const app = express()
