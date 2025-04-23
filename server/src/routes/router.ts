@@ -7,5 +7,6 @@ const router = Router({
     strict: true
 })
 router.get('/api/:hash', apiController)
-router.get('/verify/:userId/:hash', verifyController)
+router.get('/verify/:userId/:token', verifyController)
+router.get('/reset/:userId/:token', ()=> null)
 export default router

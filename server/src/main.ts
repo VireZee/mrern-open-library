@@ -33,7 +33,7 @@ app.use(
             return new Promise((resolve, reject) => {
                 passport.authenticate('jwt', { session: false }, (err: Error, user: User) => {
                     if (err) return reject(err)
-                    return resolve({ req, res, user })
+                    return resolve({ res, user })
                 })(req, res, () => null)
             })
         }
