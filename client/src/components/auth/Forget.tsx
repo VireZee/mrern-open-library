@@ -5,7 +5,7 @@ import type { RootState } from '@store/store'
 import { change, setError } from '@store/slices/auth/verify'
 import FORGET from '@features/auth/mutations/Forget'
 
-const ForgetPassword: FC = () => {
+const Forget: FC = () => {
     const [forget, { loading }] = useMutation(FORGET)
     const dispatch = useDispatch()
     const forgetState = useSelector((state: RootState) => state.forget)
@@ -46,4 +46,4 @@ const ForgetPassword: FC = () => {
         </div>
     )
 }
-export default ForgetPassword
+export default Forget

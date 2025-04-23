@@ -12,7 +12,7 @@ import Home from '@components/views/Home'
 import Register from '@components/auth/Register'
 import Verify from '@components/auth/Verify'
 import Login from '@components/auth/Login'
-import ForgetPassword from '@components/auth/ForgetPassword'
+import Forget from '@components/auth/Forget'
 import Collection from '@components/views/Collection'
 import API from '@components/views/API'
 import Settings from '@components/auth/Settings'
@@ -59,7 +59,7 @@ const App: FC = () => {
                     <Route element={<Auth verified={appState.verified} />}>
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
-                        <Route path='/forget-password' element={<ForgetPassword />} />
+                        <Route path='/forget-password' element={<Forget />} />
                     </Route>
                     <Route element={<Verified verified={appState.verified} />}>
                         <Route path='/verify' element={<Verify />} />
