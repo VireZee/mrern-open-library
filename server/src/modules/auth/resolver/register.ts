@@ -19,7 +19,7 @@ const register = async (_: null, args: { name: string, username: string, email: 
         if (usernameErr) errs['username'] = usernameErr
         if (emailErr) errs['email'] = emailErr
         if (!pass) errs['pass'] = "Password can't be empty!"
-        if (!show && pass !== rePass) errs['rePass'] = "Password do not match!"
+        if (!show && pass !== rePass) errs['rePass'] = 'Password do not match!'
         if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
         const newUser = new user({
             photo: Buffer.from(generateSvg(name), 'base64'),

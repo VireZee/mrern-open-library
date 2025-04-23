@@ -18,14 +18,14 @@ const settings = async (_: null, args: { photo: string, name: string, username: 
         const nameErr = validateName(name)
         const usernameErr = await validateUsername(username, user!._id)
         const emailErr = await validateEmail(email, user!._id)
-        if (Buffer.byteLength(photo, 'base64') > 5592405) errs['photo'] = "Image size must not exceed 8MB (MiB)"
+        if (Buffer.byteLength(photo, 'base64') > 5592405) errs['photo'] = 'Image size must not exceed 8MB (MiB)'
         if (nameErr) errs['name'] = nameErr
         if (usernameErr) errs['username'] = usernameErr
         if (emailErr) errs['email'] = emailErr
         if (oldPass && !newPass) errs['newPass'] = "New password can't be empty!"
-        if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass)))) errs['oldPass'] = "Invalid current password"
+        if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass)))) errs['oldPass'] = 'Invalid current password'
         if (newPass && await verifyHash(newPass, user!.pass)) errs['newPass'] = "The new password can't be the same as the current password!"
-        if (!show && newPass !== rePass) errs['rePass'] = "Password do not match!"
+        if (!show && newPass !== rePass) errs['rePass'] = 'Password do not match!'
         if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
         const updatedUser: Partial<UserSettings> = {}
         if (photo && photo !== authUser.photo) updatedUser.photo = photo
