@@ -8,6 +8,7 @@ const password = async (_: null, args: { pass: string, rePass: string, show: boo
         const { userId, token } = req.params
         const id = sanitize(userId!)
         const user = await userModel.findById(id)
+        if (token !== code) return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}/error`)
         if (!pass) throw new GraphQLError("Password can't be empty!", { extensions: { code: 422 } })
         if (!show && pass !== rePass) throw new GraphQLError('Password do not match!', { extensions: { code: 422 } })
         const updatedUser: Partial<{ pass: string, updated: Date }> = {}
