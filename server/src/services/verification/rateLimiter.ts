@@ -2,7 +2,7 @@ import Redis from '@database/Redis.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import formatTimeLeft from '@utils/formatter/timeLeft.ts'
 
-export default async (keyName: string, user: { _id: string }, minutes: number, otherKeyName = keyName) => {
+export default async (keyName: string, user: { _id: ObjectId | string }, minutes: number, otherKeyName = keyName) => {
     const key = sanitizeRedisKey(keyName, user._id)
     const otherKey = sanitizeRedisKey(otherKeyName, user._id)
     const increment = await Redis.HINCRBY(key, 'attempts', 1)

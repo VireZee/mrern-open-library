@@ -29,11 +29,11 @@ export default `#graphql
             email: String!
         ): String!
         password(
-            id: string
-            token: string
-            pass: string
-            rePass: string
-            show: boolean
+            id: String!
+            token: String!
+            pass: String!
+            rePass: String
+            show: Boolean!
         ): Boolean!
         terminate: Boolean!
     }

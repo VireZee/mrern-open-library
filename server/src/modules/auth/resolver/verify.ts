@@ -11,7 +11,6 @@ const verify = async (_: null, args: { code: string }, context: { user: User }) 
         const { user } = context
         const key = sanitizeRedisKey('verify', user._id)
         const getVerify = await Redis.HGETALL(key)
-        await Redis.HSETNX(key, 'attempts', '0')
         if (user!.verified) throw new GraphQLError('Already verified!', { extensions: { code: 409 } })
         if (!getVerify['code']) throw new GraphQLError('Verification code expired!', { extensions: { code: 400 } })
         await block('verify', user, 'You have been temporarily blocked from verifying your code due to too many failed attempts! Try again in')

@@ -8,7 +8,7 @@ const password = async (_: null, args: { id: string, token: string, pass: string
         const { id, token, pass, rePass, show } = args
         const { res } = context
         const user = await userModel.findById(id)
-        const key = sanitizeRedisKey('forget', id)
+        const key = sanitizeRedisKey('verify', id)
         const code = await Redis.HGET(key, 'code')
         if (token !== code) return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}/invalid`)
         if (!pass) throw new GraphQLError("Password can't be empty!", { extensions: { code: 422 } })
