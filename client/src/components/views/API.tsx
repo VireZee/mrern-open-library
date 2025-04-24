@@ -4,9 +4,9 @@ import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import CHECK from '@features/api/queries/Check'
 import GENERATE from '@features/api/mutations/Generate'
 import { useSelector, useDispatch } from 'react-redux'
-import { setOnline, setApiKey } from '@store/slices/views/apis'
+import { setOnline, setApiKey } from '@store/slices/views/api'
 import type { RootState } from '@store/store'
-import Net from '@components/common/NoInternet'
+import NoInternet from '@components/common/NoInternet'
 
 const API: FC = () => {
     const { loading, data, error } = useQuery(CHECK)
@@ -54,7 +54,7 @@ const API: FC = () => {
                     )}
                 </div>
             ) : (
-                <Net />
+                <NoInternet />
             )}
         </>
     )
