@@ -42,7 +42,7 @@ export const resetPassword = async (email: string, verificationCode: string, use
                 <p style="color: #555;">Click the button below to reset your password:</p>
                 <a href="http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}/reset/${user_id}/${verificationCode}"
                     style="display: inline-block; background: #007BFF; color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 5px; font-weight: bold;">
-                    Verify Now
+                    Reset Password
                 </a>
                 <p style="color: #888; font-size: 14px; margin-top: 10px;">This reset will expire in 5 minutes.</p>
             </div>
