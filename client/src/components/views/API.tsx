@@ -1,18 +1,19 @@
-import React from 'react'
+import { useEffect } from 'react'
+import type { FC } from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
+import CHECK from '@features/api/queries/Check'
+import GENERATE from '@features/api/mutations/Generate'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/store'
-import { setOnline, setApiKey } from '../../store/slices/views/API'
-import CheckGQL from '@features/api/queries/Check'
-import GenerateGQL from '@features/api/mutations/Generate'
-import Net from '../common/Internet'
+import { setOnline, setApiKey } from '@store/slices/views/apis'
+import type { RootState } from '@store/store'
+import Net from '@components/common/NoInternet'
 
-const API: React.FC = () => {
-    const { loading, data, error } = useQuery(CheckGQL)
-    const [generate] = useMutation(GenerateGQL)
+const API: FC = () => {
+    const { loading, data, error } = useQuery(CHECK)
+    const [generate] = useMutation(GENERATE)
     const dispatch = useDispatch()
     const apiState = useSelector((state: RootState) => state.API)
-    React.useEffect(() => {
+    useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)
         window.addEventListener('offline', handleOnline)

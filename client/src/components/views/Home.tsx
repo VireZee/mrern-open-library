@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import type { FC } from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
+import { HOME } from '@features/book/queries/Home'
+import { FETCH } from '@features/book/queries/Home'
+import ADD from '@features/book/mutations/Add'
 import { useSelector, useDispatch } from 'react-redux'
+import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } from '@store/slices/views/homes'
+import type { Books } from '@store/slices/views/homes'
 import type { RootState } from '@store/store'
-import type { Books } from '@store/slices/views/Home'
-import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } from '../../store/slices/views/Home'
-import { HOME as HomeGQL } from '@features/book/queries/Home'
-import { FETCH as FetchGQL } from '@features/book/queries/Home'
-import AddGQL from '@features/book/mutations/Add'
-import Load from '../common/Load'
-import Net from '../common/Internet'
-import NB from '../common/NoBooks'
+import Load from '@components/common/Load'
+import NoInternet from '@components/common/NoInternet'
+import NoBooks from '@components/common/NoBooks'
 
 interface Props {
     search: string
@@ -19,10 +20,10 @@ interface BooksData {
     numFound: number
     docs: Books[]
 }
-const Home: React.FC<Props> = ({ isUser, search }) => {
-    const { refetch: homeRefetch } = useQuery(HomeGQL, { skip: true })
-    const { refetch: fetRefetch } = useQuery(FetchGQL, { skip: true })
-    const [add] = useMutation(AddGQL)
+const Home: FC<Props> = ({ isUser, search }) => {
+    const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
+    const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
+    const [add] = useMutation(ADD)
     const dispatch = useDispatch()
     const homeState = useSelector((state: RootState) => state.HOME)
     const { page } = Object.fromEntries(new URLSearchParams(window.location.search))
@@ -64,7 +65,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
     }, [isUser, homeState.books])
     const fetchStatus = async (author_key: string[], cover_edition_key: string, cover_i: number) => {
         try {
-            const { data } = await fetRefetch({ author_key, cover_edition_key, cover_i })
+            const { data } = await fetchRefetch({ author_key, cover_edition_key, cover_i })
             dispatch(setStatus(data.fetch))
         } catch (err) {
             if (err instanceof ApolloError) alert('Fetch Error: ' + err.message)
@@ -149,7 +150,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                     {homeState.online ? (
                         <>
                             {homeState.books.length === 0 ? (
-                                <NB />
+                                <NoBooks />
                             ) : (
                                 <>
                                     <div className="mt-[12rem] sm:mt-[6rem] md:mt-[7rem] lg:mt-[8rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8">
@@ -167,7 +168,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                                                             checked={(book.author_key && book.cover_edition_key && book.cover_i) ? homeState.status[getValidKey(book.author_key, book.cover_edition_key, book.cover_i)] || false : false}
                                                             onChange={() => { if (book.author_key && book.cover_edition_key && book.cover_i) addToCollection(book.author_key, book.cover_edition_key, book.cover_i, book.title, book.author_name) }}
                                                             disabled={!(book.author_key && book.cover_edition_key && book.cover_i)}
-                                                            />
+                                                        />
                                                         <span>Add to Collection</span>
                                                     </label>
                                                 </div>
@@ -181,7 +182,7 @@ const Home: React.FC<Props> = ({ isUser, search }) => {
                             )}
                         </>
                     ) : (
-                        <Net />
+                        <NoInternet />
                     )}
                 </>
             )}

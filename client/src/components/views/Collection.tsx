@@ -1,14 +1,15 @@
-import React from 'react'
+import { useEffect } from 'react'
+import type { FC } from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
+import FETCH from '@features/book/queries/Collection'
+import REMOVE from '@features/book/mutations/Remove'
 import { useSelector, useDispatch } from 'react-redux'
-import type { RootState } from '../../store/store'
-import type { Books } from '../../store/slices/views/Collection'
-import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } from '../../store/slices/views/Collection'
-import FetchGQL from '@features/book/queries/Collection'
-import RemoveGQL from '@features/book/mutations/Remove'
-import Load from '../common/Load'
-import Net from '../common/Internet'
-import NB from '../common/NoBooks'
+import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } from '@store/slices/views/collections'
+import type { Books } from '@store/slices/views/collections'
+import type { RootState } from '@store/store'
+import Load from '@components/common/Load'
+import NoInternet from '@components/common/NoInternet'
+import NoBooks from '@components/common/NoBooks'
 
 interface Props {
     search: string
@@ -24,14 +25,14 @@ interface CollectionData {
     }[]
     totalCollection: number
 }
-const Collection: React.FC<Props> = ({ search }) => {
-    const { refetch } = useQuery(FetchGQL, { skip: true })
-    const [remove] = useMutation(RemoveGQL)
+const Collection: FC<Props> = ({ search }) => {
+    const { refetch } = useQuery(FETCH, { skip: true })
+    const [remove] = useMutation(REMOVE)
     const dispatch = useDispatch()
     const colState = useSelector((state: RootState) => state.COL)
     const { title, page } = Object.fromEntries(new URLSearchParams(window.location.search))
     const pg = Number(page) || 1
-    React.useEffect(() => {
+    useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)
         window.addEventListener('offline', handleOnline)
@@ -130,7 +131,7 @@ const Collection: React.FC<Props> = ({ search }) => {
                     {colState.online ? (
                         <>
                             {colState.books.length === 0 ? (
-                                <NB />
+                                <NoBooks />
                             ) : (
                                 <>
                                     <div className="mt-[12rem] sm:mt-[6rem] md:mt-[7rem] lg:mt-[8rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8">
@@ -161,7 +162,7 @@ const Collection: React.FC<Props> = ({ search }) => {
                             )}
                         </>
                     ) : (
-                        <Net />
+                        <NoInternet />
                     )}
                 </>
             )}
