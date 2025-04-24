@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import type { FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import CHECK from '@features/api/queries/Check'
 import GENERATE from '@features/api/mutations/Generate'

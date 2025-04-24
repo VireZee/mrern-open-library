@@ -6,6 +6,6 @@ const router = Router({
     caseSensitive: true,
     strict: true
 })
-router.get('/api/:hash', apiController)
-router.get('/verify/:userId/:token', verifyController)
+router.get('/api/:token', apiController)
+router.get('/verify/:id/:token', verifyController)
 export default router

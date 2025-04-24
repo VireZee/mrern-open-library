@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import type { FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import FETCH from '@features/book/queries/Collection'
 import REMOVE from '@features/book/mutations/Remove'

@@ -7,8 +7,8 @@ import { change, setError } from '@store/slices/auth/verify'
 import type { RootState } from '@store/store'
 
 const Verify: FC = () => {
-    const [verify, { loading: verLoad }] = useMutation(VERIFY)
-    const [resend, { loading: resLoad }] = useMutation(RESEND)
+    const [verify, { loading: verifyLoad }] = useMutation(VERIFY)
+    const [resend, { loading: resendLoad }] = useMutation(RESEND)
     const dispatch = useDispatch()
     const verifyState = useSelector((state: RootState) => state.verify)
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,8 +52,8 @@ const Verify: FC = () => {
                         />
                         {verifyState.error && <p className="text-red-500 text-sm mt-1">{verifyState.error}</p>}
                     </div>
-                    <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={verLoad} >{verLoad ? 'Loading...' : 'Verify'}</button>
-                    <button type="button" className="w-full bg-black text-white py-2 px-4 rounded-md mt-1" disabled={resLoad} onClick={resendCode}>{resLoad ? 'Loading...' : 'Resend Code'}</button>
+                    <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={verifyLoad} >{verifyLoad ? 'Loading...' : 'Verify'}</button>
+                    <button type="button" className="w-full bg-black text-white py-2 px-4 rounded-md mt-1" disabled={resendLoad} onClick={resendCode}>{resendLoad ? 'Loading...' : 'Resend Code'}</button>
                 </form>
             </div>
         </div>

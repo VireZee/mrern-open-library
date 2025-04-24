@@ -3,8 +3,8 @@ import booksChild from '@controller/booksChild.ts'
 
 const booksParent = async (req: Req, res: Res) => {
     try {
-        const { hash } = req.params
-        const hashBuffer = Buffer.from(hash!, 'hex')
+        const { token } = req.params
+        const hashBuffer = Buffer.from(token!, 'hex')
         const user = await userModel.findOne({ api_key: hashBuffer })
         if (!user) return res.status(404).json({ message: 'Invalid API Key!' })
         const books = await booksChild({ id: user._id })

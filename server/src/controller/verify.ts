@@ -5,13 +5,13 @@ import type { User } from '@type/models/user.d.ts'
 
 const verify = async (req: Req, res: Res) => {
     try {
-        const { userId, token } = req.params
-        const userKey = sanitizeRedisKey('user', userId!)
-        const verifyKey = sanitizeRedisKey('verify', userId!)
+        const { id, token } = req.params
+        const userKey = sanitizeRedisKey('user', id!)
+        const verifyKey = sanitizeRedisKey('verify', id!)
         const user = await Redis.json.GET(userKey) as User
         const code = await Redis.HGET(verifyKey, 'code')
         if (!user!.verified && token !== code) return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}/error`)
-        await setToVerified(userId!)
+        await setToVerified(id!)
         return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`)
     } catch (e) {
         throw e
