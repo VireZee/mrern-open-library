@@ -2,7 +2,6 @@ import Redis from '@database/Redis.ts'
 import collectionModel from '@models/collection.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatBooksMap } from '@utils/formatter/books.ts'
-
 export default async (keyName: string, user: { _id: ObjectId | string }) => {
     const key = sanitizeRedisKey(keyName, user._id)
     const cache = await Redis.json.GET(key)

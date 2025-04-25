@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import type { FC } from 'react'
+import { useEffect, type FC } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import AUTH from '@features/auth/queries/Auth'

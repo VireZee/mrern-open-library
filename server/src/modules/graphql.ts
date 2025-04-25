@@ -7,7 +7,6 @@ import middlewareResolver from '@modules/middleware/resolver.ts'
 import authResolver from '@modules/auth/resolver.ts'
 import bookResolver from '@modules/book/resolver.ts'
 import apiResolver from '@modules/api/resolver.ts'
-
 export const typeDefs = [schema, middlewareSchema, authSchema, bookSchema, apiSchema].join('\n')
 export const resolvers = {
     Query: {

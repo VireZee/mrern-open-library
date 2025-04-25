@@ -1,5 +1,4 @@
 import type Collection from '@type/models/collection.d.ts'
-
 export const formatBooksMap = (books: Collection[]) => {
     return books.map(book => ({
         author_key: book.author_key,

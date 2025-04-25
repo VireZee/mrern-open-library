@@ -1,5 +1,4 @@
 import user from '@models/user.ts'
-
 export default async (email: string, id?: ObjectId) => {
     if (!email) {
         return "Email can't be empty!"

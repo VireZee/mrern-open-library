@@ -6,6 +6,7 @@ import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
 import generateSvg from '@utils/misc/generateSvg.ts'
+import graphqlError from '@utils/misc/graphqlError.ts'
 
 const register = async (_: null, args: { name: string, username: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {
@@ -20,7 +21,7 @@ const register = async (_: null, args: { name: string, username: string, email: 
         if (emailErr) errs['email'] = emailErr
         if (!pass) errs['pass'] = "Password can't be empty!"
         if (!show && pass !== rePass) errs['rePass'] = 'Password do not match!'
-        if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
+        if (Object.keys(errs).length > 0) graphqlError('Unprocessable Content', 422, errs)
         const newUser = new user({
             photo: Buffer.from(generateSvg(name), 'base64'),
             name: formatName(name),

@@ -8,7 +8,6 @@ import forget from '@modules/auth/resolver/forget.ts'
 import validate from '@modules/auth/resolver/validate.ts'
 import reset from '@modules/auth/resolver/reset.ts'
 import terminate from '@modules/auth/resolver/terminate.ts'
-
 export default {
     Mutation: {
         register,

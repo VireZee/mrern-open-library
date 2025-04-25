@@ -1,5 +1,4 @@
 import user from '@models/user.ts'
-
 export const validateUsername = async (username: string, id?: ObjectId) => {
     if (!username) {
         return "Username can't be empty!"

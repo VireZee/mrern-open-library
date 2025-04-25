@@ -6,6 +6,7 @@ import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { validateName, formatName } from '@utils/validators/name.ts'
 import { validateUsername, formatUsername } from '@utils/validators/username.ts'
 import validateEmail from '@utils/validators/email.ts'
+import graphqlError from '@utils/misc/graphqlError.ts'
 import type { User, UserSettings } from '@type/models/user.d.ts'
 
 const settings = async (_: null, args: { photo: string, name: string, username: string, email: string, oldPass: string, newPass: string, rePass: string, show: boolean }, context: { res: Res, user: User }) => {
@@ -26,7 +27,7 @@ const settings = async (_: null, args: { photo: string, name: string, username: 
         if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass)))) errs['oldPass'] = 'Invalid current password'
         if (newPass && await verifyHash(newPass, user!.pass)) errs['newPass'] = "The new password can't be the same as the current password!"
         if (!show && newPass !== rePass) errs['rePass'] = 'Password do not match!'
-        if (Object.keys(errs).length > 0) throw new GraphQLError('Unprocessable Content', { extensions: { errs, code: 422 } })
+        if (Object.keys(errs).length > 0) graphqlError('Unprocessable Content', 422, errs)
         const updatedUser: Partial<UserSettings> = {}
         if (photo && photo !== authUser.photo) updatedUser.photo = photo
         if (name && name !== authUser.name) updatedUser.name = formatName(name)

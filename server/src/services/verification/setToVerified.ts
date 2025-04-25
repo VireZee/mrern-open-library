@@ -1,7 +1,6 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
-
 export default async (userId: string) => {
     const userKey = sanitizeRedisKey('user', userId)
     const verifyKey = sanitizeRedisKey('verify', userId)

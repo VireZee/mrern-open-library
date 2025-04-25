@@ -1,5 +1,4 @@
 import generateToken from '@utils/security/jwt.ts'
-
 export default (user: { _id: ObjectId }, res: Res) => {
     const t = generateToken(user._id)
     res.cookie('!', t, {

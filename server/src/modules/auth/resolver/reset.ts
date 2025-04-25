@@ -2,6 +2,7 @@ import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { hash } from '@utils/security/hash.ts'
+import graphqlError from '@utils/misc/graphqlError.ts'
 
 const reset = async (_: null, args: { id: string, token: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {
@@ -12,8 +13,8 @@ const reset = async (_: null, args: { id: string, token: string, pass: string, r
         const forgetKey = sanitizeRedisKey('forget', id)
         const code = await Redis.HGET(verifyKey, 'code')
         if (token !== code) return res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}/invalid`)
-        if (!pass) throw new GraphQLError("Password can't be empty!", { extensions: { code: 422 } })
-        if (!show && pass !== rePass) throw new GraphQLError('Password do not match!', { extensions: { code: 422 } })
+        if (!pass) graphqlError("Password can't be empty!", 422)
+        if (!show && pass !== rePass) graphqlError('Password do not match!', 422)
         const updatedUser: Partial<{ pass: string, updated: Date }> = {}
         updatedUser.pass = await hash(pass)
         updatedUser.updated = new Date()

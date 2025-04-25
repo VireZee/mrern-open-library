@@ -1,6 +1,7 @@
 import userModel from '@models/user.ts'
 import cookie from '@services/account/cookie.ts'
 import { verifyHash } from '@utils/security/hash.ts'
+import graphqlError from '@utils/misc/graphqlError.ts'
 
 const login = async (_: null, args: { emailOrUsername: string, pass: string }, context: { res: Res }) => {
     try {
@@ -12,8 +13,8 @@ const login = async (_: null, args: { emailOrUsername: string, pass: string }, c
                 { username: emailOrUsername.toLowerCase() }
             ]
         }).lean()
-        if (!user || !(await verifyHash(pass, user!.pass))) throw new GraphQLError('Invalid login credentials!', { extensions: { code: 401 } })
-        cookie(user, res)
+        if (!user || !(await verifyHash(pass, user!.pass))) graphqlError('Invalid login credentials!', 401)
+        cookie(user!, res)
         return true
     } catch (e) {
         throw e
