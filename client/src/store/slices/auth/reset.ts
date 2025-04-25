@@ -3,15 +3,19 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { GlobalUserState } from '@type/redux/state'
 
 const initialState: GlobalUserState = {
-    emailOrUsername: '',
+    isValidating: true,
     pass: '',
+    rePass: '',
     show: false,
     error: ''
 }
-const login = createSlice({
-    name: 'login',
+const reset = createSlice({
+    name: 'reset',
     initialState,
     reducers: {
+        setIsValidating: (state, { payload }: PayloadAction<boolean>) => {
+            state['isValidating'] = payload
+        },
         change: (state, { payload: { name, value } }: PayloadAction<{ name: keyof GlobalUserState, value: string }>) => {
             state[name] = value
         },
@@ -23,5 +27,5 @@ const login = createSlice({
         }
     }
 })
-export const { change, setShow, setError } = login.actions
-export default login.reducer
+export const { setIsValidating, change, setShow, setError } = reset.actions
+export default reset.reducer

@@ -32,7 +32,7 @@ export default `#graphql
             id: String!
             token: String!
         ): Boolean!
-        password(
+        reset(
             id: String!
             token: String!
             pass: String!

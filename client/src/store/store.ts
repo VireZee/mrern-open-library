@@ -7,9 +7,10 @@ import verify from '@store/slices/auth/verify'
 import login from '@store/slices/auth/login'
 import Home from '@store/slices/views/home'
 import Col from '@store/slices/views/collection'
-import API from '@store/slices/views/api'
+import api from '@store/slices/views/api'
 import settings from '@store/slices/auth/settings'
 import forget from '@store/slices/auth/forget'
+import reset from '@store/slices/auth/reset'
 
 const store: Store = configureStore({
     reducer: {
@@ -20,9 +21,10 @@ const store: Store = configureStore({
         login,
         HOME: Home,
         COL: Col,
-        API,
+        api,
         settings,
-        forget
+        forget,
+        reset
     }
 })
 export type RootState = ReturnType<typeof store.getState>
