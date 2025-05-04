@@ -1,15 +1,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { GlobalBookState } from '@type/redux/state'
 
-interface State {
-    [key: string]: boolean | undefined | string | null
-}
-const initialState: State = {
+const initialState: GlobalBookState = {
     online: navigator.onLine,
     apiKey: undefined
 }
-const API = createSlice({
-    name: 'API',
+const api = createSlice({
+    name: 'api',
     initialState,
     reducers: {
         setOnline: (state, { payload }: PayloadAction<boolean>) => {
@@ -20,5 +18,5 @@ const API = createSlice({
         }
     }
 })
-export const { setOnline, setApiKey } = API.actions
-export default API.reducer
+export const { setOnline, setApiKey } = api.actions
+export default api.reducer

@@ -1,26 +1,17 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import type { GlobalBookState } from '@type/redux/state'
+import type Books from '@type/redux/book/Books'
 
-export interface Books {
-    author_key: string[]
-    cover_edition_key: string
-    cover_i: number
-    title: string
-    author_name: string[]
-}
-interface State {
-    [key: string]: boolean | Books[] | number
-    books: Books[]
-}
-const initialState: State = {
+const initialState: GlobalBookState = {
     online: navigator.onLine,
     load: false,
     books: [],
     currentPage: 1,
     totalPages: 1
 }
-const Collection = createSlice({
-    name: 'COL',
+const collection = createSlice({
+    name: 'collection',
     initialState,
     reducers: {
         setOnline: (state, { payload }: PayloadAction<boolean>) => {
@@ -40,5 +31,5 @@ const Collection = createSlice({
         }
     }
 })
-export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } = Collection.actions
-export default Collection.reducer
+export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } = collection.actions
+export default collection.reducer

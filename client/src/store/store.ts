@@ -5,8 +5,8 @@ import navbar from '@store/slices/layouts/navbar'
 import register from '@store/slices/auth/register'
 import verify from '@store/slices/auth/verify'
 import login from '@store/slices/auth/login'
-import Home from '@store/slices/views/home'
-import Col from '@store/slices/views/collection'
+import home from '@store/slices/views/home'
+import collection from '@store/slices/views/collection'
 import api from '@store/slices/views/api'
 import settings from '@store/slices/auth/settings'
 import forget from '@store/slices/auth/forget'
@@ -19,8 +19,8 @@ const store: Store = configureStore({
         register,
         verify,
         login,
-        HOME: Home,
-        COL: Col,
+        home,
+        collection,
         api,
         settings,
         forget,
