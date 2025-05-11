@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-
 export const HOME = gql`
     query Home($search: String, $page: Int!) {
         home(search: $search, page: $page) {
