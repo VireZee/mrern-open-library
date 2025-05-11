@@ -28,7 +28,7 @@ const Collection: FC<Props> = ({ search }) => {
     const { refetch } = useQuery(FETCH, { skip: true })
     const [remove] = useMutation(REMOVE)
     const dispatch = useDispatch()
-    const colState = useSelector((state: RootState) => state.COL)
+    const colState = useSelector((state: RootState) => state.collection)
     const { title, page } = Object.fromEntries(new URLSearchParams(window.location.search))
     const pg = Number(page) || 1
     useEffect(() => {

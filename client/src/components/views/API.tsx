@@ -11,7 +11,7 @@ const API: FC = () => {
     const { loading, data, error } = useQuery(CHECK)
     const [generate] = useMutation(GENERATE)
     const dispatch = useDispatch()
-    const apiState = useSelector((state: RootState) => state.API)
+    const apiState = useSelector((state: RootState) => state.api)
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)

@@ -24,7 +24,7 @@ const Home: FC<Props> = ({ isUser, search }) => {
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
     const [add] = useMutation(ADD)
     const dispatch = useDispatch()
-    const homeState = useSelector((state: RootState) => state.HOME)
+    const homeState = useSelector((state: RootState) => state.home)
     const { page } = Object.fromEntries(new URLSearchParams(window.location.search))
     const pg = Number(page) || 1
     useEffect(() => {
@@ -44,6 +44,7 @@ const Home: FC<Props> = ({ isUser, search }) => {
                 dispatch(setLoad(true))
                 dispatch(setCurrentPage(1))
                 const { data } = await homeRefetch({ search: search || 'harry potter', page: homeState.currentPage })
+                console.log(data)
                 if (data.home) booksData(data.home)
                 else dispatch(setBooks([]))
                 dispatch(setLoad(false))

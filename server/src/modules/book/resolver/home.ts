@@ -7,6 +7,7 @@ const home = async (_: null, args: { search: string, page: number }) => {
         const { search, page } = args
         const key = `book:${search}|${page}`
         const cache = await Redis.json.GET(key)
+        console.log(cache)
         if (cache) return cache
         const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')
