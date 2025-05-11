@@ -1,7 +1,7 @@
 import type User from '@type/redux/user/user'
 import type BaseError from '@type/redux/user/baseError'
 import type ExtendedError from '@type/redux/user/extendedError'
-import type Books from '@type/redux/book/Books'
+import type Books from '@type/redux/book/books'
 
 export type GlobalUserState = {
     [_: string]:

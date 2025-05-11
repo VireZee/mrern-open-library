@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 import type { GlobalBookState } from '@type/redux/state'
-import type Books from '@type/redux/book/Books'
+import type Books from '@type/redux/book/books'
 
 const initialState: GlobalBookState = {
     online: navigator.onLine,

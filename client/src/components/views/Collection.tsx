@@ -4,11 +4,11 @@ import FETCH from '@features/book/queries/Collection'
 import REMOVE from '@features/book/mutations/Remove'
 import { useSelector, useDispatch } from 'react-redux'
 import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } from '@store/slices/views/collection'
-import type { Books } from '@store/slices/views/collection'
 import type { RootState } from '@store/store'
 import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
 import NoBooks from '@components/common/NoBooks'
+import type Books from '@type/redux/book/books'
 
 interface Props {
     search: string
