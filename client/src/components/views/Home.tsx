@@ -44,7 +44,6 @@ const Home: FC<Props> = ({ isUser, search }) => {
                 dispatch(setLoad(true))
                 dispatch(setCurrentPage(1))
                 const { data } = await homeRefetch({ search: search || 'harry potter', page: homeState.currentPage })
-                console.log(data)
                 if (data.home) booksData(data.home)
                 else dispatch(setBooks([]))
                 dispatch(setLoad(false))

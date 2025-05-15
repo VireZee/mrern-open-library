@@ -1,5 +1,6 @@
 import Redis from '@database/Redis.ts'
 import got from 'got'
+import { formatBooksMap } from '@utils/formatter/books.ts'
 import type Collection from '@type/models/collection.d.ts'
 
 const home = async (_: null, args: { search: string, page: number }) => {
@@ -7,8 +8,15 @@ const home = async (_: null, args: { search: string, page: number }) => {
         const { search, page } = args
         const key = `book:${search}|${page}`
         const cache = await Redis.json.GET(key)
-        console.log(cache)
-        if (cache) return cache
+        // console.log('\nCache: ', cache, '\n')
+        console.log('\nCache Format: ', {
+            numFound: (cache as { numFound: number }).numFound,
+            docs: formatBooksMap((cache as { docs: Collection[] }).docs)
+        }, '\n')
+        if (cache) return {
+            numFound: (cache as { numFound: number }).numFound,
+            docs: formatBooksMap((cache as { docs: Collection[] }).docs)
+        }
         const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')
         const response = await got(`https://openlibrary.org/search.json?${type}=${formattedQuery}&page=${page}`).json<{ numFound: number, docs: Collection[] }>()
@@ -22,6 +30,7 @@ const home = async (_: null, args: { search: string, page: number }) => {
                 author_name: book.author_name ?? ['Unknown Author']
             }))
         }
+        console.log('\nResponse: ', books, '\n')
         await Redis.json.SET(key, '$', books)
         await Redis.EXPIRE(key, 86400)
         return books
