@@ -8,14 +8,9 @@ const home = async (_: null, args: { search: string, page: number }) => {
         const { search, page } = args
         const key = `book:${search}|${page}`
         const cache = await Redis.json.GET(key)
-        // console.log('\nCache: ', cache, '\n')
-        console.log('\nCache Format: ', {
-            numFound: (cache as { numFound: number }).numFound,
-            docs: formatBooksMap((cache as { docs: Collection[] }).docs)
-        }, '\n')
         if (cache) return {
-            numFound: (cache as { numFound: number }).numFound,
-            docs: formatBooksMap((cache as { docs: Collection[] }).docs)
+            numFound: (JSON.parse(cache as string) as { numFound: number }).numFound,
+            docs: formatBooksMap((JSON.parse(cache as string) as { docs: Collection[] }).docs)
         }
         const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')
@@ -30,7 +25,6 @@ const home = async (_: null, args: { search: string, page: number }) => {
                 author_name: book.author_name ?? ['Unknown Author']
             }))
         }
-        console.log('\nResponse: ', books, '\n')
         await Redis.json.SET(key, '$', books)
         await Redis.EXPIRE(key, 86400)
         return books
