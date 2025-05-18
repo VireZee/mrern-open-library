@@ -1,6 +1,6 @@
 import Redis from '@database/Redis.ts'
 export default async (key: string) => {
-    let cursor = 0
+    let cursor = '0'
     do {
         const result = await Redis.SCAN(cursor, {
             MATCH: key,
@@ -8,5 +8,5 @@ export default async (key: string) => {
         })
         cursor = result.cursor
         if (result.keys.length) await Redis.DEL(result.keys)
-    } while (cursor !== 0)
+    } while (cursor !== '0')
 }
