@@ -9,17 +9,10 @@ import type { RootState } from '@store/store'
 import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
 import NoBooks from '@components/common/NoBooks'
+import type { HomeProps, BooksData } from '@type/components/home'
 import type Books from '@type/redux/book/books'
 
-interface Props {
-    search: string
-    isUser: Record<string, string> | null
-}
-interface BooksData {
-    numFound: number
-    docs: Books[]
-}
-const Home: FC<Props> = ({ isUser, search }) => {
+const Home: FC<HomeProps> = ({ isUser, search }) => {
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
     const [add] = useMutation(ADD)

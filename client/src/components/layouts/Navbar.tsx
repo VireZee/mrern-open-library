@@ -6,15 +6,9 @@ import LOGOUT from '@features/auth/mutations/Logout'
 import { useSelector, useDispatch } from 'react-redux'
 import { setActive, setIsDropdownOpen } from '@store/slices/layouts/navbar'
 import type { RootState } from '@store/store'
+import type NavbarProps from '@type/components/navbar'
 
-interface Props {
-    isUser: {
-        photo: string
-        name: string
-    } | null
-    onSearch: (v: string) => void
-}
-const Navbar: FC<Props> = ({ isUser, onSearch }) => {
+const Navbar: FC<NavbarProps> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LOGOUT)
     const dispatch = useDispatch()
     const navbarState = useSelector((state: RootState) => state.navbar)

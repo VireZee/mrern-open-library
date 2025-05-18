@@ -5,17 +5,10 @@ import { SETTINGS, TERMINATE } from '@features/auth/mutations/Settings'
 import { useSelector, useDispatch } from 'react-redux'
 import { setIsDropdownOpen, change, setShow, setErrors } from '@store/slices/auth/settings'
 import type { RootState } from '@store/store'
+import type SettingsProps from '@type/components/settings'
 import type ExtendedError from '@type/redux/auth/extendedError'
 
-interface Props {
-    isUser: {
-        photo: string
-        name: string
-        username: string
-        email: string
-    }
-}
-const Settings: FC<Props> = ({ isUser }) => {
+const Settings: FC<SettingsProps> = ({ isUser }) => {
     const [settings, { loading: settingsLoad }] = useMutation(SETTINGS)
     const [terminate, { loading: terminateLoad }] = useMutation(TERMINATE)
     const dispatch = useDispatch()
@@ -84,7 +77,7 @@ const Settings: FC<Props> = ({ isUser }) => {
             }
         } catch (e) {
             if (e instanceof ApolloError) {
-                const{ errs } = e.cause!.extensions as { errs: ExtendedError }
+                const { errs } = e.cause!.extensions as { errs: ExtendedError }
                 dispatch(setErrors(errs))
             } else alert('An unexpected error occurred.')
         }

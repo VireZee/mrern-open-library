@@ -8,23 +8,10 @@ import type { RootState } from '@store/store'
 import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
 import NoBooks from '@components/common/NoBooks'
+import type { CollectionProps, CollectionData } from '@type/components/collection'
 import type Books from '@type/redux/book/books'
 
-interface Props {
-    search: string
-}
-interface CollectionData {
-    found: number
-    collection: {
-        author_key: string[]
-        cover_edition_key: string
-        cover_i: number
-        title: string
-        author_name: string[]
-    }[]
-    totalCollection: number
-}
-const Collection: FC<Props> = ({ search }) => {
+const Collection: FC<CollectionProps> = ({ search }) => {
     const { refetch } = useQuery(FETCH, { skip: true })
     const [remove] = useMutation(REMOVE)
     const dispatch = useDispatch()
