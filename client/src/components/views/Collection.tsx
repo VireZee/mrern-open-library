@@ -9,7 +9,7 @@ import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
 import NoBooks from '@components/common/NoBooks'
 import type { CollectionProps, CollectionData } from '@type/components/collection'
-import type Books from '@type/redux/book/book'
+import type Books from '@type/redux/book/books'
 
 const Collection: FC<CollectionProps> = ({ search }) => {
     const { refetch } = useQuery(FETCH, { skip: true })
