@@ -1,4 +1,5 @@
 import { useEffect, type FC } from 'react'
+import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import { HOME } from '@features/book/queries/Home'
 import { FETCH } from '@features/book/queries/Home'
@@ -13,12 +14,12 @@ import type { HomeProps, BooksData } from '@type/components/home'
 import type Books from '@type/redux/book/books'
 
 const Home: FC<HomeProps> = ({ isUser, search }) => {
+    const { query, page } = useParams()
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
     const [add] = useMutation(ADD)
     const dispatch = useDispatch()
     const homeState = useSelector((state: RootState) => state.home)
-    const { page } = Object.fromEntries(new URLSearchParams(window.location.search))
     const pg = Number(page) || 1
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))

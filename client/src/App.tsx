@@ -56,6 +56,8 @@ const App: FC = () => {
                 <Routes>
                     <Route element={<Main user={appState.user} verified={appState.verified} />}>
                         <Route path='/' element={<Home isUser={appState.user} search={appState.search} />} />
+                        <Route path='/search/:query' element={<Home isUser={appState.user} search={appState.search} />} />
+                        <Route path='/search/:query/:page' element={<Home isUser={appState.user} search={appState.search} />} />
                     </Route>
                     <Route element={<Auth verified={appState.verified} />}>
                         <Route path='/register' element={<Register />} />
