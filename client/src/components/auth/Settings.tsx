@@ -1,5 +1,5 @@
-import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useEffect, useRef } from 'react'
+import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import { SETTINGS, TERMINATE } from '@features/auth/mutations/Settings'
 import { useSelector, useDispatch } from 'react-redux'

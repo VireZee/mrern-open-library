@@ -26,7 +26,7 @@ const Register: FC = () => {
                     email: registerState.email,
                     pass: registerState.pass,
                     rePass: registerState.show ? null : registerState.rePass,
-                    show: registerState.show,
+                    show: registerState.show
                 }
             })
             if (data.register) location.href = '/verify'

@@ -10,7 +10,7 @@ import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
 import NoBooks from '@components/common/NoBooks'
 import type { HomeProps, BooksData } from '@type/components/home'
-import type Books from '@type/redux/book/books'
+import type Books from '@type/redux/book/book'
 
 const Home: FC<HomeProps> = ({ isUser, search }) => {
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
