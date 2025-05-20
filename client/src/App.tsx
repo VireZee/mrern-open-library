@@ -70,6 +70,8 @@ const App: FC = () => {
                     </Route>
                     <Route element={<Protected user={appState.user} verified={appState.verified} />}>
                         <Route path='/collection' element={<Collection search={appState.search} />} />
+                        <Route path='/collection/:query' element={<Collection search={appState.search} />} />
+                        <Route path='/collection/:query/:page' element={<Collection search={appState.search} />} />
                         <Route path='/API' element={<API />} />
                         <Route path='/settings' element={<Settings isUser={appState.user} />} />
                     </Route>
