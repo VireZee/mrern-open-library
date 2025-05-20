@@ -3,6 +3,6 @@ type NavbarProps = {
         photo: string
         name: string
     } | null
-    onSearch: (v: string) => void
+    onSearch: (query: string) => void
 }
 export default NavbarProps

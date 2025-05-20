@@ -28,10 +28,10 @@ const App: FC = () => {
     const { loading, data, error } = useQuery(AUTH)
     const dispatch = useDispatch()
     const appState = useSelector((state: RootState) => state.app)
-    const showNavbar = ['/', '/collection', '/API'].includes(pathname)
+    const showNavbar = ['/', '/collection', '/API'].some(path => pathname === path) || pathname.startsWith('/search/') || pathname.startsWith('/collection/')
     const showBackLink = ['/register', '/login', '/forget-password'].includes(pathname)
     const noHeader = ['/settings', '/verify'].includes(pathname)
-    const searchHandler = (s: string) => dispatch(setSearch(s))
+    const searchHandler = (search: string) => dispatch(setSearch(search))
     useEffect(() => {
         if (!loading) {
             if (data) {
