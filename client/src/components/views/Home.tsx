@@ -15,6 +15,7 @@ import type Books from '@type/redux/book/books'
 
 const Home: FC<HomeProps> = ({ isUser, search }) => {
     const { query, page } = useParams()
+    console.log(query)
     const pg = Number(page) || 1
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
@@ -37,7 +38,7 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
             const fetchBooks = async () => {
                 dispatch(setLoad(true))
                 dispatch(setCurrentPage(1))
-                const { data } = await homeRefetch({ search: search || query || 'harry potter', page: homeState.currentPage })
+                const { data } = await homeRefetch({ search: search ? search.replace(/\s+/g, '+') : query ? query.replace(/\++/g, ' ') : 'harry potter', page: pg })
                 if (data.home) booksData(data.home)
                 else dispatch(setBooks([]))
                 dispatch(setLoad(false))
@@ -91,7 +92,7 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
         const addPages = (s: number, e: number) => {
             for (let i = s; i <= e; i++) pages.push(i)
         }
-        const { currentPage, totalPages } = homeState
+        const { totalPages } = homeState
         if (totalPages <= 9) addPages(1, totalPages)
         else if (search || pg <= 6) {
             addPages(1, 7)
@@ -126,10 +127,7 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
                         onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        {/* <a href={`s?${/^\d{10}(\d{3})?$/.test(search ?? '') ? 'isbn' : 'title'}=${search ? search.split(' ').join('+') : 'harry+potter'}&page=${currentPage}`}>
-                            {page}
-                        </a> */}
-                        <a href={`search/${search}/${currentPage}`}>
+                        <a href={`/search/${search ? search.replace(/\s+/g, '+') : query ?? 'harry+potter'}/${page}`}>
                             {page}
                         </a>
                     </span>
