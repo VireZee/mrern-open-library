@@ -9,6 +9,7 @@ const Forget: FC = () => {
     const [forget, { loading }] = useMutation(FORGET)
     const dispatch = useDispatch()
     const forgetState = useSelector((state: RootState) => state.forget)
+    const { email, error } = forgetState
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
@@ -17,7 +18,7 @@ const Forget: FC = () => {
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
-            const { data } = await forget({ variables: { email: forgetState.email } })
+            const { data } = await forget({ variables: { email } })
             if (data.forget) dispatch(setError(data.forget))
         } catch (e) {
             if (e instanceof ApolloError) dispatch(setError(e.message))
@@ -34,11 +35,11 @@ const Forget: FC = () => {
                         <input
                             type="email"
                             name="email"
-                            value={forgetState.email}
+                            value={email}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!forgetState.errors ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {forgetState.error && <p className="text-red-500 text-sm mt-1">{forgetState.error}</p>}
+                        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                     </div>
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading} >{loading ? 'Loading...' : 'Send'}</button>
                 </form>

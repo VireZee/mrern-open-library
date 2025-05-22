@@ -12,6 +12,7 @@ const API: FC = () => {
     const [generate] = useMutation(GENERATE)
     const dispatch = useDispatch()
     const apiState = useSelector((state: RootState) => state.api)
+    const { online, apiKey } = apiState
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)
@@ -21,7 +22,7 @@ const API: FC = () => {
             window.removeEventListener('online', handleOnline)
             window.removeEventListener('offline', handleOnline)
         }
-    }, [apiState.online, data, error])
+    }, [online, data, error])
     const check = async () => {
         if (!loading) {
             if (data) dispatch(setApiKey(data.check))
@@ -39,10 +40,10 @@ const API: FC = () => {
     }
     return (
         <>
-            {apiState.online ? (
+            {online ? (
                 <div className="mt-16">
-                    {apiState.apiKey !== null ? (
-                        <p className="bg-black text-white px-4 py-3 rounded-lg w-[90vw] max-w-[600px] text-center break-all absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg sm:text-xl">http://{import.meta.env['VITE_DOMAIN']}:{import.meta.env['VITE_SERVER_PORT']}/api/{apiState.apiKey}</p>
+                    {apiKey !== null ? (
+                        <p className="bg-black text-white px-4 py-3 rounded-lg w-[90vw] max-w-[600px] text-center break-all absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg sm:text-xl">http://{import.meta.env['VITE_DOMAIN']}:{import.meta.env['VITE_SERVER_PORT']}/api/{apiKey}</p>
                     ) : (
                         <button
                             onClick={generateApi}

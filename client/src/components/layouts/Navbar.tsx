@@ -12,6 +12,7 @@ const Navbar: FC<NavbarProps> = ({ isUser, onSearch }) => {
     const [logout] = useMutation(LOGOUT)
     const dispatch = useDispatch()
     const navbarState = useSelector((state: RootState) => state.navbar)
+    const { active, isDropdownOpen } = navbarState
     const { title, isbn } = Object.fromEntries(new URLSearchParams(window.location.search))
     const str = title || isbn
     useEffect(() => {
@@ -45,23 +46,23 @@ const Navbar: FC<NavbarProps> = ({ isUser, onSearch }) => {
             <div className="text-white">
                 {isUser ? (
                     <div className="flex flex-wrap space-x-4">
-                        <Link to="" className={`${navbarState.active === 'home' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('home'))}>Home</Link>
-                        <Link to="collection" className={`${navbarState.active === 'col' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('col'))}>Collection</Link>
-                        <Link to="API" className={`${navbarState.active === 'api' ? 'text-gray-500' : 'hover:text-gray-500'}`} onClick={() => dispatch(setActive('api'))}>API</Link>
+                        <Link to="" className={`${active === 'home' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('home'))}>Home</Link>
+                        <Link to="collection" className={`${active === 'col' ? 'text-gray-500' : 'hover:text-gray-500'} mr-4`} onClick={() => dispatch(setActive('col'))}>Collection</Link>
+                        <Link to="API" className={`${active === 'api' ? 'text-gray-500' : 'hover:text-gray-500'}`} onClick={() => dispatch(setActive('api'))}>API</Link>
                     </div>
                 ) : (
                     <Link to="" className='text-gray-500'>Home</Link>
                 )}
             </div>
-            {navbarState.active !== 'api' && (
-                <input placeholder={navbarState.active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={str} onKeyDown={handleKeyDown} />
+            {active !== 'api' && (
+                <input placeholder={active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={str} onKeyDown={handleKeyDown} />
             )}
             <div className="w-full flex flex-col items-center mt-4 md:mt-0 md:w-auto md:flex-row md:justify-end">
                 {isUser ? (
                     <>
                         <span className="hidden md:inline text-white mr-4">{isUser.name}</span>
-                        <img src={`data:image/${imgFormat(isUser.photo)};base64,${isUser.photo}`} alt="Image" className="rounded-full w-12 h-12 mx-auto cursor-pointer" onClick={() => dispatch(setIsDropdownOpen(!navbarState.isDropdownOpen))} />
-                        {navbarState.isDropdownOpen && (
+                        <img src={`data:image/${imgFormat(isUser.photo)};base64,${isUser.photo}`} alt="Image" className="rounded-full w-12 h-12 mx-auto cursor-pointer" onClick={() => dispatch(setIsDropdownOpen(!isDropdownOpen))} />
+                        {isDropdownOpen && (
                             <div className="absolute top-12 right-0 bg-white text-black shadow-md rounded-md w-40">
                                 <ul>
                                     <li className="p-2 hover:bg-gray-200 cursor-pointer"><a href="settings">Settings</a></li>

@@ -5,7 +5,7 @@ import type BaseError from '@type/redux/auth/baseError'
 
 const initialState: GlobalUserState = {
     name: '',
-    uname: '',
+    username: '',
     email: '',
     pass: '',
     rePass: '',

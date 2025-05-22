@@ -15,6 +15,7 @@ const Reset: FC = () => {
     const [reset, { loading }] = useMutation(RESET)
     const dispatch = useDispatch()
     const resetState = useSelector((state: RootState) => state.reset)
+    const { isValidating, pass, rePass, show, error } = resetState
     useEffect(() => {
         (async () => {
             try {
@@ -36,7 +37,7 @@ const Reset: FC = () => {
         dispatch(change({ name, value }))
         dispatch(setError(''))
     }
-    const toggle = () => dispatch(setShow(!resetState.show))
+    const toggle = () => dispatch(setShow(!show))
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
@@ -44,9 +45,9 @@ const Reset: FC = () => {
                 variables: {
                     id,
                     token,
-                    pass: resetState.pass,
-                    rePass: resetState.rePass,
-                    show: resetState.show
+                    pass,
+                    rePass,
+                    show
                 }
             })
             if (data.reset) {
@@ -58,7 +59,7 @@ const Reset: FC = () => {
             else alert('An unexpected error occurred.')
         }
     }
-    if (resetState.isValidating) return <Load />
+    if (isValidating) return <Load />
     return (
         <div className="bg-black flex justify-center items-center h-screen">
             <div className="bg-white p-8 rounded-lg shadow-2xl w-96">
@@ -68,18 +69,18 @@ const Reset: FC = () => {
                         <label className="text-md text-gray-700">Password</label>
                         <div className="relative">
                             <input
-                                type={resetState.show ? "text" : "password"}
+                                type={show ? "text" : "password"}
                                 name="pass"
-                                value={resetState.pass}
+                                value={pass}
                                 onChange={handleChange}
-                                className={`mt-1 p-2 border ${!resetState.error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                                className={`mt-1 p-2 border ${!error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                             />
                             <button
                                 type="button"
                                 onClick={toggle}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {resetState.show ? (
+                                {show ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -94,16 +95,16 @@ const Reset: FC = () => {
                                 )}
                             </button>
                         </div>
-                        {resetState.error && <p className="text-red-500 text-sm mt-1">{resetState.error}</p>}
-                        {!resetState.show && (
+                        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                        {!show && (
                             <div className="mb-4">
                                 <label className="text-md text-gray-700">Retype Password</label>
                                 <input
                                     type="password"
                                     name="rePass"
-                                    value={resetState.rePass}
+                                    value={rePass}
                                     onChange={handleChange}
-                                    className={`mt-1 p-2 border ${!resetState.error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                                    className={`mt-1 p-2 border ${!error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                                 />
                             </div>
                         )}

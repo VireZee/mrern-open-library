@@ -13,6 +13,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
     const [terminate, { loading: terminateLoad }] = useMutation(TERMINATE)
     const dispatch = useDispatch()
     const settingsState = useSelector((state: RootState) => state.settings)
+    const { isDropdownOpen, photo, name, username, email, oldPass, newPass, rePass, show, errors } = settingsState
     useEffect(() => {
         dispatch(change({ name: 'photo', value: isUser.photo }))
         dispatch(change({ name: 'name', value: isUser.name }))
@@ -40,10 +41,10 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
             if (format) dispatch(change({ name: 'photo', value: base64String! }))
             else alert('Invalid file format. Please upload an JPG/JPEG, PNG, GIF, or SVG image!')
         }
-        dispatch(setErrors({ ...settingsState.errors, photo: '' }))
+        dispatch(setErrors({ ...errors, photo: '' }))
     }
     const removeImage = () => {
-        const initials = settingsState.name.split(' ').map((w: string) => w.charAt(0).toUpperCase()).slice(0, 5).join('')
+        const initials = name.split(' ').map((w: string) => w.charAt(0).toUpperCase()).slice(0, 5).join('')
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">
             <circle cx="256" cy="256" r="256" fill="#000" />
             <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Times New Roman" font-size="128" fill="white">${initials}</text>
@@ -53,22 +54,22 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
-        dispatch(setErrors({ ...settingsState.errors, [name]: '' }))
+        dispatch(setErrors({ ...errors, [name]: '' }))
     }
-    const toggle = (name: 'old' | 'new') => dispatch(setShow({ ...settingsState.show, [name]: !settingsState.show[name] }))
+    const toggle = (name: 'old' | 'new') => dispatch(setShow({ ...show, [name]: !show[name] }))
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
             const { data } = await settings({
                 variables: {
-                    photo: settingsState.photo,
-                    name: settingsState.name,
-                    username: settingsState.username,
-                    email: settingsState.email,
-                    oldPass: settingsState.oldPass,
-                    newPass: settingsState.newPass,
-                    rePass: settingsState.show['new'] ? null : settingsState.rePass,
-                    show: settingsState.show['new']
+                    photo,
+                    name,
+                    username,
+                    email,
+                    oldPass,
+                    newPass,
+                    rePass: show['new'] ? null : rePass,
+                    show: show['new']
                 }
             })
             if (data.settings) {
@@ -100,7 +101,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                 <h2 className="text-3xl font-extrabold text-center mb-4">Settings</h2>
                 <form onSubmit={submit}>
                     <div className="relative flex justify-center mb-6">
-                        <img src={`data:image/${imgFormat(settingsState.photo)};base64,${settingsState.photo}`} alt="Image" className="rounded-full w-72 h-72 cursor-pointer object-cover" onClick={() => dispatch(setIsDropdownOpen(!settingsState.isDropdownOpen))} />
+                        <img src={`data:image/${imgFormat(photo)};base64,${photo}`} alt="Image" className="rounded-full w-72 h-72 cursor-pointer object-cover" onClick={() => dispatch(setIsDropdownOpen(!isDropdownOpen))} />
                         <input
                             type="file"
                             accept="image/jpeg, image/png, image/gif, image/svg+xml"
@@ -108,7 +109,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                             className="hidden"
                             onChange={handleFileChange}
                         />
-                        {settingsState.isDropdownOpen && (
+                        {isDropdownOpen && (
                             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white text-black shadow-md rounded-md w-40 z-50">
                                 <ul className="text-center">
                                     <li
@@ -133,17 +134,17 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                             </div>
                         )}
                     </div>
-                    {settingsState.errors.photo && <p className="text-red-500 text-sm mt-1 text-center">{settingsState.errors.photo}</p>}
+                    {errors.photo && <p className="text-red-500 text-sm mt-1 text-center">{errors.photo}</p>}
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Name</label>
                         <input
                             type="text"
                             name="name"
                             className="w-full p-2 border rounded-md mt-1"
-                            value={settingsState.name}
+                            value={name}
                             onChange={handleChange}
                         />
-                        {settingsState.errors.name && <p className="text-red-500 text-sm mt-1">{settingsState.errors.name}</p>}
+                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Username</label>
@@ -151,10 +152,10 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                             type="text"
                             name="username"
                             className="w-full p-2 border rounded-md mt-1"
-                            value={settingsState.username}
+                            value={username}
                             onChange={handleChange}
                         />
-                        {settingsState.errors.username && <p className="text-red-500 text-sm mt-1">{settingsState.errors.username}</p>}
+                        {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Email</label>
@@ -162,20 +163,20 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                             type="email"
                             name="email"
                             className="w-full p-2 border rounded-md mt-1"
-                            value={settingsState.email}
+                            value={email}
                             onChange={handleChange}
                         />
-                        {settingsState.errors.email && <p className="text-red-500 text-sm mt-1">{settingsState.errors.email}</p>}
+                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="text-sm text-gray-600">Change Password</label>
                         <div className="relative">
                             <input
-                                type={settingsState.show['old'] ? "text" : "password"}
+                                type={show['old'] ? "text" : "password"}
                                 name="oldPass"
                                 placeholder="Old Password"
                                 className="w-full p-2 border rounded-md mt-1"
-                                value={settingsState.oldPass}
+                                value={oldPass}
                                 onChange={handleChange}
                             />
                             <button
@@ -183,7 +184,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                                 onClick={() => toggle('old')}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {settingsState.show['old'] ? (
+                                {show['old'] ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -198,14 +199,14 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                                 )}
                             </button>
                         </div>
-                        {settingsState.errors.oldPass && <p className="text-red-500 text-sm mt-1">{settingsState.errors.oldPass}</p>}
+                        {errors.oldPass && <p className="text-red-500 text-sm mt-1">{errors.oldPass}</p>}
                         <div className="relative">
                             <input
-                                type={settingsState.show['new'] ? "text" : "password"}
+                                type={show['new'] ? "text" : "password"}
                                 name="newPass"
                                 placeholder="New Password"
                                 className="w-full p-2 border rounded-md mt-1"
-                                value={settingsState.newPass}
+                                value={newPass}
                                 onChange={handleChange}
                             />
                             <button
@@ -213,7 +214,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                                 onClick={() => toggle('new')}
                                 className="absolute inset-y-0 right-0 flex items-center px-3"
                             >
-                                {settingsState.show['new'] ? (
+                                {show['new'] ? (
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M2 2L22 22" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -228,18 +229,18 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                                 )}
                             </button>
                         </div>
-                        {settingsState.errors.newPass && <p className="text-red-500 text-sm mt-1">{settingsState.errors.newPass}</p>}
-                        {!settingsState.show['new'] && (
+                        {errors.newPass && <p className="text-red-500 text-sm mt-1">{errors.newPass}</p>}
+                        {!show['new'] && (
                             <>
                                 <input
                                     type="password"
                                     name="rePass"
                                     placeholder="Retype New Password"
                                     className="w-full p-2 border rounded-md mt-1"
-                                    value={settingsState.rePass}
+                                    value={rePass}
                                     onChange={handleChange}
                                 />
-                                {settingsState.errors.rePass && <p className="text-red-500 text-sm mt-1">{settingsState.errors.rePass}</p>}
+                                {errors.rePass && <p className="text-red-500 text-sm mt-1">{errors.rePass}</p>}
                             </>
                         )}
                     </div>

@@ -11,6 +11,7 @@ const Verify: FC = () => {
     const [resend, { loading: resendLoad }] = useMutation(RESEND)
     const dispatch = useDispatch()
     const verifyState = useSelector((state: RootState) => state.verify)
+    const { code, error } = verifyState
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))
@@ -19,7 +20,7 @@ const Verify: FC = () => {
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
-            const { data } = await verify({ variables: { code: verifyState.code } })
+            const { data } = await verify({ variables: { code } })
             if (data.verify) location.href = '/'
         } catch (e) {
             if (e instanceof ApolloError) dispatch(setError(e.message))
@@ -46,11 +47,11 @@ const Verify: FC = () => {
                         <input
                             type="text"
                             name="code"
-                            value={verifyState.code}
+                            value={code}
                             onChange={handleChange}
-                            className={`mt-1 p-2 border ${!verifyState.errors ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
+                            className={`mt-1 p-2 border ${!error ? 'border-gray-300' : 'border-red-500'} rounded-md w-full focus:outline-none focus:border-black`}
                         />
-                        {verifyState.error && <p className="text-red-500 text-sm mt-1">{verifyState.error}</p>}
+                        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                     </div>
                     <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={verifyLoad} >{verifyLoad ? 'Loading...' : 'Verify'}</button>
                     <button type="button" className="w-full bg-black text-white py-2 px-4 rounded-md mt-1" disabled={resendLoad} onClick={resendCode}>{resendLoad ? 'Loading...' : 'Resend Code'}</button>

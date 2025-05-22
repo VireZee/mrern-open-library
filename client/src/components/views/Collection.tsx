@@ -15,7 +15,8 @@ const Collection: FC<CollectionProps> = ({ search }) => {
     const { refetch } = useQuery(FETCH, { skip: true })
     const [remove] = useMutation(REMOVE)
     const dispatch = useDispatch()
-    const colState = useSelector((state: RootState) => state.collection)
+    const collectionState = useSelector((state: RootState) => state.collection)
+    const { online, load, books, currentPage, totalPages } = collectionState
     const { title, page } = Object.fromEntries(new URLSearchParams(window.location.search))
     const pg = Number(page) || 1
     useEffect(() => {
@@ -27,7 +28,7 @@ const Collection: FC<CollectionProps> = ({ search }) => {
             window.removeEventListener('online', handleOnline)
             window.removeEventListener('offline', handleOnline)
         }
-    }, [colState.online, search])
+    }, [online, search])
     const collectionData = (data: CollectionData) => {
         const { found, collection, totalCollection } = data
         if (found === 0) dispatch(setBooks([]))
@@ -41,7 +42,7 @@ const Collection: FC<CollectionProps> = ({ search }) => {
             dispatch(setLoad(true))
             const { data } = await refetch({
                 search: search || title,
-                page: pg || colState.currentPage
+                page: pg || currentPage
             })
             if (data.collection) collectionData(data.collection)
         } catch (err) {
@@ -65,7 +66,6 @@ const Collection: FC<CollectionProps> = ({ search }) => {
         const addPages = (s: number, e: number) => {
             for (let i = s; i <= e; i++) pages.push(i)
         }
-        const { totalPages } = colState
         if (totalPages <= 9) addPages(1, totalPages)
         else if (search || pg <= 6) {
             addPages(1, 7)
@@ -100,7 +100,7 @@ const Collection: FC<CollectionProps> = ({ search }) => {
                         onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`collection?${search ? `title=${search.split(' ').join('+')}&page=${colState.currentPage}` : `page=${colState.currentPage}`}`}>
+                        <a href={`collection?${search ? `title=${search.split(' ').join('+')}&page=${currentPage}` : `page=${currentPage}`}`}>
                             {page}
                         </a>
                     </span >
@@ -110,18 +110,18 @@ const Collection: FC<CollectionProps> = ({ search }) => {
     }
     return (
         <>
-            {colState.load ? (
+            {load ? (
                 <Load />
             ) : (
                 <>
-                    {colState.online ? (
+                    {online ? (
                         <>
-                            {colState.books.length === 0 ? (
+                            {books.length === 0 ? (
                                 <NoBooks />
                             ) : (
                                 <>
                                     <div className="mt-[12rem] sm:mt-[6rem] md:mt-[7rem] lg:mt-[8rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8">
-                                        {colState.books.map((book: Books, idx: number) => (
+                                        {books.map((book: Books, idx: number) => (
                                             <div key={idx} className="flex flex-col sm:flex-row max-w-sm sm:max-w-md lg:max-w-lg mx-auto p-6 border border-gray-400 shadow-[0px_4px_20px_rgba(0,0,0,0.6)] rounded-lg bg-white text-black">
                                                 <img src={`http://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`}
                                                     alt={book.title}

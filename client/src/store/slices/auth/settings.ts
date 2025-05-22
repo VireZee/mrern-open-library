@@ -7,7 +7,7 @@ const initialState: GlobalUserState = {
     isDropdownOpen: false,
     photo: '',
     name: '',
-    uname: '',
+    username: '',
     email: '',
     oldPass: '',
     newPass: '',
