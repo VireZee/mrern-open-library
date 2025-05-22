@@ -15,13 +15,13 @@ import type Books from '@type/redux/book/books'
 
 const Home: FC<HomeProps> = ({ isUser, search }) => {
     const { query, page } = useParams()
-    console.log(query)
     const pg = Number(page) || 1
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
     const [add] = useMutation(ADD)
     const dispatch = useDispatch()
     const homeState = useSelector((state: RootState) => state.home)
+    const { online, load, books, totalPages, status } = homeState
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)
@@ -43,20 +43,20 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
                 else dispatch(setBooks([]))
                 dispatch(setLoad(false))
             }
-            if (homeState.online) fetchBooks()
+            if (online) fetchBooks()
         })()
         return () => {
             window.removeEventListener('online', handleOnline)
             window.removeEventListener('offline', handleOnline)
         }
-    }, [homeState.online, search])
+    }, [online, search])
     useEffect(() => {
         if (isUser) {
-            homeState.books.forEach((book: Books) => {
+            books.forEach((book: Books) => {
                 if (book.author_key && book.cover_edition_key && book.cover_i) fetchStatus(book.author_key, book.cover_edition_key, book.cover_i)
             })
         }
-    }, [isUser, homeState.books])
+    }, [isUser, books])
     const fetchStatus = async (author_key: string[], cover_edition_key: string, cover_i: number) => {
         try {
             const { data } = await fetchRefetch({ author_key, cover_edition_key, cover_i })
@@ -92,7 +92,6 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
         const addPages = (s: number, e: number) => {
             for (let i = s; i <= e; i++) pages.push(i)
         }
-        const { totalPages } = homeState
         if (totalPages <= 9) addPages(1, totalPages)
         else if (search || pg <= 6) {
             addPages(1, 7)
@@ -116,15 +115,15 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
             pages.push(1, '...')
             addPages(pg - 6, pg)
         }
-        const handleClick = (page: number) => {
-            if (typeof page === 'number') dispatch(setCurrentPage(page))
-        }
+        // const handleClick = (page: number) => {
+        //     if (typeof page === 'number') dispatch(setCurrentPage(page))
+        // }
         return (
             <>
                 {pages.map((page, idx) => (
                     <span
                         key={idx}
-                        onClick={() => handleClick(page)}
+                        // onClick={() => handleClick(page)}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
                     >
                         <a href={`/search/${search ? search.replace(/\s+/g, '+') : query ?? 'harry+potter'}/${page}`}>
@@ -137,18 +136,18 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
     }
     return (
         <>
-            {homeState.load ? (
+            {load ? (
                 <Load />
             ) : (
                 <>
-                    {homeState.online ? (
+                    {online ? (
                         <>
-                            {homeState.books.length === 0 ? (
+                            {books.length === 0 ? (
                                 <NoBooks />
                             ) : (
                                 <>
                                     <div className="mt-[12rem] sm:mt-[6rem] md:mt-[7rem] lg:mt-[8rem] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8">
-                                        {homeState.books.map((book: Books, idx: number) => (
+                                        {books.map((book: Books, idx: number) => (
                                             <div key={idx} className="flex flex-col sm:flex-row max-w-sm sm:max-w-md lg:max-w-lg mx-auto p-6 border border-gray-400 shadow-[0px_4px_20px_rgba(0,0,0,0.6)] rounded-lg bg-white text-black">
                                                 <img src={`http://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`}
                                                     alt={book.title}
@@ -159,7 +158,7 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
                                                     <label className="flex items-center space-x-2">
                                                         <input
                                                             type="checkbox"
-                                                            checked={(book.author_key && book.cover_edition_key && book.cover_i) ? homeState.status[getValidKey(book.author_key, book.cover_edition_key, book.cover_i)] || false : false}
+                                                            checked={(book.author_key && book.cover_edition_key && book.cover_i) ? status[getValidKey(book.author_key, book.cover_edition_key, book.cover_i)] || false : false}
                                                             onChange={() => { if (book.author_key && book.cover_edition_key && book.cover_i) addToCollection(book.author_key, book.cover_edition_key, book.cover_i, book.title, book.author_name) }}
                                                             disabled={!(book.author_key && book.cover_edition_key && book.cover_i)}
                                                         />
