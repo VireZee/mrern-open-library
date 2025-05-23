@@ -37,7 +37,7 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
             }
             const fetchBooks = async () => {
                 dispatch(setLoad(true))
-                const { data } = await homeRefetch({ search: search ? search.replace(/\s+/g, '+') : query ? query.replace(/\++/g, ' ') : 'harry potter', page: pg })
+                const { data } = await homeRefetch({ search: search ?? (query ? query.replace(/\++/g, ' ') : 'harry potter'), page: pg })
                 if (data.home) booksData(data.home)
                 else dispatch(setBooks([]))
                 dispatch(setLoad(false))
