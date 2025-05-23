@@ -15,7 +15,7 @@ import type Books from '@type/redux/book/books'
 
 const Home: FC<HomeProps> = ({ isUser, search }) => {
     const { query, page } = useParams()
-    const pg = search.replace(/\s+/g, '+') === query ? Number(page) : 1
+    const pg = Number(page) || 1
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
     const [add] = useMutation(ADD)
