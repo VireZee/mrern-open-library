@@ -5,7 +5,7 @@ import { HOME } from '@features/book/queries/Home'
 import { FETCH } from '@features/book/queries/Home'
 import ADD from '@features/book/mutations/Add'
 import { useSelector, useDispatch } from 'react-redux'
-import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } from '@store/slices/views/home'
+import { setOnline, setLoad, setBooks, setTotalPages, setStatus } from '@store/slices/views/home'
 import type { RootState } from '@store/store'
 import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
@@ -15,7 +15,7 @@ import type Books from '@type/redux/book/books'
 
 const Home: FC<HomeProps> = ({ isUser, search }) => {
     const { query, page } = useParams()
-    const pg = Number(page) || 1
+    const pg = search.replace(/\s+/g, '+') === query ? Number(page) : 1
     const { refetch: homeRefetch } = useQuery(HOME, { skip: true })
     const { refetch: fetchRefetch } = useQuery(FETCH, { skip: true })
     const [add] = useMutation(ADD)
@@ -37,7 +37,6 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
             }
             const fetchBooks = async () => {
                 dispatch(setLoad(true))
-                dispatch(setCurrentPage(1))
                 const { data } = await homeRefetch({ search: search ? search.replace(/\s+/g, '+') : query ? query.replace(/\++/g, ' ') : 'harry potter', page: pg })
                 if (data.home) booksData(data.home)
                 else dispatch(setBooks([]))
@@ -115,16 +114,12 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
             pages.push(1, '...')
             addPages(pg - 6, pg)
         }
-        // const handleClick = (page: number) => {
-        //     if (typeof page === 'number') dispatch(setCurrentPage(page))
-        // }
         return (
             <>
                 {pages.map((page, idx) => (
                     <span
                         key={idx}
-                        // onClick={() => handleClick(page)}
-                        className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
+                        className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === pg ? 'bg-blue-500 text-white' : ''}`}
                     >
                         <a href={`/search/${search ? search.replace(/\s+/g, '+') : query ?? 'harry+potter'}/${page}`}>
                             {page}

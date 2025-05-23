@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import type { FC, KeyboardEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, matchPath } from 'react-router-dom'
 import { useMutation, ApolloError } from '@apollo/client'
 import LOGOUT from '@features/auth/mutations/Logout'
 import { useSelector, useDispatch } from 'react-redux'
@@ -9,12 +9,17 @@ import type { RootState } from '@store/store'
 import type NavbarProps from '@type/components/navbar'
 
 const Navbar: FC<NavbarProps> = ({ isUser, onSearch }) => {
+    const { pathname } = useLocation()
+    const match =
+        matchPath('/search/:query', pathname) ??
+        matchPath('/search/:query/:page', pathname) ??
+        matchPath('/collection/:query', pathname) ??
+        matchPath('/collection/:query/:page', pathname)
+    const query = match?.params.query
     const [logout] = useMutation(LOGOUT)
     const dispatch = useDispatch()
     const navbarState = useSelector((state: RootState) => state.navbar)
     const { active, isDropdownOpen } = navbarState
-    const { title, isbn } = Object.fromEntries(new URLSearchParams(window.location.search))
-    const str = title || isbn
     useEffect(() => {
         const path = window.location.pathname
         if (path === '/collection') dispatch(setActive('col'))
@@ -55,7 +60,7 @@ const Navbar: FC<NavbarProps> = ({ isUser, onSearch }) => {
                 )}
             </div>
             {active !== 'api' && (
-                <input placeholder={active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={str} onKeyDown={handleKeyDown} />
+                <input placeholder={active === 'home' ? 'Search Title or ISBN (without "-" or spaces)' : 'Search Title'} className="bg-white w-full md:w-[25vw] p-2 rounded-full mt-2 md:mt-0" defaultValue={query ? query.replace(/\++/g, ' ') : ''} onKeyDown={handleKeyDown} />
             )}
             <div className="w-full flex flex-col items-center mt-4 md:mt-0 md:w-auto md:flex-row md:justify-end">
                 {isUser ? (

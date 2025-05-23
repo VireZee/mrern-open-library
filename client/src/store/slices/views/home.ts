@@ -7,7 +7,6 @@ const initialState: GlobalBookState = {
     online: navigator.onLine,
     load: false,
     books: [],
-    currentPage: 1,
     totalPages: 1,
     status: {}
 }
@@ -24,9 +23,6 @@ const home = createSlice({
         setBooks: (state, { payload }: PayloadAction<Books[]>) => {
             state['books'] = payload
         },
-        setCurrentPage: (state, { payload }: PayloadAction<number>) => {
-            state['currentPage'] = payload
-        },
         setTotalPages: (state, { payload }: PayloadAction<number>) => {
             state['totalPages'] = payload
         },
@@ -35,5 +31,5 @@ const home = createSlice({
         }
     }
 })
-export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages, setStatus } = home.actions
+export const { setOnline, setLoad, setBooks, setTotalPages, setStatus } = home.actions
 export default home.reducer

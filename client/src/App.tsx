@@ -25,13 +25,13 @@ import Load from '@components/common/Load'
 
 const App: FC = () => {
     const { pathname } = useLocation()
-    const { loading, data, error } = useQuery(AUTH)
-    const dispatch = useDispatch()
-    const appState = useSelector((state: RootState) => state.app)
     const showNavbar = ['/', '/collection', '/API'].some(path => pathname === path) || pathname.startsWith('/search/') || pathname.startsWith('/collection/')
     const showBackLink = ['/register', '/login', '/forget-password'].includes(pathname)
     const noHeader = ['/settings', '/verify'].includes(pathname)
-    const searchHandler = (search: string) => dispatch(setSearch(search))
+    const { loading, data, error } = useQuery(AUTH)
+    const dispatch = useDispatch()
+    const appState = useSelector((state: RootState) => state.app)
+    const { search, user, verified } = appState
     useEffect(() => {
         if (!loading) {
             if (data) {
@@ -41,12 +41,13 @@ const App: FC = () => {
             else if (error) dispatch(setUser(null))
         }
     }, [data, error])
+    const searchHandler = (search: string) => dispatch(setSearch(search))
     if (loading) return <Load />
     return (
         <>
             {!noHeader && (
                 <header className="fixed w-screen">
-                    {showNavbar && <Navbar isUser={appState.user} onSearch={searchHandler} />}
+                    {showNavbar && <Navbar isUser={user} onSearch={searchHandler} />}
                     {showBackLink && (
                         <a href="/" className="absolute top-4 left-4 text-[1.2rem] text-white no-underline">&#8592; Back to home</a>
                     )}
@@ -54,26 +55,26 @@ const App: FC = () => {
             )}
             <main>
                 <Routes>
-                    <Route element={<Main user={appState.user} verified={appState.verified} />}>
-                        <Route path='/' element={<Home isUser={appState.user} search={appState.search} />} />
-                        <Route path='/search/:query' element={<Home isUser={appState.user} search={appState.search} />} />
-                        <Route path='/search/:query/:page' element={<Home isUser={appState.user} search={appState.search} />} />
+                    <Route element={<Main user={user} verified={verified} />}>
+                        <Route path='/' element={<Home isUser={user} search={search} />} />
+                        <Route path='/search/:query' element={<Home isUser={user} search={search} />} />
+                        <Route path='/search/:query/:page' element={<Home isUser={user} search={search} />} />
                     </Route>
-                    <Route element={<Auth verified={appState.verified} />}>
+                    <Route element={<Auth verified={verified} />}>
                         <Route path='/register' element={<Register />} />
                         <Route path='/login' element={<Login />} />
                         <Route path='/forget-password' element={<Forget />} />
                         <Route path='/reset/:id/:token' element={<Reset />} />
                     </Route>
-                    <Route element={<Verified verified={appState.verified} />}>
+                    <Route element={<Verified verified={verified} />}>
                         <Route path='/verify' element={<Verify />} />
                     </Route>
-                    <Route element={<Protected user={appState.user} verified={appState.verified} />}>
-                        <Route path='/collection' element={<Collection search={appState.search} />} />
-                        <Route path='/collection/:query' element={<Collection search={appState.search} />} />
-                        <Route path='/collection/:query/:page' element={<Collection search={appState.search} />} />
+                    <Route element={<Protected user={user} verified={verified} />}>
+                        <Route path='/collection' element={<Collection search={search} />} />
+                        <Route path='/collection/:query' element={<Collection search={search} />} />
+                        <Route path='/collection/:query/:page' element={<Collection search={search} />} />
                         <Route path='/API' element={<API />} />
-                        <Route path='/settings' element={<Settings isUser={appState.user} />} />
+                        <Route path='/settings' element={<Settings isUser={user} />} />
                     </Route>
                     <Route path='*' element={<NotFound />} />
                 </Routes>
