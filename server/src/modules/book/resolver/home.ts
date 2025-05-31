@@ -7,10 +7,10 @@ const home = async (_: null, args: { search: string, page: number }) => {
     try {
         const { search, page } = args
         const key = `book:${search}|${page}`
-        const cache = await Redis.json.GET(key) as string
+        const cache = await Redis.json.GET(key)
         if (cache) return {
-            numFound: (JSON.parse(cache) as { numFound: number }).numFound,
-            docs: formatBooksMap((JSON.parse(cache) as { docs: Collection[] }).docs)
+            numFound: (cache as { numFound: number }).numFound,
+            docs: formatBooksMap((cache as { docs: Collection[] }).docs)
         }
         const type = /^\d{10}(\d{3})?$/.test(search) ? 'isbn' : 'title'
         const formattedQuery = search.replace(/\s+/g, '+')

@@ -10,8 +10,8 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
         const { user } = context
         let key = sanitizeRedisKey('collection', user._id)
         key = `${key}|${search}|${page}`
-        const cache = await Redis.json.GET(key) as string
-        if (cache) return JSON.parse(cache)
+        const cache = await Redis.json.GET(key)
+        if (cache) return cache
         const limit = 9
         const query: Query = { user_id: user._id }
         if (search) query.title = { $regex: search, $options: 'i' }

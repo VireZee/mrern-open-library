@@ -10,8 +10,8 @@ const fetch = async (_: null, args: { author_key: string[], cover_edition_key: s
         const { author_key, cover_edition_key, cover_i } = args
         const { user } = context
         const key = sanitizeRedisKey('collection', user._id)
-        const rawCache = await Redis.json.GET(key) as string
-        const cache: Collection[] = JSON.parse(rawCache)
+        const rawCache = await Redis.json.GET(key)
+        const cache = rawCache as Collection[]
         let bookCollection: Collection | undefined
         if (Array.isArray(cache)) bookCollection = formatBooksFind(cache, author_key, cover_edition_key, cover_i)
         else {

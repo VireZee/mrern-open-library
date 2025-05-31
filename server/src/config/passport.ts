@@ -13,8 +13,8 @@ const opt: StrategyOptionsWithoutRequest = {
 passport.use(new JwtStrategy(opt, async (payload, done) => {
     try {
         const key = sanitizeRedisKey('user', payload.id)
-        const cache = await Redis.json.GET(key) as string
-        if (cache) return done(null, JSON.parse(cache))
+        const cache = await Redis.json.GET(key)
+        if (cache) return done(null, cache)
         const user: Parameters<typeof formatUser>[0] | null = await userModel.findById(sanitize(payload.id))
         if (!user) return done(null, false)
         await Redis.json.SET(key, '$', formatUser(user))
