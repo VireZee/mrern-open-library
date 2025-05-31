@@ -101,7 +101,7 @@ const Collection: FC<CollectionProps> = ({ search }) => {
                         key={idx}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === pg ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`collection?${search ? `title=${search.split(' ').join('+')}&page=${currentPage}` : `page=${currentPage}`}`}>
+                        <a href={`/collection/${search ? search.replace(/\s+/g, '+') : query ?? ''}/${page}`}>
                             {page}
                         </a>
                     </span >

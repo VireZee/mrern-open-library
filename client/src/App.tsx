@@ -57,7 +57,6 @@ const App: FC = () => {
                 <Routes>
                     <Route element={<Main user={user} verified={verified} />}>
                         <Route path='/' element={<Home isUser={user} search={search} />} />
-                        <Route path='/search/:query' element={<Home isUser={user} search={search} />} />
                         <Route path='/search/:query/:page' element={<Home isUser={user} search={search} />} />
                     </Route>
                     <Route element={<Auth verified={verified} />}>
@@ -71,7 +70,7 @@ const App: FC = () => {
                     </Route>
                     <Route element={<Protected user={user} verified={verified} />}>
                         <Route path='/collection' element={<Collection search={search} />} />
-                        <Route path='/collection/:query' element={<Collection search={search} />} />
+                        <Route path='/collection/:page' element={<Collection search={search} />} />
                         <Route path='/collection/:query/:page' element={<Collection search={search} />} />
                         <Route path='/API' element={<API />} />
                         <Route path='/settings' element={<Settings isUser={user} />} />
