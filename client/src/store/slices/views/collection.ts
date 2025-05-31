@@ -7,7 +7,6 @@ const initialState: GlobalBookState = {
     online: navigator.onLine,
     load: false,
     books: [],
-    currentPage: 1,
     totalPages: 1
 }
 const collection = createSlice({
@@ -23,13 +22,10 @@ const collection = createSlice({
         setBooks: (state, { payload }: PayloadAction<Books[]>) => {
             state['books'] = payload
         },
-        setCurrentPage: (state, { payload }: PayloadAction<number>) => {
-            state['currentPage'] = payload
-        },
         setTotalPages: (state, { payload }: PayloadAction<number>) => {
             state['totalPages'] = payload
         }
     }
 })
-export const { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } = collection.actions
+export const { setOnline, setLoad, setBooks, setTotalPages } = collection.actions
 export default collection.reducer

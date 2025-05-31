@@ -1,9 +1,10 @@
 import { useEffect, type FC } from 'react'
+import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
 import FETCH from '@features/book/queries/Collection'
 import REMOVE from '@features/book/mutations/Remove'
 import { useSelector, useDispatch } from 'react-redux'
-import { setOnline, setLoad, setBooks, setCurrentPage, setTotalPages } from '@store/slices/views/collection'
+import { setOnline, setLoad, setBooks, setTotalPages } from '@store/slices/views/collection'
 import type { RootState } from '@store/store'
 import Load from '@components/common/Load'
 import NoInternet from '@components/common/NoInternet'
@@ -12,13 +13,13 @@ import type { CollectionProps, CollectionData } from '@type/components/collectio
 import type Books from '@type/redux/book/books'
 
 const Collection: FC<CollectionProps> = ({ search }) => {
+    const { query, page } = useParams()
+    const pg = Number(page) || 1
     const { refetch } = useQuery(FETCH, { skip: true })
     const [remove] = useMutation(REMOVE)
     const dispatch = useDispatch()
     const collectionState = useSelector((state: RootState) => state.collection)
     const { online, load, books, currentPage, totalPages } = collectionState
-    const { title, page } = Object.fromEntries(new URLSearchParams(window.location.search))
-    const pg = Number(page) || 1
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)
@@ -41,8 +42,12 @@ const Collection: FC<CollectionProps> = ({ search }) => {
         try {
             dispatch(setLoad(true))
             const { data } = await refetch({
-                search: search || title,
-                page: pg || currentPage
+                search: search && search.trim()
+                    ? search
+                    : query && query.trim()
+                        ? query.replace(/\++/g, ' ')
+                        : '',
+                page: pg
             })
             if (data.collection) collectionData(data.collection)
         } catch (err) {
@@ -89,16 +94,12 @@ const Collection: FC<CollectionProps> = ({ search }) => {
             pages.push(1, '...')
             addPages(pg - 6, pg)
         }
-        const handleClick = (page: number) => {
-            if (typeof page === 'number') dispatch(setCurrentPage(page))
-        }
         return (
             <>
                 {pages.map((page, idx) => (
                     <span
                         key={idx}
-                        onClick={() => handleClick(page)}
-                        className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === (search ? 1 : pg) ? 'bg-blue-500 text-white' : ''}`}
+                        className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === pg ? 'bg-blue-500 text-white' : ''}`}
                     >
                         <a href={`collection?${search ? `title=${search.split(' ').join('+')}&page=${currentPage}` : `page=${currentPage}`}`}>
                             {page}

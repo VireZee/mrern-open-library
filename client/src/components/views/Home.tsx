@@ -1,8 +1,7 @@
 import { useEffect, type FC } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, ApolloError } from '@apollo/client'
-import { HOME } from '@features/book/queries/Home'
-import { FETCH } from '@features/book/queries/Home'
+import { HOME, FETCH } from '@features/book/queries/Home'
 import ADD from '@features/book/mutations/Add'
 import { useSelector, useDispatch } from 'react-redux'
 import { setOnline, setLoad, setBooks, setTotalPages, setStatus } from '@store/slices/views/home'
@@ -37,7 +36,14 @@ const Home: FC<HomeProps> = ({ isUser, search }) => {
             }
             const fetchBooks = async () => {
                 dispatch(setLoad(true))
-                const { data } = await homeRefetch({ search: search ?? (query ? query.replace(/\++/g, ' ') : 'harry potter'), page: pg })
+                const { data } = await homeRefetch({
+                    search: search && search.trim()
+                        ? search
+                        : query && query.trim()
+                            ? query.replace(/\++/g, ' ')
+                            : 'harry potter',
+                    page: pg
+                })
                 if (data.home) booksData(data.home)
                 else dispatch(setBooks([]))
                 dispatch(setLoad(false))
