@@ -19,7 +19,7 @@ const Collection: FC<CollectionProps> = ({ search }) => {
     const [remove] = useMutation(REMOVE)
     const dispatch = useDispatch()
     const collectionState = useSelector((state: RootState) => state.collection)
-    const { online, load, books, currentPage, totalPages } = collectionState
+    const { online, load, books, totalPages } = collectionState
     useEffect(() => {
         const handleOnline = () => dispatch(setOnline(navigator.onLine))
         window.addEventListener('online', handleOnline)
@@ -101,7 +101,13 @@ const Collection: FC<CollectionProps> = ({ search }) => {
                         key={idx}
                         className={`cursor-pointer my-10 px-3 py-1 rounded-full ${page === pg ? 'bg-blue-500 text-white' : ''}`}
                     >
-                        <a href={`/collection/${search ? search.replace(/\s+/g, '+') : query ?? ''}/${page}`}>
+                        <a href={
+                            search?.trim()
+                                ? `/collection/${search.replace(/\s+/g, '+')}/${page}`
+                                : query
+                                    ? `/collection/${query}/${page}`
+                                    : `/collection/${page}`
+                        }>
                             {page}
                         </a>
                     </span >
