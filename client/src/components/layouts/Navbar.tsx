@@ -11,19 +11,18 @@ import type NavbarProps from '@type/components/navbar'
 const Navbar: FC<NavbarProps> = ({ isUser, onSearch }) => {
     const { pathname } = useLocation()
     const match =
-        matchPath('/search/:query', pathname) ??
         matchPath('/search/:query/:page', pathname) ??
-        matchPath('/collection/:query', pathname) ??
+        matchPath('/collection/:page', pathname) ??
         matchPath('/collection/:query/:page', pathname)
-    const query = match?.params.query
+    const query = match?.params && 'query' in match.params ? (match.params.query) as string : ''
     const [logout] = useMutation(LOGOUT)
     const dispatch = useDispatch()
     const navbarState = useSelector((state: RootState) => state.navbar)
     const { active, isDropdownOpen } = navbarState
     useEffect(() => {
-        const path = window.location.pathname
-        if (path === '/collection') dispatch(setActive('col'))
-        else if (path === '/API') dispatch(setActive('api'))
+        if (pathname === '/' || pathname.startsWith('/search/')) dispatch(setActive('home'))
+        if (pathname === '/collection' || pathname.startsWith('/collection/')) dispatch(setActive('col'))
+        else if (pathname === '/API') dispatch(setActive('api'))
     }, [])
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onSearch(e.currentTarget.value)
