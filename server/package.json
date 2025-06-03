@@ -20,7 +20,7 @@
         "typescript": "^5.8.3"
     },
     "dependencies": {
-        "@apollo/server": "^4.12.1",
+        "@apollo/server": "^4.12.2",
         "argon2": "^0.43.0",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
@@ -36,7 +36,7 @@
         "passport-jwt": "^4.0.1",
         "redis": "^5.1.1"
     },
-    "packageManager": "pnpm@10.11.0",
+    "packageManager": "pnpm@10.11.1",
     "pnpm": {
         "onlyBuiltDependencies": [
             "@apollo/protobufjs",
