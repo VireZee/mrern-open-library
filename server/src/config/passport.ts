@@ -2,15 +2,22 @@ import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import passport from 'passport'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import type { StrategyOptionsWithoutRequest } from 'passport-jwt'
+import type { StrategyOptions } from 'passport-google-oauth20'
 import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import formatUser from '@utils/formatter/user.ts'
 
-const opt: StrategyOptionsWithoutRequest = {
+const jwtOpt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
     secretOrKey: process.env['SECRET_KEY']!
 }
-passport.use(new JwtStrategy(opt, async (payload, done) => {
+const googleOpt: StrategyOptions = {
+    clientID: '',
+    clientSecret: '',
+    callbackURL: ''
+}
+passport.use(new JwtStrategy(jwtOpt, async (payload, done) => {
     try {
         const key = sanitizeRedisKey('user', payload.id)
         const cache = await Redis.json.GET(key)
@@ -20,6 +27,15 @@ passport.use(new JwtStrategy(opt, async (payload, done) => {
         await Redis.json.SET(key, '$', formatUser(user))
         await Redis.EXPIRE(key, 86400)
         return done(null, formatUser(user))
+    } catch (e) {
+        return done(e, false)
+    }
+}))
+passport.use(new GoogleStrategy(googleOpt, async (accessToken, refreshToken, profile, done) => {
+    try {
+        const photo = profile.photos?.[0]?.value
+        const name = profile.displayName
+        const email = profile.emails?.[0]?.value
     } catch (e) {
         return done(e, false)
     }
