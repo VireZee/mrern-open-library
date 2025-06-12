@@ -31,13 +31,13 @@ passport.use(new JwtStrategy(jwtOpt, async (payload, done) => {
         return done(e, false)
     }
 }))
-passport.use(new GoogleStrategy(googleOpt, async (accessToken, refreshToken, profile, done) => {
-    try {
-        const photo = profile.photos?.[0]?.value
-        const name = profile.displayName
-        const email = profile.emails?.[0]?.value
-    } catch (e) {
-        return done(e, false)
-    }
-}))
+// passport.use(new GoogleStrategy(googleOpt, async (accessToken, refreshToken, profile, done) => {
+//     try {
+//         const photo = profile.photos?.[0]?.value
+//         const name = profile.displayName
+//         const email = profile.emails?.[0]?.value
+//     } catch (e) {
+//         return done(e, false)
+//     }
+// }))
 export default passport

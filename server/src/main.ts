@@ -14,31 +14,33 @@ import route from '@routes/router.ts'
 import type { User } from '@type/models/user.d.ts'
 import type Context from '@type/misc/context.d.ts'
 
-await MongoDB()
-const app = express()
-const httpServer = http.createServer(app)
-const server = new ApolloServer<Context>({
-    typeDefs,
-    resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
-})
-await server.start()
-app.use(cors({ origin: `http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`, credentials: true }))
-app.use(cp())
-app.use(express.json({ limit: '5mb' }))
-app.use(passport.initialize())
-app.use(
-    '/gql',
-    expressMiddleware(server, {
-        context: async ({ req, res }) => {
-            return new Promise((resolve, reject) => {
-                passport.authenticate('jwt', { session: false }, (err: Error, user: User) => {
-                    if (err) return reject(err)
-                    return resolve({ res, user })
-                })(req, res, () => null)
-            })
-        }
+(async () => {
+    await MongoDB()
+    const app = express()
+    const httpServer = http.createServer(app)
+    const server = new ApolloServer<Context>({
+        typeDefs,
+        resolvers,
+        plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
     })
-)
-app.use(route)
-httpServer.listen(process.env['PORT'])
+    await server.start()
+    app.use(cors({ origin: `http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`, credentials: true }))
+    app.use(cp())
+    app.use(express.json({ limit: '5mb' }))
+    app.use(passport.initialize())
+    app.use(
+        '/gql',
+        expressMiddleware(server, {
+            context: async ({ req, res }) => {
+                return new Promise((resolve, reject) => {
+                    passport.authenticate('jwt', { session: false }, (err: Error, user: User) => {
+                        if (err) return reject(err)
+                        return resolve({ res, user })
+                    })(req, res, () => null)
+                })
+            }
+        })
+    )
+    app.use(route)
+    httpServer.listen(process.env['PORT'])
+})()
