@@ -13,3 +13,7 @@ export type UserSettings = BaseUser & {
     pass: string
     updated: Date
 }
+export type GoogleUser = BaseUser & {
+    googleId?: string
+    registeredWithGoogle: boolean
+}
