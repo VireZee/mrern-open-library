@@ -17,7 +17,7 @@
         "@types/passport": "^1.0.17",
         "@types/passport-google-oauth20": "^2.0.16",
         "@types/passport-jwt": "^4.0.1",
-        "tsx": "^4.20.1",
+        "tsx": "^4.20.3",
         "typescript": "^5.8.3"
     },
     "dependencies": {
@@ -31,7 +31,7 @@
         "graphql": "^16.11.0",
         "jsonwebtoken": "^9.0.2",
         "module-alias": "^2.2.3",
-        "mongoose": "^8.15.1",
+        "mongoose": "^8.15.2",
         "nodemailer": "^7.0.3",
         "passport": "^0.7.0",
         "passport-google-oauth20": "^2.0.0",

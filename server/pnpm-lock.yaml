@@ -39,8 +39,8 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3
       mongoose:
-        specifier: ^8.15.1
-        version: 8.15.1
+        specifier: ^8.15.2
+        version: 8.15.2
       nodemailer:
         specifier: ^7.0.3
         version: 7.0.3
@@ -88,8 +88,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       tsx:
-        specifier: ^4.20.1
-        version: 4.20.1
+        specifier: ^4.20.3
+        version: 4.20.3
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -923,8 +923,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@8.15.1:
-    resolution: {integrity: sha512-RhQ4DzmBi5BNGcS0w4u1vdMRIKcteXTCNzDt1j7XRcdWYBz1MjMjulBhPaeC5jBCHOD1yinuOFTTSOWLLGexWw==}
+  mongoose@8.15.2:
+    resolution: {integrity: sha512-GLwghI2dS/n5BTBljspF4+FsCEBeHgnMQyX8GloYkLkl+MKljKkjcP9DhLr47Yod2RO1RCr4vZ3evUZAyuoILw==}
     engines: {node: '>=16.20.1'}
 
   mpath@0.9.0:
@@ -1129,8 +1129,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsx@4.20.1:
-    resolution: {integrity: sha512-JsFUnMHIE+g8KllOvWTrSOwCKM10xLcsesvUQR61znsbrcwZ4U/QaqdymmvTqG5GMD7k2VFv9UG35C4dRy34Ag==}
+  tsx@4.20.3:
+    resolution: {integrity: sha512-qjbnuR9Tr+FJOMBqJCW5ehvIo/buZq7vH7qD7JziU98h6l3qGy0a/yPFjwO+y0/T7GFpNgNAvEcPPVfyT8rrPQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -2004,7 +2004,7 @@ snapshots:
       bson: 6.10.3
       mongodb-connection-string-url: 3.0.2
 
-  mongoose@8.15.1:
+  mongoose@8.15.2:
     dependencies:
       bson: 6.10.3
       kareem: 2.6.3
@@ -2220,7 +2220,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsx@4.20.1:
+  tsx@4.20.3:
     dependencies:
       esbuild: 0.25.2
       get-tsconfig: 4.10.0
