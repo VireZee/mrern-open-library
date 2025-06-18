@@ -7,7 +7,18 @@ const router = Router({
     caseSensitive: true,
     strict: true
 })
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
+router.get('/auth/google/register', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    state: 'register'
+}))
+router.get('/auth/google/login', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    state: 'login'
+}))
+router.get('/auth/google/connect', passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    state: 'connect'
+}))
 // router.get('/auth/google/callback',
 //     passport.authenticate('google', {
 //         session: false,
