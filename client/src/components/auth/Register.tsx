@@ -121,7 +121,8 @@ const Register: FC = () => {
                             {errors.rePass && <p className="text-red-500 text-sm mt-1">{errors.rePass}</p>}
                         </div>
                     )}
-                    <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Register'}</button>
+                    <button type="submit" className="w-full bg-black text-white py-2 px-4 my-1 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Register'}</button>
+                    <button onClick={() => location.href = `http://${import.meta.env['VITE_DOMAIN']}:${import.meta.env['VITE_SERVER_PORT']}/auth/google/register`} className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Register with Google'}</button>
                 </form>
                 <div className="mt-4 text-sm text-gray-700 text-center">
                     Already have an account? <a href="/login" className="font-medium text-black hover:text-black">Log In</a>
