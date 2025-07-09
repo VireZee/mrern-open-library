@@ -81,7 +81,14 @@ const Login: FC = () => {
                     <div className="flex justify-center mb-4">
                         <a href="/forget-password" className="font-medium text-black hover:text-black">Forgot your password?</a>
                     </div>
-                    <button type="submit" className="w-full bg-black text-white py-2 px-4 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+                    <button type="submit" className="w-full bg-black text-white py-2 px-4 my-1 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
+                    <button type="button" onClick={() => {
+                        const width = 500
+                        const height = 600
+                        const left = window.screenX + (window.outerWidth - width) / 2
+                        const top = window.screenY + (window.outerHeight - height) / 2
+                        window.open(`http://${import.meta.env['VITE_DOMAIN']}:${import.meta.env['VITE_SERVER_PORT']}/auth/google/login`, '_blank', `width=${width},height=${height},left=${left},top=${top}`)
+                    }} className="w-full bg-black text-white py-2 px-4 rounded-md">Login with Google</button>
                 </form>
                 <div className="mt-4 text-sm text-gray-700 text-center">
                     Don't have an account? <a href="/register" className="font-medium text-black hover:text-black">Register</a>
