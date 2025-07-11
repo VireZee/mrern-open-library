@@ -19,18 +19,21 @@ router.get('/auth/google/connect', passport.authenticate('google', {
     scope: ['profile', 'email'],
     state: 'connect'
 }))
-// router.get('/auth/google/callback',
-//     passport.authenticate('google', {
-//         session: false,
-//         failureRedirect: '/login'
-//     }),
-//     (req, res) => {
-//         const user = req.user
-//         const token = generateJwt(user)
-//         res.cookie('!', token, { httpOnly: true, sameSite: 'lax' })
-//         res.redirect(`http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}`)
-//     }
-// )
+router.get('/auth/google/callback',
+    passport.authenticate('google', {
+        session: false,
+        failureRedirect: '/login'
+    }),
+    // (req, res) => {
+    //     const state = req.query['state']
+    //     const profile = req.user
+    //     if (!profile) return res.redirect('/login')
+    //     const googleId = profile.id
+    //     const email = profile.emails?.[0]?.value
+    //     const name = profile.displayName
+    //     const photo = profile.photos?.[0]?.value
+    // }
+)
 router.get('/api/:token', apiController)
 router.get('/verify/:id/:token', verifyController)
 export default router
