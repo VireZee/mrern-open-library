@@ -19,11 +19,10 @@ router.get('/auth/google/connect', passport.authenticate('google', {
     scope: ['profile', 'email'],
     state: 'connect'
 }))
-router.get('/auth/google/callback',
-    passport.authenticate('google', {
-        session: false,
-        failureRedirect: '/login'
-    }),
+router.get('/auth/google/callback', passport.authenticate('google', {
+    session: false,
+    failureRedirect: '/login'
+}),
     // (req, res) => {
     //     const state = req.query['state']
     //     const profile = req.user
