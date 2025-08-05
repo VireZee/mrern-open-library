@@ -4,7 +4,7 @@ export default (user: { _id: ObjectId }, res: Res) => {
     res.cookie('!', token, {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
-        secure: process.env['NODE_ENV'] === 'production',
+        secure: true,
         sameSite: "strict",
         priority: "high"
     })
