@@ -7,8 +7,8 @@ import type { StrategyOptionsWithoutRequest } from 'passport-jwt'
 import type { StrategyOptionsWithRequest } from 'passport-google-oauth20'
 import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatName } from '@utils/validators/name.ts'
-import { formatUsername } from '@utils/validators/username.ts'
 import formatUser from '@utils/formatter/user.ts'
+import generateUniqueUsername from '@utils/misc/generateUniqueUsername.ts'
 
 const jwtOpt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
@@ -43,14 +43,14 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
         const state = req.query['state']
         if (state === 'register') {
             if (await userModel.findOne({ googleId }))
-                return done(null, false)
+                return done(null, false, { message: 'Google account already registered. Try logging in with Google.' })
             if (await userModel.findOne({ email }))
-                return done(null, false)
+                return done(null, false, { message: 'Email is already registered. Try logging in with your email and password, or connect Google in account settings.' })
             const newUser = new userModel({
                 googleId,
                 photo: photoUrl,
                 name: formatName(name),
-                username: formatUsername(email.split('@')[0]!),
+                username: await generateUniqueUsername(email.split('@')[0]!),
                 email,
                 pass: '',
                 verified: true
