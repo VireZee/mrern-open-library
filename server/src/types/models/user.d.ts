@@ -14,6 +14,5 @@ export type UserSettings = BaseUser & {
     updated: Date
 }
 export type GoogleUser = BaseUser & {
-    googleId?: string
-    registeredWithGoogle: boolean
+    googleId: string
 }

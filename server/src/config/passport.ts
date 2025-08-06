@@ -53,7 +53,6 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
                 username: formatUsername(email.split('@')[0]!),
                 email,
                 pass: '',
-                registeredWithGoogle: true,
                 verified: true
             })
             await newUser.save()
