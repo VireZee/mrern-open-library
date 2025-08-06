@@ -21,12 +21,12 @@ router.get('/auth/google/connect', passport.authenticate('google', {
     scope: ['profile', 'email'],
     state: 'connect'
 }))
-router.get('/auth/google/callback', passport.authenticate('google', { session: false }),
-    (req, res) => {
-        const user = req.user as User
-        cookie(new TypesObjectId(user._id), res)
-    }
-)
+router.get('/auth/google/callback', (req, res, next) => {
+    passport.authenticate('google', { session: false }, (err, user, info) => {
+        if (err) return res.status(500).json({ error: err })
+
+    })
+})
 router.get('/api/:token', apiController)
 router.get('/verify/:id/:token', verifyController)
 export default router
