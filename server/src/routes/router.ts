@@ -2,6 +2,8 @@ import { Router } from 'express'
 import passport from '@config/passport.ts'
 import apiController from '@controller/booksParent.ts'
 import verifyController from '@controller/verify.ts'
+import cookie from '@services/account/cookie.ts'
+import type { User } from '@type/models/user.d.ts'
 
 const router = Router({
     caseSensitive: true,
@@ -21,6 +23,8 @@ router.get('/auth/google/connect', passport.authenticate('google', {
 }))
 router.get('/auth/google/callback', passport.authenticate('google', { session: false }),
     (req, res) => {
+        const user = req.user as User
+        cookie(new TypesObjectId(user._id), res)
     }
 )
 router.get('/api/:token', apiController)

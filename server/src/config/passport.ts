@@ -44,16 +44,24 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
         if (state === 'register') {
             if (await userModel.findOne({ googleId }))
                 return done(null, false)
+            if (await userModel.findOne({ email }))
+                return done(null, false)
             const newUser = new userModel({
                 googleId,
-                registeredWithGoogle: true,
                 photo: photoUrl,
                 name: formatName(name),
                 username: formatUsername(email.split('@')[0]!),
                 email,
-                pass: ''
+                pass: '',
+                registeredWithGoogle: true,
+                verified: true
             })
             await newUser.save()
+            return done(null, newUser)
+        } else if (state === 'login') {
+            return
+        } else if (state === 'connect') {
+            return
         }
     } catch (e) {
         return done(e, false)
