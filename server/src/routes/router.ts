@@ -3,7 +3,7 @@ import passport from '@config/passport.ts'
 import apiController from '@controller/booksParent.ts'
 import verifyController from '@controller/verify.ts'
 import cookie from '@services/account/cookie.ts'
-import type { User } from '@type/models/user.d.ts'
+import type { User } from '@type/models/user.js'
 
 const router = Router({
     caseSensitive: true,
@@ -22,10 +22,12 @@ router.get('/auth/google/connect', passport.authenticate('google', {
     state: 'connect'
 }))
 router.get('/auth/google/callback', (req, res, next) => {
-    passport.authenticate('google', { session: false }, (err, user, info) => {
-        if (err) return res.status(500).json({ error: err })
-
-    })
+    passport.authenticate('google', { session: false }, (err, user: User, info) => {
+        if (!user) return res.status(409).json({ error: info.message })
+        if (err) return res.status(500).json({ unknownError: err })
+        cookie(new TypesObjectId(user._id), res)
+        return res.redirect('/')
+    })(req, res, next)
 })
 router.get('/api/:token', apiController)
 router.get('/verify/:id/:token', verifyController)
