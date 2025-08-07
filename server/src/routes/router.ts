@@ -21,13 +21,32 @@ router.get('/auth/google/connect', passport.authenticate('google', {
     scope: ['profile', 'email'],
     state: 'connect'
 }))
-router.get('/auth/google/callback', (req, res, next) => {
+router.get('/auth/google/callback', (_, res) => {
     passport.authenticate('google', { session: false }, (err, user: User, info) => {
-        // if (!user) return res.status(409).json({ error: info.message })
-        // if (err) return res.status(500).json({ unknownError: err })
+        if (!user) {
+            return res.send(`
+                <script>
+                    window.opener.postMessage({ success: false, message: '${info.message}' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
+                    window.close()
+                </script>
+            `)
+        }
+        if (err) {
+            return res.send(`
+                <script>
+                    window.opener.postMessage({ success: false, message: '${err}' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
+                    window.close()
+                </script>
+            `)
+        }
         cookie(new TypesObjectId(user._id), res)
-        return res.redirect('/')
-    })(req, res, next)
+        return res.send(`
+            <script>
+                window.opener.postMessage({ success: true }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
+                window.close()
+            </script>
+        `)
+    })(_, res)
 })
 router.get('/api/:token', apiController)
 router.get('/verify/:id/:token', verifyController)

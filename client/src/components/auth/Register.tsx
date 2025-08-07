@@ -33,8 +33,8 @@ const Register: FC = () => {
             if (data.register) location.href = '/verify'
         } catch (e) {
             if (e instanceof ApolloError) {
-                const { errs } = e.cause!.extensions as { errs: BaseError }
-                dispatch(setErrors(errs))
+                const { errors } = e.cause!.extensions as { errors: BaseError }
+                dispatch(setErrors(errors))
             } else alert('An unexpected error occurred.')
         }
     }
