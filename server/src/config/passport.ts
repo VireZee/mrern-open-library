@@ -37,15 +37,15 @@ passport.use(new JwtStrategy(jwtOpt, async (payload, done) => {
 passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => {
     try {
         const googleId = profile.id
-        const email = profile.emails![0]!.value
-        const name = profile.displayName
         const photoUrl = profile.photos![0]!.value
+        const name = profile.name!.givenName
+        const email = profile.emails![0]!.value
         const state = req.query['state']
         if (state === 'register') {
             if (await userModel.findOne({ googleId }))
                 return done(null, false, { message: 'Google account already registered. Try logging in with Google.' })
-            if (await userModel.findOne({ email }))
-                return done(null, false, { message: 'Email is already registered. Try logging in with your email and password, or connect Google in account settings.' })
+            // if (await userModel.findOne({ email }))
+            //     return done(null, false, { message: 'Email is already registered. Try logging in with your email and password, or connect Google in account settings.' })
             const newUser = new userModel({
                 googleId,
                 photo: photoUrl,

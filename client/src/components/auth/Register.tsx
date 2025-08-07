@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import type { FC, ChangeEvent, FormEvent } from 'react'
 import { useMutation, ApolloError } from '@apollo/client'
 import REGISTER from '@features/auth/mutations/Register'
@@ -11,6 +12,15 @@ const Register: FC = () => {
     const dispatch = useDispatch()
     const registerState = useSelector((state: RootState) => state.register)
     const { name, username, email, pass, rePass, show, errors } = registerState
+    useEffect(() => {
+        const googleHandler = (e: MessageEvent) => {
+            const { message } = e.data
+            if (!message) location.href = '/'
+            else if (message) alert(message)
+        }
+        window.addEventListener('message', googleHandler)
+        return () => window.removeEventListener('message', googleHandler)
+    }, [])
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(change({ name, value }))

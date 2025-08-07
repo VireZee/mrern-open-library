@@ -23,10 +23,11 @@ router.get('/auth/google/connect', passport.authenticate('google', {
 }))
 router.get('/auth/google/callback', (_, res) => {
     passport.authenticate('google', { session: false }, (err, user: User, info) => {
+        console.log(user)
         if (!user) {
             return res.send(`
                 <script>
-                    window.opener.postMessage({ success: false, message: '${info.message}' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
+                    window.opener.postMessage({ message: '${info.message}' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
                     window.close()
                 </script>
             `)
@@ -34,7 +35,7 @@ router.get('/auth/google/callback', (_, res) => {
         if (err) {
             return res.send(`
                 <script>
-                    window.opener.postMessage({ success: false, message: '${err}' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
+                    window.opener.postMessage({ message: '${err}' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
                     window.close()
                 </script>
             `)
@@ -42,7 +43,7 @@ router.get('/auth/google/callback', (_, res) => {
         cookie(new TypesObjectId(user._id), res)
         return res.send(`
             <script>
-                window.opener.postMessage({ success: true }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
+                window.opener.postMessage({ message: '' }, 'http://${process.env['DOMAIN']}:${process.env['CLIENT_PORT']}')
                 window.close()
             </script>
         `)
