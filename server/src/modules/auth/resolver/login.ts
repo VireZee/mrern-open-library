@@ -30,8 +30,8 @@ const login = async (_: null, args: { emailOrUsername: string, pass: string }, c
                 { username: emailOrUsername.toLowerCase() }
             ]
         }).lean()
-        if (!user || !(await verifyHash(pass, user!.pass!))) graphqlError('Invalid login credentials!', 401)
         if (googleUser) graphqlError('Account is registered using Google! Try logging in with Google!', 401)
+        if ((!user || !(await verifyHash(pass, user.pass!)))) graphqlError('Invalid login credentials!', 401)
         cookie(user!, res)
         return true
     } catch (e) {
