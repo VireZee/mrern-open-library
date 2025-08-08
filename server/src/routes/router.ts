@@ -23,7 +23,6 @@ router.get('/auth/google/connect', passport.authenticate('google', {
 }))
 router.get('/auth/google/callback', (_, res) => {
     passport.authenticate('google', { session: false }, (err, user: User, info) => {
-        console.log(user)
         if (!user) {
             return res.send(`
                 <script>
