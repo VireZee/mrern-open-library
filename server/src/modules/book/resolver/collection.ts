@@ -18,8 +18,8 @@ const Collection = async (_: null, args: { search: string, page: number }, conte
         const query: Query = { user_id: user._id }
         if (search) query.title = { $regex: search, $options: 'i' }
         const [bookCollection, totalCollection] = await Promise.all([
-            collectionModel.find(query).sort({ created: -1 }).skip((page - 1) * limit).limit(limit),
-            collectionModel.countDocuments(query)
+            collectionModel.find(query).sort({ created: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+            collectionModel.countDocuments(query).lean()
         ])
         const collection = {
             found: bookCollection.length,

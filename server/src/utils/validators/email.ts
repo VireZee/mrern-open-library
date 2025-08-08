@@ -9,11 +9,11 @@ export default async (email: string, id?: ObjectId) => {
         ],
         email,
         ...(id && { _id: { $ne: id } })
-    })) return 'Email is already registered!'
+    }).lean()) return 'Email is already registered!'
     else if (await user.findOne({
         googleId: { $exists: true, $nin: [null, ''] },
         email,
         ...(id && { _id: { $ne: id } })
-    })) return 'Email is already registered using Google!'
+    }).lean()) return 'Email is already registered using Google!'
     return
 }

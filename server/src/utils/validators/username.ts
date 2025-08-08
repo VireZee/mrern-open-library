@@ -6,7 +6,7 @@ export const validateUsername = async (username: string, id?: ObjectId) => {
     else if (await user.findOne({
         username: formatUsername(username),
         ...(id && { _id: { $ne: id } })
-    })) return 'Username is unavailable!'
+    }).lean()) return 'Username is unavailable!'
     return
 }
 export const formatUsername = (username: string) => username.toLowerCase()

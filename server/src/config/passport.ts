@@ -38,14 +38,11 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
     try {
         const googleId = profile.id
         const photoUrl = profile.photos![0]!.value
-        const name = profile.name!.givenName
+        const name = [profile.name!.givenName, profile.name!.familyName].filter(Boolean).join(' ')
         const email = profile.emails![0]!.value
         const state = req.query['state']
         if (state === 'register') {
-            if (await userModel.findOne({ googleId }))
-                return done(null, false, { message: 'Google account already registered. Try logging in with Google.' })
-            // if (await userModel.findOne({ email }))
-            //     return done(null, false, { message: 'Email is already registered. Try logging in with your email and password, or connect Google in account settings.' })
+            if (await userModel.findOne({ googleId }).lean()) return done(null, false, { message: 'Google account is already registered! Try logging in with Google!' })
             const newUser = new userModel({
                 googleId,
                 photo: photoUrl,
@@ -58,7 +55,9 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
             await newUser.save()
             return done(null, newUser)
         } else if (state === 'login') {
-            return
+            const user = await userModel.findOne({ googleId }).lean()
+            if (!user) return done(null, false, { message: 'Google account is not registered! Try registering it with Google!' })
+            return done(null, user)
         } else if (state === 'connect') {
             return
         }

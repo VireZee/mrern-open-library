@@ -6,7 +6,7 @@ import generateCode from '@services/verification/generateCode.ts'
 const forget = async (_: null, args: { email: string }) => {
     try {
         const { email } = args
-        const user = await userModel.findOne({ email })
+        const user = await userModel.findOne({ email }).lean()
         if (user) {
             await block('forget', user, 'Too many reset requests! Try again in')
             await rateLimiter('forget', user, 60, 'verify')

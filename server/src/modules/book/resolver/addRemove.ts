@@ -11,7 +11,7 @@ const addRemove = async (_: null, args: { author_key: string[], cover_edition_ke
             author_key,
             cover_edition_key,
             cover_i
-        })
+        }).lean()
         if (bookCollection) {
             await collection.findByIdAndDelete(bookCollection._id)
             await updateCollection('collection', user)
