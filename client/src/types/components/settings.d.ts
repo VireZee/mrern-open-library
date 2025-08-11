@@ -1,5 +1,6 @@
 type SettingsProps = {
     isUser: {
+        google: boolean
         photo: string
         name: string
         username: string

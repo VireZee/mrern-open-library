@@ -245,6 +245,9 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                         )}
                     </div>
                     <button className="w-full p-2 bg-black text-white rounded-md mt-5" disabled={settingsLoad}>
+                        {isUser.google ? 'Disconnect from Google' : 'Connect to Google'}
+                    </button>
+                    <button className="w-full p-2 bg-black text-white rounded-md mt-5" disabled={settingsLoad}>
                         {settingsLoad ? 'Loading...' : 'Save Changes'}
                     </button>
                     <button className="w-full p-2 bg-red-500 text-white rounded-md mt-5" onClick={handleDeleteAccount} disabled={terminateLoad}>Delete Account</button>
