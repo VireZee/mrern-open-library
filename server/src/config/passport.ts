@@ -64,8 +64,12 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
                 const updatedUser = await userModel.findByIdAndUpdate(user!._id, { googleId }, { new: true }).lean()
                 await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
                 return done(null, updatedUser!)
+            } else if (user!.googleId) {
+                if (!user!.pass) return done(null, false, { message: 'Set a password before disconnecting your account from Google!' })
+                const updatedUser = await userModel.findByIdAndUpdate(user!._id, { $unset: { googleId } }).lean()
+                await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
+                return done(null, updatedUser!)
             }
-            else if (user!.googleId) await userModel.findByIdAndUpdate(user!._id, { $unset: { googleId } })
         }
     } catch (e) {
         return done(e, false)

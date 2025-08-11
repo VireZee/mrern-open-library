@@ -18,6 +18,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
         const googleHandler = (e: MessageEvent) => {
             const { message } = e.data
             if (!message) location.href = '/settings'
+            else if (message) alert(message)
         }
         dispatch(change({ name: 'photo', value: isUser.photo }))
         dispatch(change({ name: 'name', value: isUser.name }))
