@@ -1,7 +1,8 @@
 type User = {
+    googleId: boolean
     photo: string
     name: string
-    uname: string
+    username: string
     email: string
     verified: boolean
 }

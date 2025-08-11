@@ -1,5 +1,6 @@
 export default `#graphql
     type Auth {
+        google: Boolean!
         photo: String!
         name: String!
         username: String!
