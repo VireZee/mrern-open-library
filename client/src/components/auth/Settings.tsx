@@ -15,11 +15,17 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
     const settingsState = useSelector((state: RootState) => state.settings)
     const { isDropdownOpen, photo, name, username, email, oldPass, newPass, rePass, show, errors } = settingsState
     useEffect(() => {
+        const googleHandler = (e: MessageEvent) => {
+            const { message } = e.data
+            if (!message) location.href = '/settings'
+        }
         dispatch(change({ name: 'photo', value: isUser.photo }))
         dispatch(change({ name: 'name', value: isUser.name }))
         dispatch(change({ name: 'username', value: isUser.username }))
         dispatch(change({ name: 'email', value: isUser.email }))
-    }, [isUser])
+        window.addEventListener('message', googleHandler)
+        return () => window.removeEventListener('message', googleHandler)
+    }, [])
     const inputFileRef = useRef<HTMLInputElement>(null)
     const imgFormat = (base64String: string) => {
         const decodedString = atob(base64String)

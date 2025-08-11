@@ -1,15 +1,13 @@
 import Redis from '@database/Redis.ts'
 import userModel from '@models/user.ts'
 import passport from 'passport'
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
-import type { StrategyOptionsWithoutRequest } from 'passport-jwt'
-import type { StrategyOptionsWithRequest } from 'passport-google-oauth20'
+import { Strategy as JwtStrategy, ExtractJwt, type StrategyOptionsWithoutRequest } from 'passport-jwt'
+import { Strategy as GoogleStrategy, type StrategyOptionsWithRequest } from 'passport-google-oauth20'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatName } from '@utils/validators/name.ts'
 import formatUser from '@utils/formatter/user.ts'
 import generateUniqueUsername from '@utils/misc/generateUniqueUsername.ts'
-import jwt, { type JwtPayload } from 'jsonwebtoken'
 
 const jwtOpt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
@@ -62,7 +60,11 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
         } else if (state === 'connect') {
             const decoded = jwt.verify(req.cookies['!'], process.env['SECRET_KEY']!) as JwtPayload
             const user = await userModel.findById(sanitize(decoded['id']))
-            if (!user!.googleId) await userModel.findByIdAndUpdate(user!._id, { googleId })
+            if (!user!.googleId) {
+                const updatedUser = await userModel.findByIdAndUpdate(user!._id, { googleId }, { new: true }).lean()
+                await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
+                return done(null, updatedUser!)
+            }
             else if (user!.googleId) await userModel.findByIdAndUpdate(user!._id, { $unset: { googleId } })
         }
     } catch (e) {
