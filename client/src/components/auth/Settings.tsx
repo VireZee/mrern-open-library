@@ -57,6 +57,13 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
         dispatch(setErrors({ ...errors, [name]: '' }))
     }
     const toggle = (name: 'old' | 'new') => dispatch(setShow({ ...show, [name]: !show[name] }))
+    const googleConnect = () => {
+        const width = 500
+        const height = 600
+        const left = window.screenX + (window.outerWidth - width) / 2
+        const top = window.screenY + (window.outerHeight - height) / 2
+        window.open(`http://${import.meta.env['VITE_DOMAIN']}:${import.meta.env['VITE_SERVER_PORT']}/auth/google/connect`, '_blank', `width=${width},height=${height},left=${left},top=${top}`)
+    }
     const submit = async (e: FormEvent) => {
         e.preventDefault()
         try {
@@ -244,13 +251,13 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
                             </>
                         )}
                     </div>
-                    <button className="w-full p-2 bg-black text-white rounded-md mt-5" disabled={settingsLoad}>
+                    <button type="button" className="w-full p-2 bg-black text-white rounded-md mt-5" onClick={googleConnect}>
                         {isUser.google ? 'Disconnect from Google' : 'Connect to Google'}
                     </button>
-                    <button className="w-full p-2 bg-black text-white rounded-md mt-5" disabled={settingsLoad}>
+                    <button className="w-full p-2 bg-black text-white rounded-md mt-2" disabled={settingsLoad}>
                         {settingsLoad ? 'Loading...' : 'Save Changes'}
                     </button>
-                    <button className="w-full p-2 bg-red-500 text-white rounded-md mt-5" onClick={handleDeleteAccount} disabled={terminateLoad}>Delete Account</button>
+                    <button type="button" className="w-full p-2 bg-red-500 text-white rounded-md mt-5" onClick={handleDeleteAccount} disabled={terminateLoad}>Delete Account</button>
                 </form>
             </div>
         </div>

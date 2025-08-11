@@ -9,6 +9,7 @@ import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatName } from '@utils/validators/name.ts'
 import formatUser from '@utils/formatter/user.ts'
 import generateUniqueUsername from '@utils/misc/generateUniqueUsername.ts'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 
 const jwtOpt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
@@ -59,7 +60,10 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
             if (!user) return done(null, false, { message: 'Google account is not registered! Try registering it with Google!' })
             return done(null, user)
         } else if (state === 'connect') {
-            return
+            const decoded = jwt.verify(req.cookies['!'], process.env['SECRET_KEY']!) as JwtPayload
+            const user = await userModel.findById(sanitize(decoded['id']))
+            if (!user!.googleId) await userModel.findByIdAndUpdate(user!._id, { googleId })
+            else if (user!.googleId) await userModel.findByIdAndUpdate(user!._id, { $unset: { googleId } })
         }
     } catch (e) {
         return done(e, false)

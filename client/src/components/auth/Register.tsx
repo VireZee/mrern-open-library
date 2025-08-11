@@ -48,6 +48,13 @@ const Register: FC = () => {
             } else alert('An unexpected error occurred.')
         }
     }
+    const googleRegister = () => {
+        const width = 500
+        const height = 600
+        const left = window.screenX + (window.outerWidth - width) / 2
+        const top = window.screenY + (window.outerHeight - height) / 2
+        window.open(`http://${import.meta.env['VITE_DOMAIN']}:${import.meta.env['VITE_SERVER_PORT']}/auth/google/register`, '_blank', `width=${width},height=${height},left=${left},top=${top}`)
+    }
     return (
         <div className="bg-black flex justify-center items-center h-screen">
             <div className="bg-white p-8 rounded-lg shadow-2xl w-96">
@@ -131,14 +138,8 @@ const Register: FC = () => {
                             {errors.rePass && <p className="text-red-500 text-sm mt-1">{errors.rePass}</p>}
                         </div>
                     )}
-                    <button type="submit" className="w-full bg-black text-white py-2 px-4 my-1 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Register'}</button>
-                    <button type="button" onClick={() => {
-                        const width = 500
-                        const height = 600
-                        const left = window.screenX + (window.outerWidth - width) / 2
-                        const top = window.screenY + (window.outerHeight - height) / 2
-                        window.open(`http://${import.meta.env['VITE_DOMAIN']}:${import.meta.env['VITE_SERVER_PORT']}/auth/google/register`, '_blank', `width=${width},height=${height},left=${left},top=${top}`)
-                    }} className="w-full bg-black text-white py-2 px-4 rounded-md">Register with Google</button>
+                    <button className="w-full bg-black text-white py-2 px-4 my-1 rounded-md" disabled={loading}>{loading ? 'Loading...' : 'Register'}</button>
+                    <button type="button" onClick={googleRegister} className="w-full bg-black text-white py-2 px-4 rounded-md">Register with Google</button>
                 </form>
                 <div className="mt-4 text-sm text-gray-700 text-center">
                     Already have an account? <a href="/login" className="font-medium text-black hover:text-black">Log In</a>
