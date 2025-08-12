@@ -60,16 +60,16 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
         } else if (state === 'connect') {
             const decoded = jwt.verify(req.cookies['!'], process.env['SECRET_KEY']!) as JwtPayload
             const user = await userModel.findById(sanitize(decoded['id']))
-            if (!user!.googleId) {
-                const updatedUser = await userModel.findByIdAndUpdate(user!._id, { googleId }, { new: true }).lean()
-                await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
-                return done(null, updatedUser!)
-            } else if (user!.googleId) {
+            let updateQuery: Record<string, string | Record<string, string>> = {}
+            if (!user!.googleId)
+                updateQuery = { googleId }
+            else if (user!.googleId) {
                 if (!user!.pass) return done(null, false, { message: 'Set a password before disconnecting your account from Google!' })
-                const updatedUser = await userModel.findByIdAndUpdate(user!._id, { $unset: { googleId } }).lean()
-                await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
-                return done(null, updatedUser!)
+                updateQuery = { $unset: { googleId } }
             }
+            const updatedUser = await userModel.findByIdAndUpdate(user!._id, updateQuery, { new: true }).lean()
+            await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
+            return done(null, updatedUser!)
         }
     } catch (e) {
         return done(e, false)
