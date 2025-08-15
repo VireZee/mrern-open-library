@@ -23,9 +23,11 @@ const settings = async (_: null, args: { photo: string, name: string, username: 
         if (nameErr) errs['name'] = nameErr
         if (usernameErr) errs['username'] = usernameErr
         if (emailErr) errs['email'] = emailErr
-        if (oldPass && !newPass) errs['newPass'] = "New password can't be empty!"
-        if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass!)))) errs['oldPass'] = 'Invalid current password'
-        if (newPass && await verifyHash(newPass, user!.pass!)) errs['newPass'] = "The new password can't be the same as the current password!"
+        if (user!.pass !== null) {
+            if (oldPass && !newPass) errs['newPass'] = "New password can't be empty!"
+            if ((newPass && !oldPass) || (newPass && !(await verifyHash(oldPass, user!.pass!)))) errs['oldPass'] = 'Invalid current password'
+            if (newPass && await verifyHash(newPass, user!.pass!)) errs['newPass'] = "The new password can't be the same as the current password!"
+        } else if (user!.pass === null) if (oldPass) errs['oldPass'] = "You don't need to enter current password"
         if (!show && newPass !== rePass) errs['rePass'] = 'Password do not match!'
         if (Object.keys(errs).length > 0) graphqlError('Unprocessable Content', 422, errs)
         const updatedUser: Partial<UserSettings> = {}

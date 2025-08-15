@@ -17,7 +17,7 @@
         "@types/passport": "^1.0.17",
         "@types/passport-google-oauth20": "^2.0.16",
         "@types/passport-jwt": "^4.0.1",
-        "tsx": "^4.20.3",
+        "tsx": "^4.20.4",
         "typescript": "^5.9.2"
     },
     "dependencies": {
@@ -37,7 +37,7 @@
         "passport": "^0.7.0",
         "passport-google-oauth20": "^2.0.0",
         "passport-jwt": "^4.0.1",
-        "redis": "^5.8.0"
+        "redis": "^5.8.1"
     },
     "packageManager": "pnpm@10.14.0",
     "pnpm": {

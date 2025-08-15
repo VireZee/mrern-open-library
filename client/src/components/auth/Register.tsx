@@ -15,7 +15,7 @@ const Register: FC = () => {
     useEffect(() => {
         const googleHandler = (e: MessageEvent) => {
             const { message } = e.data
-            if (!message) location.href = '/'
+            if (message === '') location.href = '/'
             else if (message) alert(message)
         }
         window.addEventListener('message', googleHandler)

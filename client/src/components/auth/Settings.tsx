@@ -17,7 +17,7 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
     useEffect(() => {
         const googleHandler = (e: MessageEvent) => {
             const { message } = e.data
-            if (!message) location.href = '/settings'
+            if (message === '') location.href = '/settings'
             else if (message) alert(message)
         }
         dispatch(change({ name: 'photo', value: isUser.photo }))
@@ -92,8 +92,8 @@ const Settings: FC<SettingsProps> = ({ isUser }) => {
             }
         } catch (e) {
             if (e instanceof ApolloError) {
-                const { errs } = e.cause!.extensions as { errs: ExtendedError }
-                dispatch(setErrors(errs))
+                const { errors } = e.cause!.extensions as { errors: ExtendedError }
+                dispatch(setErrors(errors))
             } else alert('An unexpected error occurred.')
         }
     }
