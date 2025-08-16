@@ -7,6 +7,7 @@ import jwt, { type JwtPayload } from 'jsonwebtoken'
 import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.ts'
 import { formatName } from '@utils/validators/name.ts'
 import formatUser from '@utils/formatter/user.ts'
+import generateSvg from '@utils/misc/generateSvg.ts'
 import generateUniqueUsername from '@utils/misc/generateUniqueUsername.ts'
 
 const jwtOpt: StrategyOptionsWithoutRequest = {
@@ -36,7 +37,6 @@ passport.use(new JwtStrategy(jwtOpt, async (payload, done) => {
 passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => {
     try {
         const googleId = profile.id
-        const photoUrl = profile.photos![0]!.value
         const name = [profile.name!.givenName, profile.name!.familyName].filter(Boolean).join(' ')
         const email = profile.emails![0]!.value
         const state = req.query['state']
@@ -44,7 +44,7 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
             if (await userModel.findOne({ googleId }).lean()) return done(null, false, { message: 'Google account is already registered! Try logging in with Google!' })
             const newUser = new userModel({
                 googleId,
-                photo: photoUrl,
+                photo: Buffer.from(generateSvg(name), 'base64'),
                 name: formatName(name),
                 username: await generateUniqueUsername(email.split('@')[0]!),
                 email,
