@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "dev": "tsx watch src/main.ts",
-        "build": "tsc"
+        "build": "tsc && tsc-alias"
     },
     "devDependencies": {
         "@types/cookie-parser": "^1.4.9",
@@ -13,10 +13,11 @@
         "@types/got": "^9.6.12",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/module-alias": "^2.0.4",
-        "@types/nodemailer": "^6.4.17",
+        "@types/nodemailer": "^7.0.0",
         "@types/passport": "^1.0.17",
         "@types/passport-google-oauth20": "^2.0.16",
         "@types/passport-jwt": "^4.0.1",
+        "tsc-alias": "^1.8.16",
         "tsx": "^4.20.4",
         "typescript": "^5.9.2"
     },
