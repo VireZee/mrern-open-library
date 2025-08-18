@@ -62,10 +62,11 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
             const user = await userModel.findById(sanitize(decoded['id']))
             let updateQuery: Record<string, string | Record<string, string>> = {}
             if (!user!.googleId) updateQuery = { googleId }
+            else if (user!.googleId !== googleId) return done(null, false, { message: 'The selected Google account does not match the one connected to your profile!' })
             else if (user!.googleId === googleId) {
                 if (!user!.pass) return done(null, false, { message: 'Set a password before disconnecting your account from Google!' })
                 updateQuery = { $unset: { googleId } }
-            } else if (user!.googleId !== googleId) return done(null, false, { message: 'The selected Google account does not match the one connected to your profile!' })
+            }
             const updatedUser = await userModel.findByIdAndUpdate(user!._id, updateQuery, { new: true }).lean()
             await Redis.json.SET(sanitizeRedisKey('user', user!._id), '$.google', !!updatedUser!.googleId)
             return done(null, updatedUser!)
