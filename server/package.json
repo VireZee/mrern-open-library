@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "dev": "tsx watch src/main.ts",
-        "build": "tsc && tsc-alias"
+        "build": "tsc && tsc-alias",
+        "start": "node dist/main.js"
     },
     "devDependencies": {
         "@types/cookie-parser": "^1.4.9",
