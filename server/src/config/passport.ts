@@ -17,7 +17,7 @@ const jwtOpt: StrategyOptionsWithoutRequest = {
 const googleOpt: StrategyOptionsWithRequest = {
     clientID: process.env['GOOGLE_CLIENT_ID']!,
     clientSecret: process.env['GOOGLE_CLIENT_SECRET']!,
-    callbackURL: 'http://localhost:3000/auth/google/callback',
+    callbackURL: `http://${process.env['DOMAIN']}:${process.env['PORT']}/auth/google/callback`,
     passReqToCallback: true
 }
 passport.use(new JwtStrategy(jwtOpt, async (payload, done) => {
