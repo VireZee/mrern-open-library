@@ -11,15 +11,18 @@ const router = Router({
 })
 router.get('/auth/google/register', passport.authenticate('google', {
     scope: ['profile', 'email'],
-    state: 'register'
+    state: 'register',
+    prompt: 'select_account'
 }))
 router.get('/auth/google/login', passport.authenticate('google', {
     scope: ['profile', 'email'],
-    state: 'login'
+    state: 'login',
+    prompt: 'select_account'
 }))
 router.get('/auth/google/connect', passport.authenticate('google', {
     scope: ['profile', 'email'],
-    state: 'connect'
+    state: 'connect',
+    prompt: 'select_account'
 }))
 router.get('/auth/google/callback', (_, res) => {
     passport.authenticate('google', { session: false }, (err, user: User, info) => {

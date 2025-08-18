@@ -61,8 +61,7 @@ passport.use(new GoogleStrategy(googleOpt, async (req, _, __, profile, done) => 
             const decoded = jwt.verify(req.cookies['!'], process.env['SECRET_KEY']!) as JwtPayload
             const user = await userModel.findById(sanitize(decoded['id']))
             let updateQuery: Record<string, string | Record<string, string>> = {}
-            if (!user!.googleId)
-                updateQuery = { googleId }
+            if (!user!.googleId) updateQuery = { googleId }
             else if (user!.googleId) {
                 if (!user!.pass) return done(null, false, { message: 'Set a password before disconnecting your account from Google!' })
                 updateQuery = { $unset: { googleId } }

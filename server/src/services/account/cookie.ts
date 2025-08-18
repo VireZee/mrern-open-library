@@ -5,7 +5,7 @@ export default (user: { _id: ObjectId }, res: Res) => {
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "lax",
         priority: "high"
     })
 }
