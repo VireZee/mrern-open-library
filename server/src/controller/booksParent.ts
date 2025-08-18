@@ -1,5 +1,5 @@
-import userModel from '@models/user.ts'
-import booksChild from '@controller/booksChild.ts'
+import userModel from '@models/user.js'
+import booksChild from '@controller/booksChild.js'
 
 const booksParent = async (req: Req, res: Res) => {
     try {

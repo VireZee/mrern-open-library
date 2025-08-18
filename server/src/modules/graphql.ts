@@ -1,12 +1,12 @@
-import schema from '@modules/schema.ts'
-import middlewareSchema from '@modules/middleware/schema.ts'
-import authSchema from '@modules/auth/schema.ts'
-import bookSchema from '@modules/book/schema.ts'
-import apiSchema from '@modules/api/schema.ts'
-import middlewareResolver from '@modules/middleware/resolver.ts'
-import authResolver from '@modules/auth/resolver.ts'
-import bookResolver from '@modules/book/resolver.ts'
-import apiResolver from '@modules/api/resolver.ts'
+import schema from '@modules/schema.js'
+import middlewareSchema from '@modules/middleware/schema.js'
+import authSchema from '@modules/auth/schema.js'
+import bookSchema from '@modules/book/schema.js'
+import apiSchema from '@modules/api/schema.js'
+import middlewareResolver from '@modules/middleware/resolver.js'
+import authResolver from '@modules/auth/resolver.js'
+import bookResolver from '@modules/book/resolver.js'
+import apiResolver from '@modules/api/resolver.js'
 export const typeDefs = [schema, middlewareSchema, authSchema, bookSchema, apiSchema].join('\n')
 export const resolvers = {
     Query: {

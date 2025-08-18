@@ -1,8 +1,8 @@
-import Redis from '@database/Redis.ts'
-import userModel from '@models/user.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
-import { hash } from '@utils/security/hash.ts'
-import graphqlError from '@utils/misc/graphqlError.ts'
+import Redis from '@database/Redis.js'
+import userModel from '@models/user.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
+import { hash } from '@utils/security/hash.js'
+import graphqlError from '@utils/misc/graphqlError.js'
 
 const reset = async (_: null, args: { id: string, token: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {

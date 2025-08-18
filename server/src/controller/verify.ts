@@ -1,6 +1,6 @@
-import Redis from '@database/Redis.ts'
-import setToVerified from '@services/verification/setToVerified.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import Redis from '@database/Redis.js'
+import setToVerified from '@services/verification/setToVerified.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
 import type { User } from '@type/models/user.d.ts'
 
 const verify = async (req: Req, res: Res) => {

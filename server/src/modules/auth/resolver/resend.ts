@@ -1,6 +1,6 @@
-import block from '@services/account/block.ts'
-import rateLimiter from '@services/verification/rateLimiter.ts'
-import generateCode from '@services/verification/generateCode.ts'
+import block from '@services/account/block.js'
+import rateLimiter from '@services/verification/rateLimiter.js'
+import generateCode from '@services/verification/generateCode.js'
 import type { User } from '@type/models/user.d.ts'
 
 const resend = async (_: null, __: null, context: { user: User }) => {

@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import passport from '@config/passport.ts'
-import apiController from '@controller/booksParent.ts'
-import verifyController from '@controller/verify.ts'
-import cookie from '@services/account/cookie.ts'
+import passport from '@config/passport.js'
+import apiController from '@controller/booksParent.js'
+import verifyController from '@controller/verify.js'
+import cookie from '@services/account/cookie.js'
 import type { User } from '@type/models/user.d.ts'
 
 const router = Router({

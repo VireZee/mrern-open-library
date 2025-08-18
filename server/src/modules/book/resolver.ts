@@ -1,7 +1,7 @@
-import home from '@modules/book/resolver/home.ts'
-import fetch from '@modules/book/resolver/fetch.ts'
-import collection from '@modules/book/resolver/collection.ts'
-import addRemove from '@modules/book/resolver/addRemove.ts'
+import home from '@modules/book/resolver/home.js'
+import fetch from '@modules/book/resolver/fetch.js'
+import collection from '@modules/book/resolver/collection.js'
+import addRemove from '@modules/book/resolver/addRemove.js'
 export default {
     Query: {
         home,

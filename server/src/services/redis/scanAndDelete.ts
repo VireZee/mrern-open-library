@@ -1,4 +1,4 @@
-import Redis from '@database/Redis.ts'
+import Redis from '@database/Redis.js'
 export default async (key: string) => {
     let cursor = '0'
     do {

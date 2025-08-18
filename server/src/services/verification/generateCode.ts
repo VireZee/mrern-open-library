@@ -1,7 +1,7 @@
-import Redis from '@database/Redis.ts'
-import { verifyEmail } from '@services/account/email.ts'
-import { resetPassword } from '@services/account/email.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import Redis from '@database/Redis.js'
+import { verifyEmail } from '@services/account/email.js'
+import { resetPassword } from '@services/account/email.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
 export default async (keyName: string, user: { _id: ObjectId | string, email: string }, isForget: boolean) => {
     const key = sanitizeRedisKey(keyName, user._id)
     const randomString = nodeCrypto.randomBytes(64).toString('hex')

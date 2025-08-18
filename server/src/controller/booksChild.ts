@@ -1,4 +1,4 @@
-import createCollection from '@services/redis/createCollection.ts'
+import createCollection from '@services/redis/createCollection.js'
 
 const booksChild = async (parent: { id: ObjectId }) => {
     try {

@@ -1,4 +1,4 @@
-import generateToken from '@utils/security/jwt.ts'
+import generateToken from '@utils/security/jwt.js'
 export default (user: { _id: ObjectId }, res: Res) => {
     const token = generateToken(user._id)
     res.cookie('!', token, {

@@ -1,7 +1,7 @@
-import userModel from '@models/user.ts'
-import block from '@services/account/block.ts'
-import rateLimiter from '@services/verification/rateLimiter.ts'
-import generateCode from '@services/verification/generateCode.ts'
+import userModel from '@models/user.js'
+import block from '@services/account/block.js'
+import rateLimiter from '@services/verification/rateLimiter.js'
+import generateCode from '@services/verification/generateCode.js'
 
 const forget = async (_: null, args: { email: string }) => {
     try {

@@ -1,6 +1,6 @@
-import Redis from '@database/Redis.ts'
-import collectionModel from '@models/collection.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import Redis from '@database/Redis.js'
+import collectionModel from '@models/collection.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
 import type { User } from '@type/models/user.d.ts'
 import type Query from '@type/modules/collection.d.ts'
 

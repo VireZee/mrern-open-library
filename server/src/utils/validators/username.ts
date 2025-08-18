@@ -1,4 +1,4 @@
-import user from '@models/user.ts'
+import user from '@models/user.js'
 export const validateUsername = async (username: string, id?: ObjectId) => {
     if (!username) return "Username can't be empty!"
     else if (!/^[\w\d]+$/.test(username)) return 'Username can only contain Latin Alphabets, Numbers, and Underscores!'

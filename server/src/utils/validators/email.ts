@@ -1,4 +1,4 @@
-import user from '@models/user.ts'
+import user from '@models/user.js'
 export default async (email: string, id?: ObjectId) => {
     if (!email) return "Email can't be empty!"
     else if (!/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) return 'Email must be valid!'

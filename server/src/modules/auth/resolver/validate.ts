@@ -1,5 +1,5 @@
-import Redis from '@database/Redis.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
+import Redis from '@database/Redis.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
 
 const validate = async (_: null, args: { id: string, token: string }) => {
     try {

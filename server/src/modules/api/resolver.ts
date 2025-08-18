@@ -1,5 +1,5 @@
-import check from '@modules/api/resolver/check.ts'
-import generate from '@modules/api/resolver/generate.ts'
+import check from '@modules/api/resolver/check.js'
+import generate from '@modules/api/resolver/generate.js'
 export default {
     Query: {
         check

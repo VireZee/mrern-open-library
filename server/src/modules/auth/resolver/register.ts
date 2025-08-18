@@ -1,12 +1,12 @@
-import user from '@models/user.ts'
-import generateCode from '@services/verification/generateCode.ts'
-import cookie from '@services/account/cookie.ts'
-import { hash } from '@utils/security/hash.ts'
-import { validateName, formatName } from '@utils/validators/name.ts'
-import { validateUsername, formatUsername } from '@utils/validators/username.ts'
-import validateEmail from '@utils/validators/email.ts'
-import generateSvg from '@utils/misc/generateSvg.ts'
-import graphqlError from '@utils/misc/graphqlError.ts'
+import user from '@models/user.js'
+import generateCode from '@services/verification/generateCode.js'
+import cookie from '@services/account/cookie.js'
+import { hash } from '@utils/security/hash.js'
+import { validateName, formatName } from '@utils/validators/name.js'
+import { validateUsername, formatUsername } from '@utils/validators/username.js'
+import validateEmail from '@utils/validators/email.js'
+import generateSvg from '@utils/misc/generateSvg.js'
+import graphqlError from '@utils/misc/graphqlError.js'
 
 const register = async (_: null, args: { name: string, username: string, email: string, pass: string, rePass: string, show: boolean }, context: { res: Res }) => {
     try {

@@ -1,7 +1,7 @@
-import userModel from '@models/user.ts'
-import collection from '@models/collection.ts'
-import scanAndDelete from '@services/redis/scanAndDelete.ts'
-import { sanitize } from '@utils/security/sanitizer.ts'
+import userModel from '@models/user.js'
+import collection from '@models/collection.js'
+import scanAndDelete from '@services/redis/scanAndDelete.js'
+import { sanitize } from '@utils/security/sanitizer.js'
 import type { User } from '@type/models/user.d.ts'
 
 const terminate = async (_: null, __: null, context: { res: Res, user: User }) => {

@@ -1,7 +1,7 @@
-import userModel from '@models/user.ts'
-import cookie from '@services/account/cookie.ts'
-import { verifyHash } from '@utils/security/hash.ts'
-import graphqlError from '@utils/misc/graphqlError.ts'
+import userModel from '@models/user.js'
+import cookie from '@services/account/cookie.js'
+import { verifyHash } from '@utils/security/hash.js'
+import graphqlError from '@utils/misc/graphqlError.js'
 
 const login = async (_: null, args: { emailOrUsername: string, pass: string }, context: { res: Res }) => {
     try {

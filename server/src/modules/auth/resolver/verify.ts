@@ -1,9 +1,9 @@
-import Redis from '@database/Redis.ts'
-import block from '@services/account/block.ts'
-import rateLimiter from '@services/verification/rateLimiter.ts'
-import setToVerified from '@services/verification/setToVerified.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
-import graphqlError from '@utils/misc/graphqlError.ts'
+import Redis from '@database/Redis.js'
+import block from '@services/account/block.js'
+import rateLimiter from '@services/verification/rateLimiter.js'
+import setToVerified from '@services/verification/setToVerified.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
+import graphqlError from '@utils/misc/graphqlError.js'
 import type { User } from '@type/models/user.d.ts'
 
 const verify = async (_: null, args: { code: string }, context: { user: User }) => {

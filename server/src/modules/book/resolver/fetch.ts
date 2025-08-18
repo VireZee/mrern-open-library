@@ -1,7 +1,7 @@
-import Redis from '@database/Redis.ts'
-import createCollection from '@services/redis/createCollection.ts'
-import { sanitizeRedisKey } from '@utils/security/sanitizer.ts'
-import { formatBooksFind } from '@utils/formatter/books.ts'
+import Redis from '@database/Redis.js'
+import createCollection from '@services/redis/createCollection.js'
+import { sanitizeRedisKey } from '@utils/security/sanitizer.js'
+import { formatBooksFind } from '@utils/formatter/books.js'
 import type Collection from '@type/models/collection.d.ts'
 import type { User } from '@type/models/user.d.ts'
 

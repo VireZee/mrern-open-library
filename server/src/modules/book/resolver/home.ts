@@ -1,6 +1,6 @@
-import Redis from '@database/Redis.ts'
+import Redis from '@database/Redis.js'
 import got from 'got'
-import { formatBooksMap } from '@utils/formatter/books.ts'
+import { formatBooksMap } from '@utils/formatter/books.js'
 import type Collection from '@type/models/collection.d.ts'
 
 const home = async (_: null, args: { search: string, page: number }) => {

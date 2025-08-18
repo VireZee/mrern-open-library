@@ -1,14 +1,14 @@
-import Redis from '@database/Redis.ts'
-import userModel from '@models/user.ts'
+import Redis from '@database/Redis.js'
+import userModel from '@models/user.js'
 import passport from 'passport'
 import { Strategy as JwtStrategy, ExtractJwt, type StrategyOptionsWithoutRequest } from 'passport-jwt'
 import { Strategy as GoogleStrategy, type StrategyOptionsWithRequest } from 'passport-google-oauth20'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
-import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.ts'
-import { formatName } from '@utils/validators/name.ts'
-import formatUser from '@utils/formatter/user.ts'
-import generateSvg from '@utils/misc/generateSvg.ts'
-import generateUniqueUsername from '@utils/misc/generateUniqueUsername.ts'
+import { sanitize, sanitizeRedisKey } from '@utils/security/sanitizer.js'
+import { formatName } from '@utils/validators/name.js'
+import formatUser from '@utils/formatter/user.js'
+import generateSvg from '@utils/misc/generateSvg.js'
+import generateUniqueUsername from '@utils/misc/generateUniqueUsername.js'
 
 const jwtOpt: StrategyOptionsWithoutRequest = {
     jwtFromRequest: ExtractJwt.fromExtractors([req => req?.cookies['!']]),
