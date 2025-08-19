@@ -3,7 +3,7 @@
 **/dist
 **/*.tsbuildinfo
 **/Dockerfile*
-**/compose.y*ml
+**/compose.yaml
 **/.dockerignore
 **/.git
 **/.gitignore

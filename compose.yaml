@@ -1,0 +1,9 @@
+services:
+  mongodb:
+    image: mongo:7.0.23
+    container_name: mrern-open-library-mongodb
+    restart: always
+  redis:
+    image: redis:8.2.1-bookworm
+    container_name: mrern-open-library-redis
+    restart: always
