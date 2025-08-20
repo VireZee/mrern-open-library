@@ -20,6 +20,7 @@ services:
     ports:
       - 8025:8025
   server:
+    build: ./server
     image: virezee/mrern-open-library-express:latest
     container_name: mrern-open-library-express
     restart: always
@@ -30,6 +31,7 @@ services:
       - redis
       - mailpit
   client:
+    build: ./client
     image: virezee/mrern-open-library-react:latest
     container_name: mrern-open-library-react
     restart: always
