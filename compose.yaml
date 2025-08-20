@@ -3,7 +3,40 @@ services:
     image: mongo:7.0.23
     container_name: mrern-open-library-mongodb
     restart: always
+    volumes:
+      - ./data/mongodb:/data/db
   redis:
-    image: redis:8.2.1-bookworm
+    image: redis/redis-stack:latest
     container_name: mrern-open-library-redis
     restart: always
+    volumes:
+      - ./data/redis:/data
+    depends_on:
+      - mongodb
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mrern-open-library-mailpit
+    restart: always
+    ports:
+      - 8025:8025
+  server:
+    image: virezee/mrern-open-library-express:latest
+    container_name: mrern-open-library-express
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      - mongodb
+      - redis
+      - mailpit
+  client:
+    image: virezee/mrern-open-library-react:latest
+    container_name: mrern-open-library-react
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+      - redis
+      - mailpit
+      - server
