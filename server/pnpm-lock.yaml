@@ -57,8 +57,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       redis:
-        specifier: ^5.8.1
-        version: 5.8.1
+        specifier: ^5.8.2
+        version: 5.8.2
     devDependencies:
       '@types/cookie-parser':
         specifier: ^1.4.9
@@ -538,33 +538,33 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@redis/bloom@5.8.1':
-    resolution: {integrity: sha512-hJOJr/yX6BttnyZ+nxD3Ddiu2lPig4XJjyAK1v7OSHOJNUTfn3RHBryB9wgnBMBdkg9glVh2AjItxIXmr600MA==}
+  '@redis/bloom@5.8.2':
+    resolution: {integrity: sha512-855DR0ChetZLarblio5eM0yLwxA9Dqq50t8StXKp5bAtLT0G+rZ+eRzzqxl37sPqQKjUudSYypz55o6nNhbz0A==}
     engines: {node: '>= 18'}
     peerDependencies:
-      '@redis/client': ^5.8.1
+      '@redis/client': ^5.8.2
 
-  '@redis/client@5.8.1':
-    resolution: {integrity: sha512-hD5Tvv7G0t8b3w8ao3kQ4jEPUmUUC6pqA18c8ciYF5xZGfUGBg0olQHW46v6qSt4O5bxOuB3uV7pM6H5wEjBwA==}
+  '@redis/client@5.8.2':
+    resolution: {integrity: sha512-WtMScno3+eBpTac1Uav2zugXEoXqaU23YznwvFgkPwBQVwEHTDgOG7uEAObtZ/Nyn8SmAMbqkEubJaMOvnqdsQ==}
     engines: {node: '>= 18'}
 
-  '@redis/json@5.8.1':
-    resolution: {integrity: sha512-kyvM8Vn+WjJI++nRsIoI9TbdfCs1/TgD0Hp7Z7GiG6W4IEBzkXGQakli+R5BoJzUfgh7gED2fkncYy1NLprMNg==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@redis/client': ^5.8.1
-
-  '@redis/search@5.8.1':
-    resolution: {integrity: sha512-CzuKNTInTNQkxqehSn7QiYcM+th+fhjQn5ilTvksP1wPjpxqK0qWt92oYg3XZc3tO2WuXkqDvTujc4D7kb6r/A==}
+  '@redis/json@5.8.2':
+    resolution: {integrity: sha512-uxpVfas3I0LccBX9rIfDgJ0dBrUa3+0Gc8sEwmQQH0vHi7C1Rx1Qn8Nv1QWz5bohoeIXMICFZRcyDONvum2l/w==}
     engines: {node: '>= 18'}
     peerDependencies:
-      '@redis/client': ^5.8.1
+      '@redis/client': ^5.8.2
 
-  '@redis/time-series@5.8.1':
-    resolution: {integrity: sha512-klvdR96U9oSOyqvcectoAGhYlMOnMS3I5UWUOgdBn1buMODiwM/E4Eds7gxldKmtowe4rLJSF1CyIqyZTjy8Ow==}
+  '@redis/search@5.8.2':
+    resolution: {integrity: sha512-cNv7HlgayavCBXqPXgaS97DRPVWFznuzsAmmuemi2TMCx5scwLiP50TeZvUS06h/MG96YNPe6A0Zt57yayfxwA==}
     engines: {node: '>= 18'}
     peerDependencies:
-      '@redis/client': ^5.8.1
+      '@redis/client': ^5.8.2
+
+  '@redis/time-series@5.8.2':
+    resolution: {integrity: sha512-g2NlHM07fK8H4k+613NBsk3y70R2JIM2dPMSkhIjl2Z17SYvaYKdusz85d7VYOrZBWtDrHV/WD2E3vGu+zni8A==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.8.2
 
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
@@ -1475,8 +1475,8 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
-  redis@5.8.1:
-    resolution: {integrity: sha512-RZjBKYX/qFF809x6vDcE5VA6L3MmiuT+BkbXbIyyyeU0lPD47V4z8qTzN+Z/kKFwpojwCItOfaItYuAjNs8pTQ==}
+  redis@5.8.2:
+    resolution: {integrity: sha512-31vunZj07++Y1vcFGcnNWEf5jPoTkGARgfWI4+Tk55vdwHxhAvug8VEtW7Cx+/h47NuJTEg/JL77zAwC6E0OeA==}
     engines: {node: '>= 18'}
 
   resolve-alpn@1.2.1:
@@ -2294,25 +2294,25 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@redis/bloom@5.8.1(@redis/client@5.8.1)':
+  '@redis/bloom@5.8.2(@redis/client@5.8.2)':
     dependencies:
-      '@redis/client': 5.8.1
+      '@redis/client': 5.8.2
 
-  '@redis/client@5.8.1':
+  '@redis/client@5.8.2':
     dependencies:
       cluster-key-slot: 1.1.2
 
-  '@redis/json@5.8.1(@redis/client@5.8.1)':
+  '@redis/json@5.8.2(@redis/client@5.8.2)':
     dependencies:
-      '@redis/client': 5.8.1
+      '@redis/client': 5.8.2
 
-  '@redis/search@5.8.1(@redis/client@5.8.1)':
+  '@redis/search@5.8.2(@redis/client@5.8.2)':
     dependencies:
-      '@redis/client': 5.8.1
+      '@redis/client': 5.8.2
 
-  '@redis/time-series@5.8.1(@redis/client@5.8.1)':
+  '@redis/time-series@5.8.2(@redis/client@5.8.2)':
     dependencies:
-      '@redis/client': 5.8.1
+      '@redis/client': 5.8.2
 
   '@sec-ant/readable-stream@0.4.1': {}
 
@@ -3357,13 +3357,13 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
-  redis@5.8.1:
+  redis@5.8.2:
     dependencies:
-      '@redis/bloom': 5.8.1(@redis/client@5.8.1)
-      '@redis/client': 5.8.1
-      '@redis/json': 5.8.1(@redis/client@5.8.1)
-      '@redis/search': 5.8.1(@redis/client@5.8.1)
-      '@redis/time-series': 5.8.1(@redis/client@5.8.1)
+      '@redis/bloom': 5.8.2(@redis/client@5.8.2)
+      '@redis/client': 5.8.2
+      '@redis/json': 5.8.2(@redis/client@5.8.2)
+      '@redis/search': 5.8.2(@redis/client@5.8.2)
+      '@redis/time-series': 5.8.2(@redis/client@5.8.2)
 
   resolve-alpn@1.2.1: {}
 
