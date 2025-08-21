@@ -3,12 +3,25 @@ services:
     image: mongo:7.0.23
     container_name: mrern-open-library-mongodb
     restart: always
+    env_file:
+      - ./server/src/.env
+    environment:
+      - DB_HOST=${DB_HOST}
+      - MONGODB_PORT=${MONGODB_PORT}
+      - MONGODB_USER=${MONGODB_USER}
+      - MONGODB_PASS=${MONGODB_PASS}
+      - MONGODB_NAME=${MONGODB_NAME}
     volumes:
       - ./data/mongodb:/data/db
   redis:
     image: redis/redis-stack:latest
     container_name: mrern-open-library-redis
     restart: always
+    env_file:
+      - ./server/src/.env
+    environment:
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASS=${REDIS_PASS}
     volumes:
       - ./data/redis:/data
     depends_on:
@@ -17,6 +30,14 @@ services:
     image: axllent/mailpit:latest
     container_name: mrern-open-library-mailpit
     restart: always
+    env_file:
+      - ./server/src/.env
+    environment:
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASS=${MAIL_PASS}
+      - MAIL_FROM=${MAIL_FROM}
     ports:
       - 8025:8025
   server:
@@ -24,6 +45,16 @@ services:
     image: virezee/mrern-open-library-express:latest
     container_name: mrern-open-library-express
     restart: always
+    env_file:
+      - ./server/src/.env
+    environment:
+      - DOMAIN=${DOMAIN}
+      - PORT=${PORT}
+      - CLIENT_PORT=${CLIENT_PORT}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - PEPPER=${PEPPER}
+      - SECRET_KEY=${SECRET_KEY}
     ports:
       - 3001:3001
     depends_on:
@@ -35,6 +66,11 @@ services:
     image: virezee/mrern-open-library-react:latest
     container_name: mrern-open-library-react
     restart: always
+    env_file:
+      - ./client/src/.env
+    environment:
+      - VITE_DOMAIN=${VITE_DOMAIN}
+      - VITE_SERVER_PORT=${VITE_SERVER_PORT}
     ports:
       - 3000:3000
     depends_on:
