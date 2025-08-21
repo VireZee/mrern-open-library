@@ -79,8 +79,8 @@ importers:
         specifier: ^2.0.4
         version: 2.0.4
       '@types/nodemailer':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.0.1
+        version: 7.0.1
       '@types/passport':
         specifier: ^1.0.17
         version: 1.0.17
@@ -792,8 +792,8 @@ packages:
   '@types/node@22.13.5':
     resolution: {integrity: sha512-+lTU0PxZXn0Dr1NBtC7Y8cR21AJr87dLLU953CWA6pMxxv/UDc7jYAY90upcrie1nRcD6XNG5HOYEDtgW5TxAg==}
 
-  '@types/nodemailer@7.0.0':
-    resolution: {integrity: sha512-APKHivjoJ1OyLrlhdJ/QJpnj78OaGSHQ18J12CeOVbffvBgUjqBiIzCW2lnRuwQiLxCpahgMf+T7G2dZBvgeYw==}
+  '@types/nodemailer@7.0.1':
+    resolution: {integrity: sha512-UfHAghPmGZVzaL8x9y+mKZMWyHC399+iq0MOmya5tIyenWX3lcdSb60vOmp0DocR6gCDTYTozv/ULQnREyyjkg==}
 
   '@types/oauth@0.9.6':
     resolution: {integrity: sha512-H9TRCVKBNOhZZmyHLqFt9drPM9l+ShWiqqJijU1B8P3DX3ub84NjxDuy+Hjrz+fEca5Kwip3qPMKNyiLgNJtIA==}
@@ -2651,7 +2651,7 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
-  '@types/nodemailer@7.0.0':
+  '@types/nodemailer@7.0.1':
     dependencies:
       '@aws-sdk/client-sesv2': 3.864.0
       '@types/node': 22.13.5
