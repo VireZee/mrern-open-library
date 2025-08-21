@@ -1,11 +1,11 @@
 import { createClient } from 'redis'
 
 const Redis = createClient({
-    password: process.env['REDIS_PASS']!,
     socket: {
-        host: process.env['DB_HOST'],
+        host: process.env['REDIS_HOST'],
         port: Number(process.env['REDIS_PORT'])
-    }
+    },
+    ...(process.env['REDIS_PASS'] && { password: process.env['REDIS_PASS'] })
 })
 try {
     await Redis.connect()

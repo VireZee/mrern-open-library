@@ -3,16 +3,18 @@ services:
     image: mongo:7.0.23
     container_name: mrern-open-library-mongodb
     restart: always
-    env_file:
-      - ./server/.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASS}
+      - MONGO_INITDB_DATABASE=${MONGODB_NAME}
     volumes:
       - ./data/mongodb:/data/db
   redis:
     image: redis/redis-stack:latest
     container_name: mrern-open-library-redis
     restart: always
-    env_file:
-      - ./server/.env
+    environment:
+      - REDIS_ARGS="--requirepass ${REDIS_PASS}"
     volumes:
       - ./data/redis:/data
     depends_on:
@@ -21,17 +23,11 @@ services:
     image: axllent/mailpit:latest
     container_name: mrern-open-library-mailpit
     restart: always
-    env_file:
-      - ./server/.env
-    ports:
-      - 8025:8025
   server:
     build: ./server
     image: virezee/mrern-open-library-express:latest
     container_name: mrern-open-library-express
     restart: always
-    env_file:
-      - ./server/.env
     ports:
       - 3001:3001
     depends_on:
@@ -43,8 +39,6 @@ services:
     image: virezee/mrern-open-library-react:latest
     container_name: mrern-open-library-react
     restart: always
-    env_file:
-      - ./client/.env
     ports:
       - 3000:3000
     depends_on:
