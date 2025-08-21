@@ -7,5 +7,5 @@
 **/.dockerignore
 **/.git
 **/.gitignore
-README
+README.md
 LICENSE
