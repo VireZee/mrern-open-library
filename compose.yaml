@@ -3,14 +3,12 @@ services:
     image: redis/redis-stack:latest
     container_name: mrern-open-library-redis
     restart: always
-    environment:
-      - REDIS_ARGS="--requirepass ${REDIS_PASS}"
-    volumes:
-      - ./data/redis:/data
   mailpit:
     image: axllent/mailpit:latest
     container_name: mrern-open-library-mailpit
     restart: always
+    ports:
+      - 8025:8025
   server:
     build: ./server
     image: virezee/mrern-open-library-express:latest
