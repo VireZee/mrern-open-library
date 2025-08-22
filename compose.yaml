@@ -1,14 +1,4 @@
 services:
-  mongodb:
-    image: mongo:7.0.23
-    container_name: mrern-open-library-mongodb
-    restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASS}
-      - MONGO_INITDB_DATABASE=${MONGODB_NAME}
-    volumes:
-      - ./data/mongodb:/data/db
   redis:
     image: redis/redis-stack:latest
     container_name: mrern-open-library-redis
@@ -17,8 +7,6 @@ services:
       - REDIS_ARGS="--requirepass ${REDIS_PASS}"
     volumes:
       - ./data/redis:/data
-    depends_on:
-      - mongodb
   mailpit:
     image: axllent/mailpit:latest
     container_name: mrern-open-library-mailpit
@@ -31,7 +19,6 @@ services:
     ports:
       - 3001:3001
     depends_on:
-      - mongodb
       - redis
       - mailpit
   client:
@@ -42,7 +29,6 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - mongodb
       - redis
       - mailpit
       - server

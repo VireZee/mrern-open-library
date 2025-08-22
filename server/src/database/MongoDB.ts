@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 const MongoDB = async () => {
     try {
-        await mongoose.connect(`mongodb://${process.env['MONGODB_USER']}:${process.env['MONGODB_PASS']}@${process.env['DB_HOST']}:${process.env['MONGODB_PORT']}/${process.env['MONGODB_NAME']}?directConnection=true&authMechanism=SCRAM-SHA-256`)
+        await mongoose.connect(`mongodb://${process.env['MONGODB_USER']}:${process.env['MONGODB_PASS']}@${process.env['DB_HOST']}:${process.env['MONGODB_PORT']}/${process.env['MONGODB_NAME']}?directConnection=true&authSource=${process.env['MONGODB_NAME']}&authMechanism=SCRAM-SHA-256`)
         const collections = await mongoose.connection.db!.listCollections().toArray()
         const collectionNames = collections.map(col => col.name)
         const targetCollections = ['users', 'collections']
