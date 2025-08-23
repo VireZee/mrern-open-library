@@ -18,7 +18,7 @@ Before setting up the project, ensure you have the following installed:
 - 🍃 **MongoDB** → [Download](https://www.mongodb.com/try/download/enterprise)
 - 🐋 **Docker** → [Download](https://docs.docker.com/get-started/get-docker)
 - 🟥 **Redis Stack** → [Download (via Docker)](https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-stack/docker)
-- ✉️ **Mailpit** → [Download (via Docker)](https://mailpit.axllent.org/docs/install)
+- ✉️ **Mailpit** → [Download (via Docker)](https://mailpit.axllent.org/docs/install/docker)
 - 🟢 **Node.js** → [Download](https://nodejs.org/en/download)
 - 📦 **pnpm** → Enable with:
 ```sh
@@ -68,7 +68,7 @@ copy server\.env.example server\.env
 Copy-Item server/.env.example server/.env 
 ```
 
-Modify `.env` with your configuration
+Modify `.env` with your configuration:
 ```env
 DB_HOST=localhost
 MONGODB_PORT=27017
@@ -91,7 +91,7 @@ GOOGLE_CLIENT_SECRET=<your_google_client_secret>
 PEPPER=<your_pepper>
 SECRET_KEY=<your_secret_key>
 ```
-> [!Note]
+> [!NOTE]
 > **Replace values inside <...> with your actual configuration credentials (Databases, Email, Google OAuth, etc.).**
 
 #### 🖥️ Frontend 📱
@@ -118,7 +118,7 @@ docker run -d --name redis-stack -e REDIS_ARGS="--requirepass <your_redis_passwo
 docker run -d --name=mailpit --restart unless-stopped -e TZ=Europe/London -p 8025:8025 -p 1025:1025 axllent/mailpit
 pnpm run dev
 ```
-> [!Note]
+> [!NOTE]
 > **Mailpit will run on http://localhost:8025 to preview verification codes.**
 
 #### 🖥️ Frontend 📱
@@ -128,6 +128,19 @@ pnpm run dev
 ```
 
 ### **🏭 Production Mode**
+Before running the application in production, make sure to modify the `.env` in both `server/.env` and `client/.env`.
+For `server/.env`:
+```sh
+PORT=3001
+CLIENT_PORT=3000
+```
+For `client/.env`:
+```sh
+VITE_SERVER_PORT=3001
+```
+> [!IMPORTANT]
+> **Make sure to keep the rest of your .env configurations intact.**
+
 #### ⚙️ Backend 🌐
 ```sh
 cd ../server
