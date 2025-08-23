@@ -121,9 +121,10 @@ pnpm run dev
 cd ../client
 pnpm run dev
 ```
+> [!Note]
+> **Mailpit will run on http://localhost:8025 to preview verification codes.**
 
 ### **🏭 Production Mode**
-
 #### ⚙️ Backend 🌐
 ```sh
 cd ../server
@@ -137,7 +138,7 @@ cd ../client
 pnpm run build
 pnpm serve -s dist
 ```
-
 > [!Note]
 > **Mailpit will run on http://localhost:8025 to preview verification codes.**
+
 ---
