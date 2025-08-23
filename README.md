@@ -110,13 +110,13 @@ Copy-Item client/.env.example client/.env
 
 ## **🚀 Running the Application**
 ### **🚧 Development Mode**
-#### ⚙️ Start Backend 🌐 (Express)
+#### ⚙️ Backend 🌐
 ```sh
 cd server
 pnpm run dev
 ```
 
-#### 🖥️ Start Frontend 📱 (React)
+#### 🖥️ Frontend 📱
 ```sh
 cd ../client
 pnpm run dev
