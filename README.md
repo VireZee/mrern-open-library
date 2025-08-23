@@ -4,10 +4,12 @@ A lightweight **Open Library System** powered by the **MRERN Stack** (**MongoDB,
 ---
 
 ## **🌟 Key Features**
-- 📖 **Browse & Search Books** (via Open Library API)
-- 🔐 **JWT-Based Authentication**
-- ⚡ **State Management with Redux Toolkit**
+- 📖 **Browse & Search Books**
 - 🔗 **Internal GraphQL Implementation**
+- ⚡ **State Management with Redux**
+- 🔐 **JWT-Based Authentication**
+- 📧 **Email Verification**
+- 🔑 **Google OAuth 2.0**
 
 ---
 
@@ -15,6 +17,7 @@ A lightweight **Open Library System** powered by the **MRERN Stack** (**MongoDB,
 Before setting up the project, ensure you have the following installed:
 - 🍃 **MongoDB** → [Download](https://www.mongodb.com/try/download/enterprise)
 - 🟥 **Redis** → [Download](https://redis.io/downloads)
+- ✉️ **Mailpit** → [Download](https://mailpit.axllent.org/docs/install)
 - 🟢 **Node.js** → [Download](https://nodejs.org/en/download)
 - 📦 **pnpm** → Enable with:
 ```sh
@@ -28,4 +31,77 @@ corepack enable pnpm
 ```sh
 git clone https://github.com/VireZee/mrern-open-library.git
 cd mrern-open-library
+```
+
+### 2️⃣ Install Dependencies 🛠️
+#### ⚙️ Backend 🌐
+```sh
+cd server
+pnpm i
+```
+
+#### 🖥️ Frontend 📱
+```sh
+cd ../client
+pnpm i
+```
+
+###  3️⃣ Configure Environment Variables ⚙️
+Copy the `.env.example` files to `.env` in both the **backend** and **frontend** directories.
+Each environment file must be placed in its respective service directory:  
+- Backend → `server/.env`
+- Frontend → `client/.env`
+
+#### ⚙️ Backend 🌐
+Navigate to the project root and create `.env` inside `server/` directory:
+```sh
+cd ..
+
+# Linux/macOS
+cp server/.env.example server/.env
+
+# Windows (cmd)
+copy server\.env.example server\.env
+
+# Windows (PowerShell)
+Copy-Item server/.env.example server/.env 
+```
+
+Modify `.env` with your configuration
+```env
+DB_HOST=localhost
+MONGODB_PORT=27017
+MONGODB_USER=<your_database_user>
+MONGODB_PASS=<your_database_password>
+MONGODB_NAME=mrern_open_library
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASS=<your_redis_password>
+MAIL_HOST=localhost
+MAIL_PORT=1025
+MAIL_USER=<your_mailpit_user>
+MAIL_PASS=<your_mailpit_password>
+MAIL_FROM=noreply@mrern-open-library.net
+DOMAIN=localhost
+PORT=3001
+CLIENT_PORT=3000
+GOOGLE_CLIENT_ID=<your_google_client_id>
+GOOGLE_CLIENT_SECRET=<your_google_client_secret>
+PEPPER=<your_pepper>
+SECRET_KEY=<your_secret_key>
+```
+> [!Note]
+> **Replace values inside <...> with your actual configuration credentials (Databases, Email, Google OAuth, etc.).**
+
+#### 🖥️ Frontend 📱
+Create `.env` inside `client/` directory:
+```sh
+# Linux/macOS
+cp client/.env.example client/.env
+
+# Windows (cmd)
+copy client\.env.example client\.env
+
+# Windows (PowerShell)
+Copy-Item client/.env.example client/.env
 ```
