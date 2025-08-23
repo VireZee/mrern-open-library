@@ -129,6 +129,7 @@ pnpm run dev
 
 ### **🏭 Production Mode**
 Before running the application in production, make sure to modify the `.env` in both `server/.env` and `client/.env`.
+
 For `server/.env`:
 ```sh
 PORT=3001
@@ -139,7 +140,7 @@ For `client/.env`:
 VITE_SERVER_PORT=3001
 ```
 > [!IMPORTANT]
-> **Make sure to keep the rest of your .env configurations intact.**
+> **Make sure to keep the rest of your `.env` configurations intact.**
 
 #### ⚙️ Backend 🌐
 ```sh
