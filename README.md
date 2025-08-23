@@ -105,3 +105,37 @@ copy client\.env.example client\.env
 # Windows (PowerShell)
 Copy-Item client/.env.example client/.env
 ```
+
+---
+
+## **🚀 Running the Application**
+### **🚧 Development Mode**
+#### ⚙️ Start Backend 🌐 (Express)
+```sh
+cd server
+pnpm run dev
+```
+
+#### 🖥️ Start Frontend 📱 (React)
+```sh
+cd ../client
+pnpm run dev
+```
+
+### **🏭 Production Mode**
+
+#### ⚙️ Backend 🌐
+```sh
+cd ../server
+pnpm run build
+pnpm start
+```
+
+#### 🖥️ Frontend 📱
+```sh
+cd ../client
+pnpm run build
+pnpm serve -s dist
+```
+
+---
