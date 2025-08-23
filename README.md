@@ -16,8 +16,9 @@ A lightweight **Open Library System** powered by the **MRERN Stack** (**MongoDB,
 ## **📋 Prerequisites**
 Before setting up the project, ensure you have the following installed:
 - 🍃 **MongoDB** → [Download](https://www.mongodb.com/try/download/enterprise)
-- 🟥 **Redis** → [Download](https://redis.io/downloads)
-- ✉️ **Mailpit** → [Download](https://mailpit.axllent.org/docs/install)
+- 🐋 **Docker** → [Download](https://docs.docker.com/get-started/get-docker)
+- 🟥 **Redis Stack** → [Download (via Docker)](https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-stack/docker)
+- ✉️ **Mailpit** → [Download (via Docker)](https://mailpit.axllent.org/docs/install)
 - 🟢 **Node.js** → [Download](https://nodejs.org/en/download)
 - 📦 **pnpm** → Enable with:
 ```sh
@@ -83,8 +84,8 @@ MAIL_USER=<your_mailpit_user>
 MAIL_PASS=<your_mailpit_password>
 MAIL_FROM=noreply@mrern-open-library.net
 DOMAIN=localhost
-PORT=3001
-CLIENT_PORT=3000
+PORT=3000
+CLIENT_PORT=5173
 GOOGLE_CLIENT_ID=<your_google_client_id>
 GOOGLE_CLIENT_SECRET=<your_google_client_secret>
 PEPPER=<your_pepper>
@@ -113,16 +114,18 @@ Copy-Item client/.env.example client/.env
 #### ⚙️ Backend 🌐
 ```sh
 cd server
+docker run -d --name redis-stack -e REDIS_ARGS="--requirepass <your_redis_password>" -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+docker run -d --name=mailpit --restart unless-stopped -e TZ=Europe/London -p 8025:8025 -p 1025:1025 axllent/mailpit
 pnpm run dev
 ```
+> [!Note]
+> **Mailpit will run on http://localhost:8025 to preview verification codes.**
 
 #### 🖥️ Frontend 📱
 ```sh
 cd ../client
 pnpm run dev
 ```
-> [!Note]
-> **Mailpit will run on http://localhost:8025 to preview verification codes.**
 
 ### **🏭 Production Mode**
 #### ⚙️ Backend 🌐
@@ -138,7 +141,5 @@ cd ../client
 pnpm run build
 pnpm serve -s dist
 ```
-> [!Note]
-> **Mailpit will run on http://localhost:8025 to preview verification codes.**
 
 ---
