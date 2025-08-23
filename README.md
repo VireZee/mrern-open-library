@@ -46,7 +46,7 @@ cd ../client
 pnpm i
 ```
 
-###  3️⃣ Configure Environment Variables ⚙️
+###  3️⃣ Configure Environment Variables 🔧
 Copy the `.env.example` files to `.env` in both the **backend** and **frontend** directories.
 Each environment file must be placed in its respective service directory:  
 - Backend → `server/.env`
@@ -138,4 +138,6 @@ pnpm run build
 pnpm serve -s dist
 ```
 
+> [!Note]
+> **Mailpit will run on http://localhost:8025 to preview verification codes.**
 ---
