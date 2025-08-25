@@ -195,5 +195,5 @@ Special thanks to Open Library API for providing free and open access to book da
 ---
 
 ### 👤 Author
-Developed by [VireZee](https://github.com/VireZee). Feel free to contribute or provide feedback! 📝
+Developed by [VireZee](https://github.com/VireZee). Feel free to contribute or provide feedback! 📝<br>
 Contributions are welcome, especially for improving the frontend.
