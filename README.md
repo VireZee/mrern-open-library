@@ -157,3 +157,43 @@ pnpm serve -s dist
 ```
 
 ---
+
+## **🐳 Running with Docker (Optional)**
+If you prefer running the application inside Docker containers, modify the `.env` in both `server/.env` and `client/.env`.
+### 1️⃣ Configure Environment Variables 🔑
+For `server/.env`:
+```sh
+DB_HOST=host.docker.internal
+REDIS_HOST=redis
+REDIS_PASS=
+MAIL_HOST=mailpit
+PORT=3001
+CLIENT_PORT=3000
+```
+For `client/.env`:
+```sh
+VITE_SERVER_PORT=3000
+```
+> [!IMPORTANT]
+> **Make sure to keep the rest of your `.env` configurations intact.**
+
+### 2️⃣ Start Containers 🚢
+```sh
+docker compose up -d
+```
+
+### 3️⃣ Stop Containers ⛔
+```sh
+docker compose down
+```
+
+---
+
+### 🙌 Acknowledgments
+Special thanks to Open Library API for providing free and open access to book data.
+
+---
+
+### 👤 Author
+Developed by [VireZee](https://github.com/VireZee). Feel free to contribute or provide feedback! 📝
+Contributions are welcome, especially for improving the frontend.
