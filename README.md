@@ -172,7 +172,7 @@ CLIENT_PORT=3000
 ```
 For `client/.env`:
 ```sh
-VITE_SERVER_PORT=3000
+VITE_SERVER_PORT=3001
 ```
 > [!IMPORTANT]
 > **Make sure to keep the rest of your `.env` configurations intact.**
