@@ -184,7 +184,7 @@ docker compose up -d
 
 ### 3️⃣ Stop Containers ⛔
 ```sh
-docker compose down
+docker compose down -v
 ```
 
 ---
