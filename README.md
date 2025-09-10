@@ -162,7 +162,7 @@ pnpm serve -s dist
 If you prefer running the application inside Docker containers, modify the `.env` in both `server/.env` and `client/.env`.
 ### 1️⃣ Configure Environment Variables 🔑
 For `server/.env`:
-```sh
+```env
 DB_HOST=host.docker.internal
 REDIS_HOST=redis
 REDIS_PASS=
@@ -171,7 +171,7 @@ PORT=3001
 CLIENT_PORT=3000
 ```
 For `client/.env`:
-```sh
+```env
 VITE_SERVER_PORT=3001
 ```
 > [!IMPORTANT]
