@@ -160,7 +160,7 @@ pnpm serve -s dist
 
 ## **🐳 Running with Docker (Optional)**
 If you prefer running the application inside Docker containers, modify the `.env` in both `server/.env` and `client/.env`.
-### 1️⃣ Configure Environment Variables 🔑
+### 1️⃣ Configure Environment Variables 🔧
 For `server/.env`:
 ```env
 DB_HOST=host.docker.internal
